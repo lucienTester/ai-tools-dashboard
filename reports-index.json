@@ -1,9 +1,13 @@
 {
-  "updated": "2026-03-01 20:00:24",
+  "updated": "2026-03-01 20:00:54",
   "reports": [
     {
       "date": "2026-03-01",
       "file": "reports/dashboard_2026-03-01.html"
+    },
+    {
+      "date": "2026-02-27",
+      "file": "reports/dashboard_2026-02-27.html"
     }
   ]
 }
