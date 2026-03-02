@@ -210,6 +210,69 @@
             font-size: 0.85em;
             margin-left: 10px;
         }
+        /* 模块统计 */
+        .module-stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+        .module-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .module-card h3 {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .module-card.story h3 { color: #3182ce; border-color: #3182ce; }
+        .module-card.bug h3 { color: #e53e3e; border-color: #e53e3e; }
+        .module-stat-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95em;
+        }
+        .module-stat-table th {
+            background: #f7fafc;
+            color: #4a5568;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .module-stat-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #f0f4f8;
+            color: #4a5568;
+        }
+        .module-stat-table tr:hover td { background: #f7fafc; }
+        .stat-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        .badge-total { background: #ebf8ff; color: #2b6cb0; }
+        .badge-done { background: #f0fff4; color: #276749; }
+        .badge-progress { background: #fffbeb; color: #92400e; }
+        .badge-pending { background: #fff5f5; color: #9b2c2c; }
+        .progress-bar-wrap {
+            background: #e2e8f0;
+            border-radius: 6px;
+            height: 8px;
+            width: 100%;
+            margin-top: 4px;
+        }
+        .progress-bar-fill {
+            height: 8px;
+            border-radius: 6px;
+            background: linear-gradient(90deg, #48bb78, #38a169);
+        }
     </style>
 </head>
 <body>
@@ -276,6 +339,156 @@
                 </thead>
                 <tbody id="tableBody"></tbody>
             </table>
+        </div>
+
+        <!-- 需求与缺陷模块统计（动态生成） -->
+        <div class="benchmark-section" id="moduleStatsSection">
+            <h2>📋 需求 & 缺陷模块统计</h2>
+            <div id="moduleStatsContainer">
+                <div class="module-stats-grid">
+    <div class="module-card story">
+        <h3>📝 需求模块统计 <span style="font-size:0.75em;font-weight:400;color:#718096;">共 39 项，完成率 66.7%</span></h3>
+        <table class="module-stat-table">
+            <thead>
+                <tr>
+                    <th>模块</th>
+                    <th>总数</th>
+                    <th>已完成</th>
+                    <th>进行中</th>
+                    <th>待处理</th>
+                    <th>完成率</th>
+                </tr>
+            </thead>
+            <tbody>
+        <tr>
+            <td><strong>战斗系统</strong></td>
+            <td><span class="stat-badge badge-total">12</span></td>
+            <td><span class="stat-badge badge-done">8</span></td>
+            <td><span class="stat-badge badge-progress">3</span></td>
+            <td><span class="stat-badge badge-pending">1</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">66.7%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:66.7%"></div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>界面UI</strong></td>
+            <td><span class="stat-badge badge-total">9</span></td>
+            <td><span class="stat-badge badge-done">6</span></td>
+            <td><span class="stat-badge badge-progress">2</span></td>
+            <td><span class="stat-badge badge-pending">1</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">66.7%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:66.7%"></div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>社交系统</strong></td>
+            <td><span class="stat-badge badge-total">7</span></td>
+            <td><span class="stat-badge badge-done">5</span></td>
+            <td><span class="stat-badge badge-progress">1</span></td>
+            <td><span class="stat-badge badge-pending">1</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">71.4%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:71.4%"></div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>道具系统</strong></td>
+            <td><span class="stat-badge badge-total">6</span></td>
+            <td><span class="stat-badge badge-done">4</span></td>
+            <td><span class="stat-badge badge-progress">2</span></td>
+            <td><span class="stat-badge badge-pending">0</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">66.7%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:66.7%"></div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>地图场景</strong></td>
+            <td><span class="stat-badge badge-total">5</span></td>
+            <td><span class="stat-badge badge-done">3</span></td>
+            <td><span class="stat-badge badge-progress">1</span></td>
+            <td><span class="stat-badge badge-pending">1</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">60.0%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:60.0%"></div></div>
+            </td>
+        </tr></tbody>
+        </table>
+    </div>
+    <div class="module-card bug">
+        <h3>🐛 缺陷模块统计 <span style="font-size:0.75em;font-weight:400;color:#718096;">共 26 项，完成率 61.5%</span></h3>
+        <table class="module-stat-table">
+            <thead>
+                <tr>
+                    <th>模块</th>
+                    <th>总数</th>
+                    <th>已完成</th>
+                    <th>进行中</th>
+                    <th>待处理</th>
+                    <th>完成率</th>
+                </tr>
+            </thead>
+            <tbody>
+        <tr>
+            <td><strong>战斗系统</strong></td>
+            <td><span class="stat-badge badge-total">8</span></td>
+            <td><span class="stat-badge badge-done">5</span></td>
+            <td><span class="stat-badge badge-progress">2</span></td>
+            <td><span class="stat-badge badge-pending">1</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">62.5%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:62.5%"></div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>界面UI</strong></td>
+            <td><span class="stat-badge badge-total">6</span></td>
+            <td><span class="stat-badge badge-done">4</span></td>
+            <td><span class="stat-badge badge-progress">1</span></td>
+            <td><span class="stat-badge badge-pending">1</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">66.7%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:66.7%"></div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>网络同步</strong></td>
+            <td><span class="stat-badge badge-total">5</span></td>
+            <td><span class="stat-badge badge-done">3</span></td>
+            <td><span class="stat-badge badge-progress">2</span></td>
+            <td><span class="stat-badge badge-pending">0</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">60.0%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:60.0%"></div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>道具系统</strong></td>
+            <td><span class="stat-badge badge-total">4</span></td>
+            <td><span class="stat-badge badge-done">2</span></td>
+            <td><span class="stat-badge badge-progress">1</span></td>
+            <td><span class="stat-badge badge-pending">1</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">50.0%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:50.0%"></div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>音效系统</strong></td>
+            <td><span class="stat-badge badge-total">3</span></td>
+            <td><span class="stat-badge badge-done">2</span></td>
+            <td><span class="stat-badge badge-progress">1</span></td>
+            <td><span class="stat-badge badge-pending">0</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">66.7%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:66.7%"></div></div>
+            </td>
+        </tr></tbody>
+        </table>
+    </div></div><p style="color:#a0aec0;font-size:0.85em;margin-top:10px;">📅 统计日期：2026-03-02 &nbsp;|&nbsp; 数据来源：本周热更分析文件</p>
+            </div>
         </div>
 
         <!-- 最新热点新闻（动态生成） -->
