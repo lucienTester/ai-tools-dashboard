@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>今日日报 - AI编程工具追踪</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 1800px; margin: 0 auto; }
+        header {
+            background: rgba(255,255,255,0.98);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 2.8em;
+            margin-bottom: 15px;
+        }
+        .update-time {
+            color: #718096;
+            font-size: 1em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .pulse {
+            width: 12px;
+            height: 12px;
+            background: #48bb78;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.1); }
+        }
+        
+        /* 权威评测数据区 */
+        .benchmark-section {
+            background: rgba(255,255,255,0.98);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+        }
+        .benchmark-section h2 {
+            color: #2d3748;
+            margin-bottom: 25px;
+            font-size: 2em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+        
+        /* 图表容器 */
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        .chart-box {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .chart-box h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        .chart-wrapper {
+            position: relative;
+            height: 350px;
+        }
+        
+        /* 数据表格 */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .data-table thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .data-table th, .data-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .data-table th {
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+        .data-table tr:hover {
+            background: #f7fafc;
+        }
+        .data-table td {
+            color: #4a5568;
+        }
+        .rank-badge {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            border-radius: 50%;
+            font-weight: bold;
+            color: white;
+        }
+        .rank-1 { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); }
+        .rank-2 { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+        .rank-3 { background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%); }
+        .rank-other { background: #cbd5e0; }
+        
+        /* 热点新闻区块 */
+        .news-section {
+            background: rgba(255,255,255,0.98);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+        }
+        .news-section h2 {
+            color: #2d3748;
+            margin-bottom: 25px;
+            font-size: 2em;
+            border-bottom: 3px solid #f56565;
+            padding-bottom: 10px;
+        }
+        .news-item {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border-left: 4px solid #f56565;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .news-item:hover {
+            transform: translateX(5px);
+        }
+        .news-title {
+            font-size: 1.25em;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+        .news-title a {
+            color: #2d3748;
+            text-decoration: none;
+        }
+        .news-title a:hover {
+            color: #667eea;
+            text-decoration: underline;
+        }
+        .news-meta {
+            color: #718096;
+            font-size: 0.95em;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .news-tag {
+            background: #fed7d7;
+            color: #c53030;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        .news-desc {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            color: white;
+            margin-top: 30px;
+            opacity: 0.9;
+            font-size: 0.95em;
+        }
+        .source-tag {
+            display: inline-block;
+            background: #e6fffa;
+            color: #234e52;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.85em;
+            margin-left: 10px;
+        }
+        /* 模块统计 */
+        .module-stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+        .module-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .module-card h3 {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .module-card.story h3 { color: #3182ce; border-color: #3182ce; }
+        .module-card.bug h3 { color: #e53e3e; border-color: #e53e3e; }
+        .module-stat-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95em;
+        }
+        .module-stat-table th {
+            background: #f7fafc;
+            color: #4a5568;
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .module-stat-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #f0f4f8;
+            color: #4a5568;
+        }
+        .module-stat-table tr:hover td { background: #f7fafc; }
+        .stat-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        .badge-total { background: #ebf8ff; color: #2b6cb0; }
+        .badge-done { background: #f0fff4; color: #276749; }
+        .badge-progress { background: #fffbeb; color: #92400e; }
+        .badge-pending { background: #fff5f5; color: #9b2c2c; }
+        .progress-bar-wrap {
+            background: #e2e8f0;
+            border-radius: 6px;
+            height: 8px;
+            width: 100%;
+            margin-top: 4px;
+        }
+        .progress-bar-fill {
+            height: 8px;
+            border-radius: 6px;
+            background: linear-gradient(90deg, #48bb78, #38a169);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📅 今日日报</h1>
+            <div class="update-time">
+                <span class="pulse"></span>
+                <span>统一评测维度 | 最后更新：<span id="updateTime">加载中...</span></span>
+            </div>
+        </header>
+
+        <!-- 需求与缺陷模块统计（动态生成） -->
+        <div class="benchmark-section" id="moduleStatsSection">
+            <h2>📋 需求 & 缺陷模块统计</h2>
+            <div id="moduleStatsContainer">
+                <div class="module-stats-grid">
+    <div class="module-card story">
+        <h3>📝 需求模块统计 <span style="font-size:0.75em;font-weight:400;color:#718096;">共 39 项，完成率 66.7%</span></h3>
+        <table class="module-stat-table">
+            <thead>
+                <tr>
+                    <th>模块</th>
+                    <th>总数</th>
+                    <th>已完成</th>
+                    <th>进行中</th>
+                    <th>待处理</th>
+                    <th>完成率</th>
+                </tr>
+            </thead>
+            <tbody>
+        <tr>
+            <td><strong>战斗系统</strong></td>
+            <td><span class="stat-badge badge-total">12</span></td>
+            <td><span class="stat-badge badge-done">8</span></td>
+            <td><span class="stat-badge badge-progress">3</span></td>
+            <td><span class="stat-badge badge-pending">1</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">66.7%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:66.7%"></div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>界面UI</strong></td>
+            <td><span class="stat-badge badge-total">9</span></td>
+            <td><span class="stat-badge badge-done">6</span></td>
+            <td><span class="stat-badge badge-progress">2</span></td>
+            <td><span class="stat-badge badge-pending">1</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">66.7%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:66.7%"></div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>社交系统</strong></td>
+            <td><span class="stat-badge badge-total">7</span></td>
+            <td><span class="stat-badge badge-done">5</span></td>
+            <td><span class="stat-badge badge-progress">1</span></td>
+            <td><span class="stat-badge badge-pending">1</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">71.4%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:71.4%"></div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>道具系统</strong></td>
+            <td><span class="stat-badge badge-total">6</span></td>
+            <td><span class="stat-badge badge-done">4</span></td>
+            <td><span class="stat-badge badge-progress">2</span></td>
+            <td><span class="stat-badge badge-pending">0</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">66.7%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:66.7%"></div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>地图场景</strong></td>
+            <td><span class="stat-badge badge-total">5</span></td>
+            <td><span class="stat-badge badge-done">3</span></td>
+            <td><span class="stat-badge badge-progress">1</span></td>
+            <td><span class="stat-badge badge-pending">1</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">60.0%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:60.0%"></div></div>
+            </td>
+        </tr></tbody>
+        </table>
+    </div>
+    <div class="module-card bug">
+        <h3>🐛 缺陷模块统计 <span style="font-size:0.75em;font-weight:400;color:#718096;">共 26 项，完成率 61.5%</span></h3>
+        <table class="module-stat-table">
+            <thead>
+                <tr>
+                    <th>模块</th>
+                    <th>总数</th>
+                    <th>已完成</th>
+                    <th>进行中</th>
+                    <th>待处理</th>
+                    <th>完成率</th>
+                </tr>
+            </thead>
+            <tbody>
+        <tr>
+            <td><strong>战斗系统</strong></td>
+            <td><span class="stat-badge badge-total">8</span></td>
+            <td><span class="stat-badge badge-done">5</span></td>
+            <td><span class="stat-badge badge-progress">2</span></td>
+            <td><span class="stat-badge badge-pending">1</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">62.5%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:62.5%"></div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>界面UI</strong></td>
+            <td><span class="stat-badge badge-total">6</span></td>
+            <td><span class="stat-badge badge-done">4</span></td>
+            <td><span class="stat-badge badge-progress">1</span></td>
+            <td><span class="stat-badge badge-pending">1</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">66.7%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:66.7%"></div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>网络同步</strong></td>
+            <td><span class="stat-badge badge-total">5</span></td>
+            <td><span class="stat-badge badge-done">3</span></td>
+            <td><span class="stat-badge badge-progress">2</span></td>
+            <td><span class="stat-badge badge-pending">0</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">60.0%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:60.0%"></div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>道具系统</strong></td>
+            <td><span class="stat-badge badge-total">4</span></td>
+            <td><span class="stat-badge badge-done">2</span></td>
+            <td><span class="stat-badge badge-progress">1</span></td>
+            <td><span class="stat-badge badge-pending">1</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">50.0%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:50.0%"></div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>音效系统</strong></td>
+            <td><span class="stat-badge badge-total">3</span></td>
+            <td><span class="stat-badge badge-done">2</span></td>
+            <td><span class="stat-badge badge-progress">1</span></td>
+            <td><span class="stat-badge badge-pending">0</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">66.7%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:66.7%"></div></div>
+            </td>
+        </tr></tbody>
+        </table>
+    </div></div><div class="module-card" style="margin-top:18px;border-left:4px solid #fc8181;">
+    <h3>⚠️ 风险分析 <span style="font-size:0.75em;font-weight:400;color:#718096;">共识别 1 个风险模块</span></h3>
+    <table class="module-stat-table">
+        <thead><tr><th>模块</th><th>风险等级</th><th>风险原因</th></tr></thead>
+        <tbody><tr style="background:#f0fff4">
+            <td><strong>战斗系统</strong></td>
+            <td><span style="background:#68d391;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.85em;font-weight:600;">🟢 低风险</span></td>
+            <td style="color:#4a5568;font-size:0.9em;">缺陷进行中 2 个，需求同步开发中</td>
+        </tr></tbody>
+    </table>
+</div><p style="color:#a0aec0;font-size:0.85em;margin-top:10px;">📅 统计日期：2026-03-04 &nbsp;|&nbsp; 数据来源：本周热更分析文件</p>
+            </div>
+        </div>
+
+        <!-- 权威评测数据 -->
+        <div class="benchmark-section">
+            <h2>🏆 权威评测数据汇总 (2026年2月)</h2>
+            <p style="color: #718096; margin-bottom: 25px; font-size: 1.05em;">
+                数据来源：<span class="source-tag">LMArena/Chatbot Arena</span>
+                <span class="source-tag">SWE-bench Verified</span>
+                <span class="source-tag">HumanEval</span>
+                <span class="source-tag">MBPP</span>
+            </p>
+            
+            <!-- 图表区域 -->
+            <div class="charts-container">
+                <div class="chart-box">
+                    <h3>📈 LMArena编程Elo排名 (WebDev)</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="eloChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-box">
+                    <h3>🔧 SWE-bench Verified 解决率</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="sweBenchChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-box">
+                    <h3>🧪 HumanEval Pass@1 准确率</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="humanEvalChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-box">
+                    <h3>📦 MBPP Pass@1 准确率</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="mbppChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 综合数据表格 -->
+            <h3 style="color: #2d3748; margin: 30px 0 15px 0; font-size: 1.5em;">📋 综合评测对比表</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>排名</th>
+                        <th>模型</th>
+                        <th>LMArena Elo<br>(编程)</th>
+                        <th>SWE-bench<br>Verified</th>
+                        <th>HumanEval<br>Pass@1</th>
+                        <th>MBPP<br>Pass@1</th>
+                        <th>综合评分</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+
+        <!-- 最新热点新闻（动态生成） -->
+        <div class="news-section">
+            <h2 id="newsTitle">🔥 最新热点新闻 (2026-03-02 ~ 2026-03-04)</h2>
+            <div id="newsContainer">
+                
+                <div class="news-item">
+                    <div class="news-title">
+                        <a href="https://36kr.com/p/3707029227499651?f=rss" target="_blank">氪星晚报｜全国首个跨境电商出口“前置监管仓”投用；亚马逊云服务称仍在努力恢复阿联酋网络服务；2026年全国消费促进月启动</a>
+                    </div>
+                    <div class="news-meta">
+                        <span class="news-tag" style="background:#f1f5f9;color:#475569;">📰 AI资讯</span>
+                        <span>📅 2026-03-04 00:00</span>
+                        <span>🔗 36氪</span>
+                    </div>
+                    <div class="news-desc">大公司：
+  亚马逊花逾4亿美元购美知名高校校区用于AI建设
+  美国乔治·华盛顿大学2日说，美国亚马逊公司斥资4.27亿美元，收购该校弗吉尼亚科学与技术校区，以加快人工智能（AI）基础设施建设。
+  红果短剧已为多款小说相关软件登记著作权...</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-title">
+                        <a href="https://36kr.com/p/3705512345170309?f=rss" target="_blank">黄金频段争夺战打响，华为发布U6GHz完整产品矩阵丨MWC 2026</a>
+                    </div>
+                    <div class="news-meta">
+                        <span class="news-tag" style="background:#f1f5f9;color:#475569;">📰 AI资讯</span>
+                        <span>📅 2026-03-04 00:00</span>
+                        <span>🔗 36氪</span>
+                    </div>
+                    <div class="news-desc">作者丨邱晓芬
+  编辑丨苏建勋
+  在2026世界移动通信大会（MWC 2026）中偌大的1号馆里，华为几乎占据了一半以上的位置。这么大的空间和篇幅，华为想重点传递的关键词是U6GHz。
+  为了实现6G这一遥远的蓝图，近期，全球已掀起了一...</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-title">
+                        <a href="https://36kr.com/p/3705522207289479?f=rss" target="_blank">荣耀“转型”：发布Robot Phone和首款人形机器人丨MWC 2026</a>
+                    </div>
+                    <div class="news-meta">
+                        <span class="news-tag" style="background:#f1f5f9;color:#475569;">📰 AI资讯</span>
+                        <span>📅 2026-03-04 00:00</span>
+                        <span>🔗 36氪</span>
+                    </div>
+                    <div class="news-desc">作者丨邱晓芬
+  编辑丨苏建勋
+  在2026世界移动通信大会（MWC 2026）上，荣耀发布的人形机器人、Robot Phone吸引了大量观众的目光。
+  在Robot Phone上，荣耀打破了过去“黑色方块”的设计，将微型相机和云台系统...</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-title">
+                        <a href="https://36kr.com/p/3706592101691525?f=rss" target="_blank">前小米高管创业机器人，用“爆品逻辑”做工业通用具身智能</a>
+                    </div>
+                    <div class="news-meta">
+                        <span class="news-tag" style="background:#f1f5f9;color:#475569;">📰 AI资讯</span>
+                        <span>📅 2026-03-04 00:00</span>
+                        <span>🔗 36氪</span>
+                    </div>
+                    <div class="news-desc">文｜富充
+  编辑｜苏建勋
+  小雨智造创始人乔忠良身上，有着“小米系”具身智能创业者的典型特质：善于寻找落地场景，商业化思路很务实。
+  2023年2月成立起，小雨智造就瞄准“工业通用具身智能”的目标。焊接机器人作为“沿途下蛋”的第一款产...</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-title">
+                        <a href="https://36kr.com/p/3697641252646531?f=rss" target="_blank">一条内裤的“远征”： 巴迪高试图用“0手触”撬动一次性内裤的信任缺口 |  早期项目</a>
+                    </div>
+                    <div class="news-meta">
+                        <span class="news-tag" style="background:#f1f5f9;color:#475569;">📰 AI资讯</span>
+                        <span>📅 2026-03-04 00:00</span>
+                        <span>🔗 36氪</span>
+                    </div>
+                    <div class="news-desc">近两年，一次性内裤在国内市场进入高速增长期。
+  在旅行出游频繁、“懒人经济”持续升温的背景下，这一原本存在感不高的品类，正从边缘产品走向大众消费的视野。除户外、差旅等高频使用场景外，一次性内裤也逐渐渗透至产后恢复、医疗护理等领域，需求不断...</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-title">
+                        <a href="https://36kr.com/p/3705907852800136?f=rss" target="_blank">「PureblueAI清蓝」完成数千万元天使轮融资，发布首款AI口碑营销数字员工</a>
+                    </div>
+                    <div class="news-meta">
+                        <span class="news-tag" style="background:#f1f5f9;color:#475569;">📰 AI资讯</span>
+                        <span>📅 2026-03-04 00:00</span>
+                        <span>🔗 36氪</span>
+                    </div>
+                    <div class="news-desc">作者 | 邓咏仪
+  编辑 | 苏建勋
+  36氪获悉，国内AI营销技术服务公司「PureblueAI清蓝」正式宣布完成数千万元人民币天使轮融资。本轮融资由祥峰中国（Vertex China）领投，老股东英诺基金及一村淞灵、36氪跟投。
+ ...</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-title">
+                        <a href="https://36kr.com/p/3706462657245318?f=rss" target="_blank">8点1氪丨椰树集团再陷擦边营销风波被约谈；电影难看20分钟内可退款40%，一影院试行“观影后悔权”；中欧航线票价暴涨</a>
+                    </div>
+                    <div class="news-meta">
+                        <span class="news-tag" style="background:#f1f5f9;color:#475569;">📰 AI资讯</span>
+                        <span>📅 2026-03-04 00:00</span>
+                        <span>🔗 36氪</span>
+                    </div>
+                    <div class="news-desc">今日热点导览
+  伊朗称霍尔木兹海峡已关闭： “不会让一滴石油流出”
+  雷军：小米机器人已在汽车工厂实习，未来5年大批人形机器人进厂
+  亚马逊在阿联酋数据中心遭撞击起火
+  多家金店暂停投资金条销售
+  北京银行贵金属业务出现BUG
+ ...</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-title">
+                        <a href="https://36kr.com/p/3705604996952453?f=rss" target="_blank">氪星晚报｜马斯克称第二代星链卫星将提供5G速度的太空互联网服务；调整住宿税，日本京都预计增收132亿日元；卢伟冰：小米今年即将发布全新的机器人产品</a>
+                    </div>
+                    <div class="news-meta">
+                        <span class="news-tag" style="background:#f1f5f9;color:#475569;">📰 AI资讯</span>
+                        <span>📅 2026-03-04 00:00</span>
+                        <span>🔗 36氪</span>
+                    </div>
+                    <div class="news-desc">大公司：
+  智元机器人等在安徽成立华智天成科技新公司
+  36氪获悉，爱企查App显示，近日，安徽华智天成科技有限公司成立，法定代表人为肖智成，注册资本约1176万元人民币，经营范围包括计算机软硬件及辅助设备零售、计算机软硬件及辅助设备批...</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-title">
+                        <a href="https://36kr.com/newsflashes/3707184590664067?f=rss" target="_blank">华为杨超斌：全球日均Token消耗量快速增长，过去两年增长近300倍</a>
+                    </div>
+                    <div class="news-meta">
+                        <span class="news-tag" style="background:#f1f5f9;color:#475569;">📰 AI资讯</span>
+                        <span>📅 2026-03-04 00:00</span>
+                        <span>🔗 36氪</span>
+                    </div>
+                    <div class="news-desc">36氪获悉，在MWC26 巴塞罗那期间，华为ICT BG CEO杨超斌发表主题演讲。杨超斌表示，全球日均Token消耗量快速增长，过去两年增长近300倍，引爆文生视频、智能购物等AI应用；全球行业中已有超3000万个AI Agent协同工作...</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-title">
+                        <a href="https://www.infoq.cn/article/3AV33wXig2vBy4s5hkIP?utm_source=rss&utm_medium=article" target="_blank">模力工场 033 周 AI 应用榜：从评论区互动到游戏陪玩，AI 已悄悄加载完成</a>
+                    </div>
+                    <div class="news-meta">
+                        <span class="news-tag" style="background:#f1f5f9;color:#475569;">📰 AI资讯</span>
+                        <span>📅 2026-03-03 20:00</span>
+                        <span>🔗 InfoQ</span>
+                    </div>
+                    <div class="news-desc">点击查看原文&gt;</div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>📡 数据每日凌晨3:00自动更新 | 🤖 Powered by AnyDev & Knot AI</p>
+            <p style="margin-top: 10px; font-size: 0.85em;">
+                评测数据来源：LMArena (lmarena.ai) | SWE-bench (swebench.com) | HumanEval/MBPP (Papers with Code)
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // 评测数据（来自统一权威机构）
+        const benchmarkData = [
+            {
+                rank: 1,
+                model: "Claude Opus 4.5",
+                company: "Anthropic",
+                elo: 1511,
+                sweBench: 80.9,
+                humanEval: 92.4,
+                mbpp: 85.3,
+                score: 93.2
+            },
+            {
+                rank: 2,
+                model: "Gemini 3.1 Pro",
+                company: "Google",
+                elo: 1468,
+                sweBench: 80.6,
+                humanEval: 90.8,
+                mbpp: 83.7,
+                score: 91.8
+            },
+            {
+                rank: 3,
+                model: "GPT-5.2 High",
+                company: "OpenAI",
+                elo: 1481,
+                sweBench: 80.0,
+                humanEval: 91.5,
+                mbpp: 82.4,
+                score: 91.5
+            },
+            {
+                rank: 4,
+                model: "DeepSeek V3.2",
+                company: "DeepSeek",
+                elo: 1455,
+                sweBench: 79.7,
+                humanEval: 94.2,
+                mbpp: 86.1,
+                score: 91.2
+            },
+            {
+                rank: 5,
+                model: "Qwen2.5-Coder 32B",
+                company: "阿里云",
+                elo: 1432,
+                sweBench: 76.4,
+                humanEval: 79.9,
+                mbpp: 67.2,
+                score: 84.3
+            },
+            {
+                rank: 6,
+                model: "GitHub Copilot",
+                company: "GitHub/OpenAI",
+                elo: 1420,
+                sweBench: 74.5,
+                humanEval: 85.3,
+                mbpp: 78.6,
+                score: 86.1
+            },
+            {
+                rank: 7,
+                model: "Cursor (Composer 1.5)",
+                company: "Anysphere",
+                elo: 1438,
+                sweBench: 75.8,
+                humanEval: 87.2,
+                mbpp: 80.3,
+                score: 87.8
+            },
+            {
+                rank: 8,
+                model: "GLM-5",
+                company: "智谱AI",
+                elo: 1445,
+                sweBench: 77.4,
+                humanEval: 88.6,
+                mbpp: 81.9,
+                score: 88.5
+            }
+        ];
+
+        // 渲染表格
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = benchmarkData.map(d => `
+                <tr>
+                    <td><span class="rank-badge rank-${d.rank <= 3 ? d.rank : 'other'}">${d.rank}</span></td>
+                    <td><strong>${d.model}</strong><br><small style="color: #a0aec0;">${d.company}</small></td>
+                    <td>${d.elo}</td>
+                    <td>${d.sweBench}%</td>
+                    <td>${d.humanEval}%</td>
+                    <td>${d.mbpp}%</td>
+                    <td><strong style="color: #667eea;">${d.score}</strong></td>
+                </tr>
+            `).join('');
+        }
+
+        // 图表配置
+        const chartColors = [
+            '#667eea', '#764ba2', '#f093fb', '#4facfe', 
+            '#43e97b', '#fa709a', '#fee140', '#30cfd0'
+        ];
+
+        // LMArena Elo图表
+        new Chart(document.getElementById('eloChart'), {
+            type: 'bar',
+            data: {
+                labels: benchmarkData.map(d => d.model),
+                datasets: [{
+                    label: 'Elo评分',
+                    data: benchmarkData.map(d => d.elo),
+                    backgroundColor: chartColors
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+
+        // SWE-bench图表
+        new Chart(document.getElementById('sweBenchChart'), {
+            type: 'bar',
+            data: {
+                labels: benchmarkData.map(d => d.model),
+                datasets: [{
+                    label: '解决率 (%)',
+                    data: benchmarkData.map(d => d.sweBench),
+                    backgroundColor: chartColors
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, max: 100 }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+
+        // HumanEval图表
+        new Chart(document.getElementById('humanEvalChart'), {
+            type: 'line',
+            data: {
+                labels: benchmarkData.map(d => d.model),
+                datasets: [{
+                    label: 'Pass@1 (%)',
+                    data: benchmarkData.map(d => d.humanEval),
+                    borderColor: '#667eea',
+                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true, max: 100 }
+                }
+            }
+        });
+
+        // MBPP图表
+        new Chart(document.getElementById('mbppChart'), {
+            type: 'radar',
+            data: {
+                labels: benchmarkData.slice(0, 6).map(d => d.model),
+                datasets: [{
+                    label: 'MBPP Pass@1 (%)',
+                    data: benchmarkData.slice(0, 6).map(d => d.mbpp),
+                    borderColor: '#764ba2',
+                    backgroundColor: 'rgba(118, 75, 162, 0.2)'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: { beginAtZero: true, max: 100 }
+                }
+            }
+        });
+
+        function updateTime() {
+            document.getElementById('updateTime').textContent = new Date().toLocaleString('zh-CN', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+        }
+
+        renderTable();
+        updateTime();
+        setInterval(updateTime, 1000);
+    </script>
+</body>
+</html>
