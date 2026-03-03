@@ -285,62 +285,6 @@
             </div>
         </header>
 
-        <!-- 权威评测数据 -->
-        <div class="benchmark-section">
-            <h2>🏆 权威评测数据汇总 (2026年2月)</h2>
-            <p style="color: #718096; margin-bottom: 25px; font-size: 1.05em;">
-                数据来源：<span class="source-tag">LMArena/Chatbot Arena</span>
-                <span class="source-tag">SWE-bench Verified</span>
-                <span class="source-tag">HumanEval</span>
-                <span class="source-tag">MBPP</span>
-            </p>
-            
-            <!-- 图表区域 -->
-            <div class="charts-container">
-                <div class="chart-box">
-                    <h3>📈 LMArena编程Elo排名 (WebDev)</h3>
-                    <div class="chart-wrapper">
-                        <canvas id="eloChart"></canvas>
-                    </div>
-                </div>
-                <div class="chart-box">
-                    <h3>🔧 SWE-bench Verified 解决率</h3>
-                    <div class="chart-wrapper">
-                        <canvas id="sweBenchChart"></canvas>
-                    </div>
-                </div>
-                <div class="chart-box">
-                    <h3>🧪 HumanEval Pass@1 准确率</h3>
-                    <div class="chart-wrapper">
-                        <canvas id="humanEvalChart"></canvas>
-                    </div>
-                </div>
-                <div class="chart-box">
-                    <h3>📦 MBPP Pass@1 准确率</h3>
-                    <div class="chart-wrapper">
-                        <canvas id="mbppChart"></canvas>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 综合数据表格 -->
-            <h3 style="color: #2d3748; margin: 30px 0 15px 0; font-size: 1.5em;">📋 综合评测对比表</h3>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th>排名</th>
-                        <th>模型</th>
-                        <th>LMArena Elo<br>(编程)</th>
-                        <th>SWE-bench<br>Verified</th>
-                        <th>HumanEval<br>Pass@1</th>
-                        <th>MBPP<br>Pass@1</th>
-                        <th>综合评分</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody"></tbody>
-            </table>
-        </div>
-
         <!-- 需求与缺陷模块统计（动态生成） -->
         <div class="benchmark-section" id="moduleStatsSection">
             <h2>📋 需求 & 缺陷模块统计</h2>
@@ -487,8 +431,74 @@
             </td>
         </tr></tbody>
         </table>
-    </div></div><p style="color:#a0aec0;font-size:0.85em;margin-top:10px;">📅 统计日期：2026-03-03 &nbsp;|&nbsp; 数据来源：本周热更分析文件</p>
+    </div></div><div class="module-card" style="margin-top:18px;border-left:4px solid #fc8181;">
+    <h3>⚠️ 风险分析 <span style="font-size:0.75em;font-weight:400;color:#718096;">共识别 1 个风险模块</span></h3>
+    <table class="module-stat-table">
+        <thead><tr><th>模块</th><th>风险等级</th><th>风险原因</th></tr></thead>
+        <tbody><tr style="background:#f0fff4">
+            <td><strong>战斗系统</strong></td>
+            <td><span style="background:#68d391;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.85em;font-weight:600;">🟢 低风险</span></td>
+            <td style="color:#4a5568;font-size:0.9em;">缺陷进行中 2 个，需求同步开发中</td>
+        </tr></tbody>
+    </table>
+</div><p style="color:#a0aec0;font-size:0.85em;margin-top:10px;">📅 统计日期：2026-03-03 &nbsp;|&nbsp; 数据来源：本周热更分析文件</p>
             </div>
+        </div>
+
+        <!-- 权威评测数据 -->
+        <div class="benchmark-section">
+            <h2>🏆 权威评测数据汇总 (2026年2月)</h2>
+            <p style="color: #718096; margin-bottom: 25px; font-size: 1.05em;">
+                数据来源：<span class="source-tag">LMArena/Chatbot Arena</span>
+                <span class="source-tag">SWE-bench Verified</span>
+                <span class="source-tag">HumanEval</span>
+                <span class="source-tag">MBPP</span>
+            </p>
+            
+            <!-- 图表区域 -->
+            <div class="charts-container">
+                <div class="chart-box">
+                    <h3>📈 LMArena编程Elo排名 (WebDev)</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="eloChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-box">
+                    <h3>🔧 SWE-bench Verified 解决率</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="sweBenchChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-box">
+                    <h3>🧪 HumanEval Pass@1 准确率</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="humanEvalChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-box">
+                    <h3>📦 MBPP Pass@1 准确率</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="mbppChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 综合数据表格 -->
+            <h3 style="color: #2d3748; margin: 30px 0 15px 0; font-size: 1.5em;">📋 综合评测对比表</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>排名</th>
+                        <th>模型</th>
+                        <th>LMArena Elo<br>(编程)</th>
+                        <th>SWE-bench<br>Verified</th>
+                        <th>HumanEval<br>Pass@1</th>
+                        <th>MBPP<br>Pass@1</th>
+                        <th>综合评分</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
         </div>
 
         <!-- 最新热点新闻（动态生成） -->
@@ -496,6 +506,17 @@
             <h2 id="newsTitle">🔥 最新热点新闻 (2026-03-01 ~ 2026-03-03)</h2>
             <div id="newsContainer">
                 
+                <div class="news-item">
+                    <div class="news-title">
+                        <a href="https://www.infoq.cn/article/GdARgp4bG83LP5oXMZar?utm_source=rss&utm_medium=article" target="_blank">Databricks推出面向AI工作负载的PostgreSQL数据库Lakebase</a>
+                    </div>
+                    <div class="news-meta">
+                        <span class="news-tag" style="background:#f1f5f9;color:#475569;">📰 AI资讯</span>
+                        <span>📅 2026-03-03 09:41</span>
+                        <span>🔗 InfoQ</span>
+                    </div>
+                    <div class="news-desc">点击查看原文&gt;</div>
+                </div>
                 <div class="news-item">
                     <div class="news-title">
                         <a href="https://sspai.com/post/106766" target="_blank">派早报：Apple 发布 iPhone 17e 与搭载 M4 芯片的 iPad Air 等新品</a>
@@ -601,19 +622,6 @@
   多家金店暂停投资金条销售
   北京银行贵金属业务出现BUG
  ...</div>
-                </div>
-                <div class="news-item">
-                    <div class="news-title">
-                        <a href="https://36kr.com/p/3705604996952453?f=rss" target="_blank">氪星晚报｜马斯克称第二代星链卫星将提供5G速度的太空互联网服务；调整住宿税，日本京都预计增收132亿日元；卢伟冰：小米今年即将发布全新的机器人产品</a>
-                    </div>
-                    <div class="news-meta">
-                        <span class="news-tag" style="background:#f1f5f9;color:#475569;">📰 AI资讯</span>
-                        <span>📅 2026-03-03 00:00</span>
-                        <span>🔗 36氪</span>
-                    </div>
-                    <div class="news-desc">大公司：
-  智元机器人等在安徽成立华智天成科技新公司
-  36氪获悉，爱企查App显示，近日，安徽华智天成科技有限公司成立，法定代表人为肖智成，注册资本约1176万元人民币，经营范围包括计算机软硬件及辅助设备零售、计算机软硬件及辅助设备批...</div>
                 </div>
             </div>
         </div>
