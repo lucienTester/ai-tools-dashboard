@@ -1,6 +1,10 @@
 {
-  "updated": "2026-03-05 06:15:15",
+  "updated": "2026-03-06 03:01:44",
   "reports": [
+    {
+      "date": "2026-03-06",
+      "file": "reports/dashboard_2026-03-06.html"
+    },
     {
       "date": "2026-03-05",
       "file": "reports/dashboard_2026-03-05.html"
