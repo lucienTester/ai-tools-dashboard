@@ -1,0 +1,46 @@
+{
+  "updated": "2026-03-08 06:15:21",
+  "reports": [
+    {
+      "date": "2026-03-08",
+      "file": "dashboard_2026-03-08.html",
+      "updated": "2026-03-08 06:15:21"
+    },
+    {
+      "date": "2026-03-07",
+      "file": "reports/dashboard_2026-03-07.html"
+    },
+    {
+      "date": "2026-03-06",
+      "file": "reports/dashboard_2026-03-06.html"
+    },
+    {
+      "date": "2026-03-05",
+      "file": "reports/dashboard_2026-03-05.html"
+    },
+    {
+      "date": "2026-03-04",
+      "file": "reports/dashboard_2026-03-04.html"
+    },
+    {
+      "date": "2026-03-03",
+      "file": "reports/dashboard_2026-03-03.html"
+    },
+    {
+      "date": "2026-03-02",
+      "file": "reports/dashboard_2026-03-02.html"
+    },
+    {
+      "date": "2026-03-01",
+      "file": "reports/dashboard_2026-03-01.html"
+    },
+    {
+      "date": "2026-02-28",
+      "file": "reports/dashboard_2026-02-28.html"
+    },
+    {
+      "date": "2026-02-27",
+      "file": "reports/dashboard_2026-02-27.html"
+    }
+  ]
+}
