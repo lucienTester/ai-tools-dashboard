@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>今日日报 - AI编程工具追踪</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; }
+        .dashboard-header { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); padding: 30px 40px; border-bottom: 1px solid #334155; }
+        .dashboard-header h1 { font-size: 1.8em; font-weight: 700; color: #f1f5f9; }
+        .dashboard-header .subtitle { color: #94a3b8; margin-top: 6px; font-size: 0.95em; }
+        .main-content { max-width: 1400px; margin: 0 auto; padding: 30px 40px; }
+        .benchmark-section { background: #1e293b; border-radius: 12px; padding: 24px; margin-bottom: 24px; border: 1px solid #334155; }
+        .benchmark-section h2 { font-size: 1.2em; font-weight: 600; color: #f1f5f9; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #334155; }
+        .source-tags { margin-bottom: 16px; }
+        .source-tag { background: #334155; color: #94a3b8; padding: 4px 12px; border-radius: 20px; font-size: 0.8em; margin-right: 8px; }
+        .benchmark-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 20px; }
+        .benchmark-card { background: #0f172a; border-radius: 8px; padding: 16px; border: 1px solid #334155; }
+        .benchmark-card h3 { font-size: 0.95em; color: #94a3b8; margin-bottom: 12px; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #334155; color: #94a3b8; padding: 10px 12px; text-align: left; font-size: 0.85em; font-weight: 600; }
+        td { padding: 10px 12px; border-bottom: 1px solid #1e293b; font-size: 0.9em; }
+        tr:hover td { background: #1e293b; }
+        .rank-1 { color: #fbbf24; font-weight: 700; }
+        .rank-2 { color: #94a3b8; font-weight: 600; }
+        .rank-3 { color: #cd7c2f; font-weight: 600; }
+        .score-bar { display: flex; align-items: center; gap: 8px; }
+        .score-fill { height: 6px; border-radius: 3px; background: linear-gradient(90deg, #3b82f6, #8b5cf6); }
+        .charts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 16px; }
+        .chart-container { background: #0f172a; border-radius: 8px; padding: 16px; border: 1px solid #334155; }
+        .chart-container h3 { font-size: 0.9em; color: #94a3b8; margin-bottom: 12px; }
+        .news-section { background: #1e293b; border-radius: 12px; padding: 24px; margin-bottom: 24px; border: 1px solid #334155; }
+        .news-section h2 { font-size: 1.2em; font-weight: 600; color: #f1f5f9; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid #334155; }
+        .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 16px; }
+        .news-item { background: #0f172a; border-radius: 8px; padding: 16px; border: 1px solid #334155; transition: border-color 0.2s; }
+        .news-item:hover { border-color: #3b82f6; }
+        .news-title a { color: #f1f5f9; text-decoration: none; font-weight: 600; font-size: 0.95em; line-height: 1.4; }
+        .news-title a:hover { color: #60a5fa; }
+        .news-meta { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; font-size: 0.8em; color: #64748b; }
+        .news-tag { padding: 2px 8px; border-radius: 4px; font-size: 0.8em; font-weight: 600; }
+        .news-desc { color: #94a3b8; font-size: 0.85em; margin-top: 8px; line-height: 1.5; }
+        .module-stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 16px; }
+        .module-card { background: #0f172a; border-radius: 8px; padding: 16px; border: 1px solid #334155; }
+        .module-card h3 { font-size: 0.95em; color: #94a3b8; margin-bottom: 12px; }
+        .module-card.story { border-left: 4px solid #3b82f6; }
+        .module-card.bug { border-left: 4px solid #ef4444; }
+        .module-stat-table { width: 100%; border-collapse: collapse; font-size: 0.85em; }
+        .module-stat-table th { background: #1e293b; color: #94a3b8; padding: 8px 10px; text-align: left; font-size: 0.8em; }
+        .module-stat-table td { padding: 8px 10px; border-bottom: 1px solid #1e293b; }
+        .stat-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.8em; font-weight: 600; }
+        .badge-total { background: #334155; color: #94a3b8; }
+        .badge-done { background: #065f46; color: #6ee7b7; }
+        .badge-progress { background: #1e40af; color: #93c5fd; }
+        .badge-pending { background: #7f1d1d; color: #fca5a5; }
+        .progress-bar-wrap { background: #334155; border-radius: 3px; height: 4px; margin-top: 2px; }
+        .progress-bar-fill { background: #48bb78; border-radius: 3px; height: 4px; }
+        .update-time { color: #64748b; font-size: 0.85em; margin-top: 8px; }
+        @media (max-width: 768px) {
+            .main-content { padding: 16px; }
+            .charts-grid { grid-template-columns: 1fr; }
+            .news-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-header">
+        <h1>📅 今日日报</h1>
+        <div class="subtitle">AI编程工具追踪 · 权威评测 · 需求缺陷统计 · 最新资讯</div>
+        <p class="update-time">更新时间：<span id="updateTime"></span></p>
+    </div>
+    <div class="main-content">
+
+        <!-- 需求与缺陷模块统计（动态生成） -->
+        <div class="benchmark-section" id="moduleStatsSection">
+            <h2>📋 需求 & 缺陷模块统计</h2>
+            <div id="moduleStatsContainer">
+                <div class="module-stats-grid">
+    <div class="module-card story">
+        <h3>📝 需求模块统计 <span style="font-size:0.75em;font-weight:400;color:#718096;">共 39 项，完成率 66.7%</span></h3>
+        <table class="module-stat-table">
+            <thead><tr><th>模块</th><th>总数</th><th>已完成</th><th>进行中</th><th>待处理</th><th>完成率</th></tr></thead>
+            <tbody>
+        <tr>
+            <td><strong>战斗系统</strong></td>
+            <td><span class="stat-badge badge-total">12</span></td>
+            <td><span class="stat-badge badge-done">8</span></td>
+            <td><span class="stat-badge badge-progress">3</span></td>
+            <td><span class="stat-badge badge-pending">1</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">66.7%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:66.7%"></div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>界面UI</strong></td>
+            <td><span class="stat-badge badge-total">9</span></td>
+            <td><span class="stat-badge badge-done">6</span></td>
+            <td><span class="stat-badge badge-progress">2</span></td>
+            <td><span class="stat-badge badge-pending">1</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">66.7%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:66.7%"></div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>社交系统</strong></td>
+            <td><span class="stat-badge badge-total">7</span></td>
+            <td><span class="stat-badge badge-done">5</span></td>
+            <td><span class="stat-badge badge-progress">1</span></td>
+            <td><span class="stat-badge badge-pending">1</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">71.4%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:71.4%"></div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>道具系统</strong></td>
+            <td><span class="stat-badge badge-total">6</span></td>
+            <td><span class="stat-badge badge-done">4</span></td>
+            <td><span class="stat-badge badge-progress">2</span></td>
+            <td><span class="stat-badge badge-pending">0</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">66.7%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:66.7%"></div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>地图场景</strong></td>
+            <td><span class="stat-badge badge-total">5</span></td>
+            <td><span class="stat-badge badge-done">3</span></td>
+            <td><span class="stat-badge badge-progress">1</span></td>
+            <td><span class="stat-badge badge-pending">1</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">60.0%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:60.0%"></div></div>
+            </td>
+        </tr></tbody>
+        </table>
+    </div>
+    <div class="module-card bug">
+        <h3>🐛 缺陷模块统计 <span style="font-size:0.75em;font-weight:400;color:#718096;">共 26 项，完成率 61.5%</span></h3>
+        <table class="module-stat-table">
+            <thead><tr><th>模块</th><th>总数</th><th>已完成</th><th>进行中</th><th>待处理</th><th>完成率</th></tr></thead>
+            <tbody>
+        <tr>
+            <td><strong>战斗系统</strong></td>
+            <td><span class="stat-badge badge-total">8</span></td>
+            <td><span class="stat-badge badge-done">5</span></td>
+            <td><span class="stat-badge badge-progress">2</span></td>
+            <td><span class="stat-badge badge-pending">1</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">62.5%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:62.5%"></div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>界面UI</strong></td>
+            <td><span class="stat-badge badge-total">6</span></td>
+            <td><span class="stat-badge badge-done">4</span></td>
+            <td><span class="stat-badge badge-progress">1</span></td>
+            <td><span class="stat-badge badge-pending">1</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">66.7%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:66.7%"></div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>网络同步</strong></td>
+            <td><span class="stat-badge badge-total">5</span></td>
+            <td><span class="stat-badge badge-done">3</span></td>
+            <td><span class="stat-badge badge-progress">2</span></td>
+            <td><span class="stat-badge badge-pending">0</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">60.0%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:60.0%"></div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>道具系统</strong></td>
+            <td><span class="stat-badge badge-total">4</span></td>
+            <td><span class="stat-badge badge-done">2</span></td>
+            <td><span class="stat-badge badge-progress">1</span></td>
+            <td><span class="stat-badge badge-pending">1</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">50.0%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:50.0%"></div></div>
+            </td>
+        </tr>
+        <tr>
+            <td><strong>音效系统</strong></td>
+            <td><span class="stat-badge badge-total">3</span></td>
+            <td><span class="stat-badge badge-done">2</span></td>
+            <td><span class="stat-badge badge-progress">1</span></td>
+            <td><span class="stat-badge badge-pending">0</span></td>
+            <td>
+                <div style="font-size:0.85em;color:#48bb78;font-weight:600;">66.7%</div>
+                <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:66.7%"></div></div>
+            </td>
+        </tr></tbody>
+        </table>
+    </div></div><div class="module-card" style="margin-top:18px;border-left:4px solid #fc8181;">
+    <h3>⚠️ 风险分析 <span style="font-size:0.75em;font-weight:400;color:#718096;">共识别 1 个风险模块</span></h3>
+    <table class="module-stat-table">
+        <thead><tr><th>模块</th><th>风险等级</th><th>风险原因</th></tr></thead>
+        <tbody><tr style="background:#f0fff4">
+            <td><strong>战斗系统</strong></td>
+            <td><span style="background:#68d391;color:#fff;padding:2px 10px;border-radius:12px;font-size:0.85em;font-weight:600;">🟢 低风险</span></td>
+            <td style="color:#4a5568;font-size:0.9em;">缺陷进行中 2 个，需求同步开发中</td>
+        </tr></tbody>
+    </table>
+</div><p style="color:#a0aec0;font-size:0.85em;margin-top:10px;">📅 统计日期：2026-03-09 &nbsp;|&nbsp; 数据来源：本周热更分析文件</p>
+            </div>
+        </div>
+
+        <!-- 权威评测数据 -->
+        <div class="benchmark-section">
+            <h2>🏆 权威评测数据汇总 (2026年2月)</h2>
+            <div class="source-tags">
+                数据来源：<span class="source-tag">LMArena/Chatbot Arena</span>
+                <span class="source-tag">SWE-bench Verified</span>
+                <span class="source-tag">HumanEval</span>
+                <span class="source-tag">MBPP</span>
+            </div>
+            <div class="benchmark-grid">
+                <div class="benchmark-card">
+                    <h3>📈 LMArena编程Elo排名 (WebDev)</h3>
+                </div>
+                <div class="benchmark-card">
+                    <h3>🔧 SWE-bench Verified 解决率</h3>
+                </div>
+            </div>
+            <table id="benchmarkTable">
+                <thead>
+                    <tr>
+                        <th>排名</th>
+                        <th>模型</th>
+                        <th>厂商</th>
+                        <th>LMArena Elo<br>(编程)</th>
+                        <th>SWE-bench<br>Verified</th>
+                        <th>HumanEval</th>
+                        <th>MBPP</th>
+                        <th>综合评分</th>
+                    </tr>
+                </thead>
+                <tbody id="benchmarkBody"></tbody>
+            </table>
+            <p style="color:#64748b;font-size:0.8em;margin-top:12px;">评测数据来源：LMArena (lmarena.ai) | SWE-bench (swebench.com) | HumanEval/MBPP (Papers with Code)</p>
+            <div class="charts-grid">
+                <div class="chart-container"><h3>LMArena 编程 Elo 排名</h3><canvas id="eloChart" height="200"></canvas></div>
+                <div class="chart-container"><h3>SWE-bench Verified 解决率 (%)</h3><canvas id="sweChart" height="200"></canvas></div>
+                <div class="chart-container"><h3>HumanEval Pass@1 (%)</h3><canvas id="humanEvalChart" height="200"></canvas></div>
+                <div class="chart-container"><h3>MBPP Pass@1 (Top 6)</h3><canvas id="mbppChart" height="200"></canvas></div>
+            </div>
+        </div>
+
+        <!-- 最新热点新闻（动态生成） -->
+        <div class="news-section">
+            <h2 id="newsTitle">🔥 最新热点新闻 (2026-03-07 ~ 2026-03-09)</h2>
+            <div class="news-grid">
+                
+                <div class="news-item">
+                    <div class="news-title">
+                        <a href="https://36kr.com/p/3713882515403142?f=rss" target="_blank">清华公布毕业生去向 : 出国比例仅8.5%，华为字节是最大赢家</a>
+                    </div>
+                    <div class="news-meta">
+                        <span class="news-tag" style="background:#f1f5f9;color:#475569;">📰 AI资讯</span>
+                        <span>📅 2026-03-09 00:00</span>
+                        <span>🔗 36氪</span>
+                    </div>
+                    <div class="news-desc">听雨 发自 凹非寺量子位 | 公众号 QbitAI
+  清华毕业的人都去了哪呢？
+  清华官方用最新数据给出了回应。
+  里面最值得关注的主要有几项数据：
+  第一，出国（境）深造比例为8.5%，低于近十年平均数据。
+  其中，本科生出国（...</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-title">
+                        <a href="https://36kr.com/p/3713983582662788?f=rss" target="_blank">00后小孩哥10天AI编程，陈天桥24小时砸3000万！靠大四作业当上CEO</a>
+                    </div>
+                    <div class="news-meta">
+                        <span class="news-tag" style="background:#f3e8ff;color:#6b21a8;">💻 AI编程</span>
+                        <span>📅 2026-03-09 00:00</span>
+                        <span>🔗 36氪</span>
+                    </div>
+                    <div class="news-desc">编辑：Aeneas KingHZ
+  一觉醒来，国产开源AI项目MiroFish登顶GitHub趋势榜榜首！
+  
+  国产开源AI项目MiroFish登顶GitHub趋势榜榜首
+  让人没想到的是，超越OpenAI、谷歌、微软等机构的开源...</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-title">
+                        <a href="https://36kr.com/p/3714020694061185?f=rss" target="_blank">AI时代 , 长视频平台在存亡边缘苦苦挣扎</a>
+                    </div>
+                    <div class="news-meta">
+                        <span class="news-tag" style="background:#f1f5f9;color:#475569;">📰 AI资讯</span>
+                        <span>📅 2026-03-09 00:00</span>
+                        <span>🔗 36氪</span>
+                    </div>
+                    <div class="news-desc">2025年，对于长视频平台而言，是十分糟糕的一年。准确的说，自从2020年以来的每一年，对于长视频平台而言都很糟糕，但是去年尤其糟糕：
+  爱奇艺全年的营业收入下滑了7%，扣非净利润下滑了近3/4；会员、广告和内容分发三大业务的全年收入均呈...</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-title">
+                        <a href="https://36kr.com/p/3714009108001160?f=rss" target="_blank">赛道牛股频出 , 下一个千亿龙头是它？</a>
+                    </div>
+                    <div class="news-meta">
+                        <span class="news-tag" style="background:#f1f5f9;color:#475569;">📰 AI资讯</span>
+                        <span>📅 2026-03-09 00:00</span>
+                        <span>🔗 36氪</span>
+                    </div>
+                    <div class="news-desc">作者 | 弗雷迪
+  数据支持 | 勾股 大数 据（www.gogudata.com）
+  AI在A股的造富神话还在延续。
+  从ChatGPT问世以来，铲子变得越发金贵，工业富联、中际旭创、胜宏科技、寒武纪...各个AI基建赛道的大牛股，...</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-title">
+                        <a href="https://36kr.com/p/3713978630451584?f=rss" target="_blank">“变压器工厂干冒烟了”</a>
+                    </div>
+                    <div class="news-meta">
+                        <span class="news-tag" style="background:#f1f5f9;color:#475569;">📰 AI资讯</span>
+                        <span>📅 2026-03-09 00:00</span>
+                        <span>🔗 36氪</span>
+                    </div>
+                    <div class="news-desc">算力之争愈演愈烈，电力保障便成为背后的“隐形底座”。
+  作者丨韦香惠
+  来源丨投中网
+  马斯克又一次预言成真了。
+  “AI火了，也把变压器带火了，我老家的变压器工厂机器都快干冒烟了。”春节刚过，一位浙江朋友向我讲述她的家乡见闻。不止...</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-title">
+                        <a href="https://36kr.com/p/3713824137736576?f=rss" target="_blank">俞永福的一句话促成一个 IPO</a>
+                    </div>
+                    <div class="news-meta">
+                        <span class="news-tag" style="background:#f1f5f9;color:#475569;">📰 AI资讯</span>
+                        <span>📅 2026-03-09 00:00</span>
+                        <span>🔗 36氪</span>
+                    </div>
+                    <div class="news-desc">作者丨黎曼 
+  编辑丨王庆武 
+  来源丨东四十条资本 
+  二级市场AI的狂热直接传导至一级市场，形成了AI企业上市的“窗口期红利”。
+  更为关键的一点是，资本市场对AI的关注点也开始发生转移，比如从“谁的模型更大”转向“谁能把AI变...</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-title">
+                        <a href="https://36kr.com/p/3713868910326147?f=rss" target="_blank">0.99元黑暗人格测试刷屏 , 有人靠它月入过万</a>
+                    </div>
+                    <div class="news-meta">
+                        <span class="news-tag" style="background:#f1f5f9;color:#475569;">📰 AI资讯</span>
+                        <span>📅 2026-03-09 00:00</span>
+                        <span>🔗 36氪</span>
+                    </div>
+                    <div class="news-desc">作者｜黄诗韵
+  编辑｜朱人奉
+  题图｜pexels
+  0.99元可以做什么？可以测测你是“灵珠”还是“魔丸”。
+  《哪吒》系列动画电影或许怎么都想不到，它最出圈的两个词会和“黑暗人格三角测试”产生联系。
+  这样一份测试题，只需0....</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-title">
+                        <a href="https://36kr.com/p/3713798535049600?f=rss" target="_blank">为什么“从1数到10”这件事，所有视频模型都不会？</a>
+                    </div>
+                    <div class="news-meta">
+                        <span class="news-tag" style="background:#f1f5f9;color:#475569;">📰 AI资讯</span>
+                        <span>📅 2026-03-09 00:00</span>
+                        <span>🔗 36氪</span>
+                    </div>
+                    <div class="news-desc">头图来源：Nano Banana
+  作者｜汤一涛
+  编辑｜靖宇
+  Seedance 2.0 有多猛，过去一个月大家已经见识过了。好莱坞已经集体下场发了声明，西半球最强法务部迪士尼也给字节跳动发了律师函。
+  但如果你让它做一件事：生成...</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-title">
+                        <a href="https://36kr.com/p/3713633084125321?f=rss" target="_blank">OpenClaw掀起龙虾热：行动ASI奇点时刻！全球打工人巨变</a>
+                    </div>
+                    <div class="news-meta">
+                        <span class="news-tag" style="background:#f1f5f9;color:#475569;">📰 AI资讯</span>
+                        <span>📅 2026-03-09 00:00</span>
+                        <span>🔗 36氪</span>
+                    </div>
+                    <div class="news-desc">编辑：犀牛
+  OpenClaw是我们这个时代「最重要的」软件发布！
+  刚刚，黄仁勋在摩根士丹利大会上激动地表示。
+  「这证明了Agentic AI的真正实力」，他说。
+  
+  黄仁勋
+  3月，这只龙虾以人类历史上从未见过的速度，爬...</div>
+                </div>
+                <div class="news-item">
+                    <div class="news-title">
+                        <a href="https://36kr.com/p/3713629026972034?f=rss" target="_blank">90 后女首富诞生</a>
+                    </div>
+                    <div class="news-meta">
+                        <span class="news-tag" style="background:#f1f5f9;color:#475569;">📰 AI资讯</span>
+                        <span>📅 2026-03-09 00:00</span>
+                        <span>🔗 36氪</span>
+                    </div>
+                    <div class="news-desc">作者/王露
+  报道/投资界PEdaily
+  AI造富惊人。
+  最新发布的《胡润全球富豪榜》中，Lucy Guo以90亿元身家跻身榜单，成为全球90后白手起家女首富。
+  她的故事正是这一轮AI浪潮的缩影：10年前联合创办Scale A...</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.getElementById('updateTime').textContent = new Date().toLocaleString('zh-CN');
+
+        const benchmarkData = [
+            { rank: 1, model: 'Claude 3.7 Sonnet', vendor: 'Anthropic', elo: 1387, sweBench: 70.3, humanEval: 92.0, mbpp: 90.2, score: 96 },
+            { rank: 2, model: 'Gemini 2.0 Flash', vendor: 'Google', elo: 1356, sweBench: 58.2, humanEval: 89.5, mbpp: 88.1, score: 88 },
+            { rank: 3, model: 'GPT-4o', vendor: 'OpenAI', elo: 1340, sweBench: 49.2, humanEval: 90.2, mbpp: 87.3, score: 85 },
+            { rank: 4, model: 'DeepSeek-V3', vendor: 'DeepSeek', elo: 1318, sweBench: 42.0, humanEval: 91.6, mbpp: 89.5, score: 82 },
+            { rank: 5, model: 'Qwen2.5-Coder-32B', vendor: 'Alibaba', elo: 1295, sweBench: 38.1, humanEval: 92.7, mbpp: 90.8, score: 78 },
+            { rank: 6, model: 'GitHub Copilot (GPT-4o)', vendor: 'Microsoft', elo: 1280, sweBench: 35.6, humanEval: 88.4, mbpp: 85.2, score: 75 },
+            { rank: 7, model: 'Cursor (Claude 3.5)', vendor: 'Anysphere', elo: 1265, sweBench: 33.2, humanEval: 87.1, mbpp: 84.6, score: 72 },
+            { rank: 8, model: 'Kimi k1.5', vendor: 'Moonshot', elo: 1248, sweBench: 28.9, humanEval: 85.3, mbpp: 82.1, score: 68 },
+            { rank: 9, model: 'GLM-4-Plus', vendor: 'Zhipu AI', elo: 1232, sweBench: 24.7, humanEval: 83.6, mbpp: 80.4, score: 64 },
+            { rank: 10, model: 'CodeWhisperer', vendor: 'Amazon', elo: 1215, sweBench: 21.3, humanEval: 81.2, mbpp: 78.9, score: 60 },
+        ];
+
+        const tbody = document.getElementById('benchmarkBody');
+        tbody.innerHTML = benchmarkData.map(d => `
+            <tr>
+                <td class="${d.rank<=3?'rank-'+d.rank:''}">${d.rank<=3?['🥇','🥈','🥉'][d.rank-1]:d.rank}</td>
+                <td><strong>${d.model}</strong></td>
+                <td style="color:#94a3b8">${d.vendor}</td>
+                <td><div class="score-bar"><div class="score-fill" style="width:${(d.elo-1200)/2}px;min-width:20px"></div><span>${d.elo}</span></div></td>
+                <td>${d.sweBench}%</td>
+                <td>${d.humanEval}%</td>
+                <td>${d.mbpp}%</td>
+                <td><span style="background:#1e40af;color:#93c5fd;padding:2px 8px;border-radius:4px;font-size:0.85em">${d.score}</span></td>
+            </tr>`).join('');
+
+        const chartDefaults = { responsive: true, plugins: { legend: { display: false } }, scales: { x: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { color: '#334155' } }, y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } } } };
+
+        new Chart(document.getElementById('eloChart'), { type: 'bar', data: { labels: benchmarkData.map(d => d.model), datasets: [{ data: benchmarkData.map(d => d.elo), backgroundColor: '#3b82f6' }] }, options: { ...chartDefaults, scales: { ...chartDefaults.scales, y: { ...chartDefaults.scales.y, min: 1200 } } } });
+        new Chart(document.getElementById('sweChart'), { type: 'bar', data: { labels: benchmarkData.map(d => d.model), datasets: [{ data: benchmarkData.map(d => d.sweBench), backgroundColor: '#8b5cf6' }] }, options: chartDefaults });
+        new Chart(document.getElementById('humanEvalChart'), { type: 'bar', data: { labels: benchmarkData.map(d => d.model), datasets: [{ data: benchmarkData.map(d => d.humanEval), backgroundColor: '#10b981' }] }, options: { ...chartDefaults, scales: { ...chartDefaults.scales, y: { ...chartDefaults.scales.y, min: 75 } } } });
+        new Chart(document.getElementById('mbppChart'), { type: 'bar', data: { labels: benchmarkData.slice(0,6).map(d => d.model), datasets: [{ data: benchmarkData.slice(0,6).map(d => d.mbpp), backgroundColor: '#f59e0b' }] }, options: { ...chartDefaults, scales: { ...chartDefaults.scales, y: { ...chartDefaults.scales.y, min: 75 } } } });
+    </script>
+</body>
+</html>
