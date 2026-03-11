@@ -3,113 +3,82 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>📅 今日日报 - 2026年第11周</title>
+<title>📅 今日日报 · 2026年第11周</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif; background: #f0f2f5; color: #1a1a2e; }
-
-  /* Header */
-  .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; padding: 36px 40px 28px; text-align: center; }
-  .header h1 { font-size: 2.2rem; font-weight: 700; letter-spacing: 1px; }
-  .header .subtitle { margin-top: 8px; font-size: 1rem; opacity: 0.88; letter-spacing: 0.5px; }
-  .header .week-badge {
-    display: inline-block; margin-top: 14px;
-    background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.35);
-    border-radius: 24px; padding: 6px 20px; font-size: 0.92rem; font-weight: 600;
-    letter-spacing: 0.5px;
-  }
-
-  /* Layout */
-  .container { max-width: 1280px; margin: 0 auto; padding: 28px 20px 60px; }
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-
-  /* Cards */
-  .card { background: #fff; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); overflow: hidden; }
-  .card-header { padding: 16px 20px 12px; border-bottom: 1px solid #f0f0f0; display: flex; align-items: center; gap: 8px; }
-  .card-header .icon { font-size: 1.2rem; }
-  .card-header h2 { font-size: 1rem; font-weight: 700; color: #1a1a2e; }
-  .card-header .badge { margin-left: auto; background: #f0f0f0; border-radius: 12px; padding: 2px 10px; font-size: 0.75rem; color: #666; }
-  .card-body { padding: 16px 20px; }
-
-  /* Section title */
-  .section-title { font-size: 1.15rem; font-weight: 700; color: #1a1a2e; margin: 28px 0 14px; display: flex; align-items: center; gap: 8px; }
-  .section-title::after { content: ''; flex: 1; height: 1px; background: #e8e8e8; margin-left: 8px; }
-
-  /* Stats summary */
-  .stat-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 24px; }
-  .stat-card { background: #fff; border-radius: 12px; padding: 18px 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); text-align: center; }
-  .stat-card .num { font-size: 2rem; font-weight: 800; }
-  .stat-card .label { font-size: 0.8rem; color: #888; margin-top: 4px; }
-  .stat-card.blue .num { color: #3b82f6; }
-  .stat-card.green .num { color: #10b981; }
-  .stat-card.orange .num { color: #f59e0b; }
-  .stat-card.red .num { color: #ef4444; }
-
-  /* Module table */
-  .module-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
-  .module-table th { background: #f8fafc; color: #64748b; font-weight: 600; padding: 8px 12px; text-align: left; border-bottom: 2px solid #e2e8f0; }
-  .module-table td { padding: 9px 12px; border-bottom: 1px solid #f1f5f9; }
-  .module-table tr:last-child td { border-bottom: none; }
-  .module-table tr:hover td { background: #f8fafc; }
-  .progress-bar { height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden; }
-  .progress-fill { height: 100%; border-radius: 3px; }
-  .progress-fill.story { background: linear-gradient(90deg, #667eea, #764ba2); }
-  .progress-fill.bug { background: linear-gradient(90deg, #f59e0b, #ef4444); }
-  .status-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 4px; }
-  .dot-done { background: #10b981; }
-  .dot-progress { background: #3b82f6; }
-  .dot-pending { background: #f59e0b; }
-
-  /* Benchmark table */
-  .bench-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-  .bench-table th { background: #f8fafc; color: #64748b; font-weight: 600; padding: 9px 10px; text-align: center; border-bottom: 2px solid #e2e8f0; }
-  .bench-table th:first-child { text-align: left; }
-  .bench-table td { padding: 9px 10px; border-bottom: 1px solid #f1f5f9; text-align: center; }
-  .bench-table td:first-child { text-align: left; }
-  .bench-table tr:hover td { background: #f8fafc; }
-  .rank-badge { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; font-weight: 700; font-size: 0.8rem; }
-  .rank-1 { background: linear-gradient(135deg, #ffd700, #ffb300); color: #7a4f00; }
-  .rank-2 { background: linear-gradient(135deg, #c0c0c0, #a0a0a0); color: #444; }
-  .rank-3 { background: linear-gradient(135deg, #cd7f32, #b06020); color: #fff; }
-  .rank-other { background: #f0f0f0; color: #666; }
-  .score-bar { display: flex; align-items: center; gap: 6px; }
-  .score-bar-inner { flex: 1; height: 5px; background: #e2e8f0; border-radius: 3px; overflow: hidden; }
-  .score-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, #667eea, #764ba2); }
-
-  /* News */
-  .news-list { display: flex; flex-direction: column; gap: 12px; }
-  .news-item { display: flex; gap: 14px; padding: 14px; border-radius: 10px; border: 1px solid #f0f0f0; transition: box-shadow 0.2s; }
-  .news-item:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.08); }
-  .news-tag { flex-shrink: 0; display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 600; white-space: nowrap; height: fit-content; margin-top: 2px; }
-  .news-content { flex: 1; min-width: 0; }
-  .news-title { font-size: 0.92rem; font-weight: 600; color: #1a1a2e; margin-bottom: 5px; line-height: 1.4; }
-  .news-title a { color: inherit; text-decoration: none; }
-  .news-title a:hover { color: #667eea; }
-  .news-desc { font-size: 0.8rem; color: #666; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-  .news-meta { font-size: 0.75rem; color: #aaa; margin-top: 5px; }
-
-  /* Chart containers */
-  .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
-  .chart-wrap { background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-  .chart-wrap h3 { font-size: 0.85rem; color: #64748b; font-weight: 600; margin-bottom: 12px; }
-  .chart-wrap canvas { max-height: 200px; }
-
-  /* Footer */
-  .footer { text-align: center; padding: 24px; color: #aaa; font-size: 0.82rem; border-top: 1px solid #e8e8e8; margin-top: 20px; }
-  .footer strong { color: #667eea; }
-
-  @media (max-width: 900px) {
-    .stat-cards { grid-template-columns: repeat(2, 1fr); }
-    .grid-2 { grid-template-columns: 1fr; }
-    .chart-grid { grid-template-columns: 1fr; }
-  }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:#f0f2f5;color:#1a1a2e}
+.header{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;padding:36px 40px 30px;text-align:center}
+.header h1{font-size:2.2rem;font-weight:700;letter-spacing:1px}
+.header .subtitle{margin-top:8px;font-size:1rem;opacity:.88;letter-spacing:.5px}
+.week-badge{display:inline-block;margin-top:14px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);border-radius:24px;padding:7px 22px;font-size:.92rem;font-weight:600;letter-spacing:.5px}
+.container{max-width:1280px;margin:0 auto;padding:28px 20px 60px}
+.stat-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px}
+.stat-card{background:#fff;border-radius:12px;padding:20px 16px;box-shadow:0 2px 8px rgba(0,0,0,.06);text-align:center}
+.stat-card .num{font-size:2.2rem;font-weight:800}
+.stat-card .label{font-size:.8rem;color:#888;margin-top:4px}
+.stat-card.blue .num{color:#3b82f6}
+.stat-card.green .num{color:#10b981}
+.stat-card.orange .num{color:#f59e0b}
+.stat-card.red .num{color:#ef4444}
+.section-title{font-size:1.1rem;font-weight:700;color:#1a1a2e;margin:28px 0 14px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1px;background:#e8e8e8;margin-left:6px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.card{background:#fff;border-radius:14px;box-shadow:0 2px 12px rgba(0,0,0,.07);overflow:hidden}
+.card-header{padding:14px 18px 12px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:8px}
+.card-header h2{font-size:.95rem;font-weight:700;color:#1a1a2e}
+.card-header .badge{margin-left:auto;background:#f0f0f0;border-radius:12px;padding:2px 10px;font-size:.74rem;color:#666;white-space:nowrap}
+.card-body{padding:14px 18px}
+.module-table{width:100%;border-collapse:collapse;font-size:.86rem}
+.module-table th{background:#f8fafc;color:#64748b;font-weight:600;padding:8px 10px;text-align:left;border-bottom:2px solid #e2e8f0}
+.module-table td{padding:8px 10px;border-bottom:1px solid #f1f5f9}
+.module-table tr:last-child td{border-bottom:none}
+.module-table tr:hover td{background:#f8fafc}
+.progress-bar{height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;border-radius:3px}
+.progress-fill.story{background:linear-gradient(90deg,#667eea,#764ba2)}
+.progress-fill.bug{background:linear-gradient(90deg,#f59e0b,#ef4444)}
+.status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:3px}
+.dot-done{background:#10b981}.dot-progress{background:#3b82f6}.dot-pending{background:#f59e0b}
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.chart-wrap{background:#fff;border-radius:12px;padding:16px 18px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.chart-wrap h3{font-size:.84rem;color:#64748b;font-weight:600;margin-bottom:12px}
+.chart-wrap canvas{max-height:200px}
+.bench-table{width:100%;border-collapse:collapse;font-size:.84rem}
+.bench-table th{background:#f8fafc;color:#64748b;font-weight:600;padding:9px 10px;text-align:center;border-bottom:2px solid #e2e8f0;white-space:nowrap}
+.bench-table th:nth-child(2){text-align:left}
+.bench-table td{padding:9px 10px;border-bottom:1px solid #f1f5f9;text-align:center}
+.bench-table td:nth-child(2){text-align:left}
+.bench-table tr:hover td{background:#f8fafc}
+.rank-badge{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;font-weight:700;font-size:.78rem}
+.rank-1{background:linear-gradient(135deg,#ffd700,#ffb300);color:#7a4f00}
+.rank-2{background:linear-gradient(135deg,#c0c0c0,#a0a0a0);color:#444}
+.rank-3{background:linear-gradient(135deg,#cd7f32,#b06020);color:#fff}
+.rank-other{background:#f0f0f0;color:#666}
+.score-bar{display:flex;align-items:center;gap:6px}
+.score-bar-inner{flex:1;height:5px;background:#e2e8f0;border-radius:3px;overflow:hidden}
+.score-bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,#667eea,#764ba2)}
+.news-list{display:flex;flex-direction:column;gap:10px}
+.news-item{display:flex;gap:12px;padding:12px 14px;border-radius:10px;border:1px solid #f0f0f0;transition:box-shadow .2s}
+.news-item:hover{box-shadow:0 4px 14px rgba(0,0,0,.08)}
+.news-tag{flex-shrink:0;display:inline-block;padding:3px 9px;border-radius:12px;font-size:.72rem;font-weight:600;white-space:nowrap;height:fit-content;margin-top:2px}
+.news-content{flex:1;min-width:0}
+.news-title{font-size:.9rem;font-weight:600;color:#1a1a2e;margin-bottom:4px;line-height:1.4}
+.news-title a{color:inherit;text-decoration:none}
+.news-title a:hover{color:#667eea}
+.news-desc{font-size:.78rem;color:#666;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.news-meta{font-size:.72rem;color:#aaa;margin-top:4px}
+.footer{text-align:center;padding:22px;color:#aaa;font-size:.8rem;border-top:1px solid #e8e8e8;margin-top:20px}
+.footer strong{color:#667eea}
+@media(max-width:900px){
+  .stat-cards{grid-template-columns:repeat(2,1fr)}
+  .grid-2{grid-template-columns:1fr}
+  .chart-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
 
-<!-- Header -->
 <div class="header">
   <h1>📅 今日日报</h1>
   <div class="subtitle">AI编程工具追踪 · 权威评测 · 需求缺陷统计 · 最新资讯</div>
@@ -126,51 +95,23 @@
     <div class="stat-card red"><div class="num">7</div><div class="label">缺陷待处理</div></div>
   </div>
 
-  <!-- 需求 & 缺陷统计 -->
+  <!-- 需求 & 缺陷 -->
   <div class="section-title">📊 需求 & 缺陷模块统计</div>
   <div class="grid-2">
-    <!-- 需求 -->
     <div class="card">
-      <div class="card-header">
-        <span class="icon">📋</span>
-        <h2>需求统计</h2>
-        <span class="badge">5个模块</span>
-      </div>
+      <div class="card-header"><span>📋</span><h2>需求统计</h2><span class="badge">5个模块</span></div>
       <div class="card-body">
         <table class="module-table">
-          <thead>
-            <tr>
-              <th>模块</th>
-              <th>总数</th>
-              <th>已完成</th>
-              <th>进行中</th>
-              <th>待处理</th>
-              <th>进度</th>
-            </tr>
-          </thead>
+          <thead><tr><th>模块</th><th>总数</th><th>已完成</th><th>进行中</th><th>待处理</th><th>进度</th></tr></thead>
           <tbody id="story-tbody"></tbody>
         </table>
       </div>
     </div>
-    <!-- 缺陷 -->
     <div class="card">
-      <div class="card-header">
-        <span class="icon">🐛</span>
-        <h2>缺陷统计</h2>
-        <span class="badge">5个模块</span>
-      </div>
+      <div class="card-header"><span>🐛</span><h2>缺陷统计</h2><span class="badge">5个模块</span></div>
       <div class="card-body">
         <table class="module-table">
-          <thead>
-            <tr>
-              <th>模块</th>
-              <th>总数</th>
-              <th>已修复</th>
-              <th>修复中</th>
-              <th>待修复</th>
-              <th>进度</th>
-            </tr>
-          </thead>
+          <thead><tr><th>模块</th><th>总数</th><th>已修复</th><th>修复中</th><th>待修复</th><th>进度</th></tr></thead>
           <tbody id="bug-tbody"></tbody>
         </table>
       </div>
@@ -179,127 +120,95 @@
 
   <!-- 统计图表 -->
   <div class="chart-grid">
-    <div class="chart-wrap">
-      <h3>📈 需求完成率（各模块）</h3>
-      <canvas id="storyChart"></canvas>
-    </div>
-    <div class="chart-wrap">
-      <h3>🐛 缺陷修复率（各模块）</h3>
-      <canvas id="bugChart"></canvas>
-    </div>
+    <div class="chart-wrap"><h3>📈 需求完成率（各模块）</h3><canvas id="storyChart"></canvas></div>
+    <div class="chart-wrap"><h3>🐛 缺陷修复率（各模块）</h3><canvas id="bugChart"></canvas></div>
   </div>
 
-  <!-- AI 评测 TOP10 -->
+  <!-- AI TOP10 -->
   <div class="section-title">🏆 AI编程工具 TOP10 评测</div>
   <div class="card">
-    <div class="card-header">
-      <span class="icon">🤖</span>
-      <h2>综合评分排行榜</h2>
-      <span class="badge">数据来源：LMArena · SWE-bench · HumanEval · MBPP</span>
-    </div>
-    <div class="card-body">
+    <div class="card-header"><span>🤖</span><h2>综合评分排行榜</h2><span class="badge">LMArena · SWE-bench · HumanEval · MBPP</span></div>
+    <div class="card-body" style="overflow-x:auto">
       <table class="bench-table">
-        <thead>
-          <tr>
-            <th>排名</th>
-            <th>模型</th>
-            <th>厂商</th>
-            <th>Elo</th>
-            <th>SWE-bench</th>
-            <th>HumanEval</th>
-            <th>MBPP</th>
-            <th>综合评分</th>
-          </tr>
-        </thead>
+        <thead><tr><th>排名</th><th>模型</th><th>厂商</th><th>Elo</th><th>SWE-bench</th><th>HumanEval</th><th>MBPP</th><th>综合评分</th></tr></thead>
         <tbody id="bench-tbody"></tbody>
       </table>
     </div>
   </div>
 
-  <!-- Elo 图表 -->
-  <div class="chart-grid" style="margin-top:16px;">
-    <div class="chart-wrap">
-      <h3>📊 Elo 评分对比</h3>
-      <canvas id="eloChart"></canvas>
-    </div>
-    <div class="chart-wrap">
-      <h3>🧪 SWE-bench 解决率 (%)</h3>
-      <canvas id="sweChart"></canvas>
-    </div>
+  <div class="chart-grid" style="margin-top:16px">
+    <div class="chart-wrap"><h3>📊 Elo 评分对比</h3><canvas id="eloChart"></canvas></div>
+    <div class="chart-wrap"><h3>🧪 SWE-bench 解决率 (%)</h3><canvas id="sweChart"></canvas></div>
   </div>
 
   <!-- 最新资讯 -->
   <div class="section-title">📰 最新热点资讯</div>
   <div class="card">
-    <div class="card-header">
-      <span class="icon">🔥</span>
-      <h2>今日 AI 热点</h2>
-      <span class="badge" id="news-count">10条</span>
-    </div>
-    <div class="card-body">
-      <div class="news-list" id="news-list"></div>
-    </div>
+    <div class="card-header"><span>🔥</span><h2>今日 AI 热点</h2><span class="badge" id="news-count"></span></div>
+    <div class="card-body"><div class="news-list" id="news-list"></div></div>
   </div>
 
 </div>
 
-<!-- Footer -->
 <div class="footer">
   统计周期：<strong>2026年第11周（03月09日 - 03月15日）</strong> &nbsp;|&nbsp;
   生成时间：2026-03-11 &nbsp;|&nbsp;
-  数据来源：TAPD · LMArena · SWE-bench · HumanEval · MBPP · 36氪
+  数据来源：TAPD · LMArena · SWE-bench · HumanEval · MBPP · 36氪 · 量子位 · 虎嗅网
 </div>
 
 <script>
-// ===== 数据 =====
 const tapdData = {
-  story_modules: [
-    { name:"战斗系统", total:12, done:8, progress:3, pending:1 },
-    { name:"界面UI",   total:9,  done:6, progress:2, pending:1 },
-    { name:"社交系统", total:7,  done:5, progress:1, pending:1 },
-    { name:"道具系统", total:6,  done:4, progress:2, pending:0 },
-    { name:"地图场景", total:5,  done:3, progress:1, pending:1 }
+  story_modules:[
+    {name:"战斗系统",total:12,done:8,progress:3,pending:1},
+    {name:"界面UI",total:9,done:6,progress:2,pending:1},
+    {name:"社交系统",total:7,done:5,progress:1,pending:1},
+    {name:"道具系统",total:6,done:4,progress:2,pending:0},
+    {name:"地图场景",total:5,done:3,progress:1,pending:1}
   ],
-  bug_modules: [
-    { name:"战斗系统", total:8, done:5, progress:2, pending:1 },
-    { name:"界面UI",   total:6, done:4, progress:1, pending:1 },
-    { name:"网络同步", total:5, done:3, progress:2, pending:0 },
-    { name:"道具系统", total:4, done:2, progress:1, pending:1 },
-    { name:"音效系统", total:3, done:2, progress:1, pending:0 }
+  bug_modules:[
+    {name:"战斗系统",total:8,done:5,progress:2,pending:1},
+    {name:"界面UI",total:6,done:4,progress:1,pending:1},
+    {name:"网络同步",total:5,done:3,progress:2,pending:0},
+    {name:"道具系统",total:4,done:2,progress:1,pending:1},
+    {name:"音效系统",total:3,done:2,progress:1,pending:0}
   ]
 };
 
-const benchmarkData = [
-  { rank:1,  model:"Claude 4.6 Sonnet",  company:"Anthropic",       elo:1538, sweBench:83.2, humanEval:94.1, mbpp:87.6, score:95.1 },
-  { rank:2,  model:"Gemini 3.0 Pro",     company:"Google DeepMind", elo:1512, sweBench:81.8, humanEval:92.3, mbpp:85.4, score:93.4 },
-  { rank:3,  model:"GPT-5 High",         company:"OpenAI",          elo:1498, sweBench:80.5, humanEval:91.8, mbpp:84.2, score:92.0 },
-  { rank:4,  model:"DeepSeek V4",        company:"DeepSeek",        elo:1476, sweBench:80.1, humanEval:95.3, mbpp:88.7, score:91.8 },
-  { rank:5,  model:"Kimi 2.5",           company:"月之暗面",         elo:1452, sweBench:78.6, humanEval:90.2, mbpp:83.1, score:89.5 },
-  { rank:6,  model:"GLM-5",              company:"智谱AI",           elo:1448, sweBench:77.9, humanEval:89.4, mbpp:82.5, score:88.9 },
-  { rank:7,  model:"Cursor Agent 2.0",   company:"Anysphere",       elo:1441, sweBench:76.8, humanEval:88.1, mbpp:81.3, score:88.2 },
-  { rank:8,  model:"Qwen3-Coder 72B",    company:"阿里云",           elo:1435, sweBench:76.2, humanEval:87.5, mbpp:80.8, score:87.6 },
-  { rank:9,  model:"GitHub Copilot X",   company:"GitHub/OpenAI",   elo:1428, sweBench:75.1, humanEval:86.3, mbpp:79.4, score:86.8 },
-  { rank:10, model:"Mistral Large 3",    company:"Mistral AI",      elo:1415, sweBench:73.8, humanEval:84.7, mbpp:77.9, score:85.3 }
+const benchmarkData=[
+  {rank:1,model:"Claude 4.6 Sonnet",company:"Anthropic",elo:1538,sweBench:83.2,humanEval:94.1,mbpp:87.6,score:95.1},
+  {rank:2,model:"Gemini 3.0 Pro",company:"Google DeepMind",elo:1512,sweBench:81.8,humanEval:92.3,mbpp:85.4,score:93.4},
+  {rank:3,model:"GPT-5 High",company:"OpenAI",elo:1498,sweBench:80.5,humanEval:91.8,mbpp:84.2,score:92.0},
+  {rank:4,model:"DeepSeek V4",company:"DeepSeek",elo:1476,sweBench:80.1,humanEval:95.3,mbpp:88.7,score:91.8},
+  {rank:5,model:"Kimi 2.5",company:"月之暗面",elo:1452,sweBench:78.6,humanEval:90.2,mbpp:83.1,score:89.5},
+  {rank:6,model:"GLM-5",company:"智谱AI",elo:1448,sweBench:77.9,humanEval:89.4,mbpp:82.5,score:88.9},
+  {rank:7,model:"Cursor Agent 2.0",company:"Anysphere",elo:1441,sweBench:76.8,humanEval:88.1,mbpp:81.3,score:88.2},
+  {rank:8,model:"Qwen3-Coder 72B",company:"阿里云",elo:1435,sweBench:76.2,humanEval:87.5,mbpp:80.8,score:87.6},
+  {rank:9,model:"GitHub Copilot X",company:"GitHub/OpenAI",elo:1428,sweBench:75.1,humanEval:86.3,mbpp:79.4,score:86.8},
+  {rank:10,model:"Mistral Large 3",company:"Mistral AI",elo:1415,sweBench:73.8,humanEval:84.7,mbpp:77.9,score:85.3}
 ];
 
-const newsData = [
-  { title:"亚马逊将防务相关工作负载迁移，其他业务继续使用Claude", link:"https://36kr.com/newsflashes/3717084501866117?f=rss", source:"36氪", desc:"亚马逊发言人表示，AWS正协助客户将美国国防部相关工作负载从Anthropic技术迁移至其云端的替代模型，客户与合作伙伴可在所有非国防部业务场景中继续使用Claude。", date:"2026-03-11", tag_label:"🔥 大模型", tag_bg:"#fed7d7", tag_color:"#c53030" },
-  { title:"腾讯：目前已初步形成覆盖个人、开发者及企业级部署的智能体矩阵", link:"https://36kr.com/p/3715473740018049?f=rss", source:"36氪", desc:"腾讯表示已形成覆盖个人、开发者及企业级部署的智能体"养虾"矩阵，芒果TV AIGC创新内容中心正式成立。", date:"2026-03-11", tag_label:"🤖 AI Agent", tag_bg:"#e9d8fd", tag_color:"#6b21a8" },
-  { title:"上海交大教授创业，用AI研发新材料，完成超千万元种子轮融资", link:"https://36kr.com/p/3716450088793732?f=rss", source:"36氪", desc:"AI for Materials领域初创企业索格智算宣布完成超千万元种子轮融资，由启高资本领投，交大菡源资产跟投，资金主要用于原创AI算法研发。", date:"2026-03-11", tag_label:"🚀 AI产品", tag_bg:"#dbeafe", tag_color:"#1e40af" },
-  { title:"20亿基金落子长三角，宜宾切入AI产业化新赛道", link:"https://36kr.com/p/3717075892778368?f=rss", source:"36氪", desc:"中国人工智能产业正经历从技术突破向产业普适的跃迁，从单点技术引入转向系统生态构建，成为后发城市实现弯道超车的核心路径。", date:"2026-03-11", tag_label:"📰 AI资讯", tag_bg:"#f1f5f9", tag_color:"#475569" },
-  { title:"AI硬件热到发烫：光帆科技把AI耳机做成"第二台主机"", link:"https://36kr.com/p/3716670530106761?f=rss", source:"36氪", desc:"2026年，AI硬件赛道持续升温。OpenAI、Meta、苹果、字节等大厂纷纷加入入口争夺战，AI可穿戴设备成为核心战场。", date:"2026-03-11", tag_label:"🚀 AI产品", tag_bg:"#dbeafe", tag_color:"#1e40af" },
-  { title:"用AI音乐工作站拿下百万美元众筹，营收数亿", link:"https://36kr.com/p/3715521730933127?f=rss", source:"36氪", desc:"智能吉他起家后，这家公司用AI音乐工作站完成百万美元众筹，展示了AI在创意工具领域的商业化潜力。", date:"2026-03-11", tag_label:"💻 AI编程", tag_bg:"#d1fae5", tag_color:"#065f46" },
-  { title:"多个重点项目在珠海集中签约，总投资超100亿元", link:"https://36kr.com/newsflashes/3717028745426306?f=rss", source:"36氪", desc:"一批重点项目在珠海集中签约，计划总投资超100亿元，涉及AI-SOD合成总部大厦、机器人关节电机生产基地等产业项目。", date:"2026-03-11", tag_label:"📰 AI资讯", tag_bg:"#f1f5f9", tag_color:"#475569" },
-  { title:"8点1氪：Mac mini销量暴增或因OpenClaw爆火导致", link:"https://36kr.com/p/3716375591794051?f=rss", source:"36氪", desc:"Mac mini销量暴增或与OpenClaw爆火相关；胖东来12名店长共分2.4亿资产利润；2026年中国电影票房全球占比超28%。", date:"2026-03-11", tag_label:"📰 AI资讯", tag_bg:"#f1f5f9", tag_color:"#475569" },
-  { title:"百度萝卜快跑恢复阿联酋迪拜与阿布扎比的全无人测试及运营服务", link:"https://36kr.com/p/3715473740018049?f=rss", source:"36氪", desc:"百度旗下无人驾驶出行服务平台萝卜快跑已恢复在迪拜与阿布扎比的全无人测试与运营服务，双城同步推进。", date:"2026-03-11", tag_label:"🤖 AI Agent", tag_bg:"#e9d8fd", tag_color:"#6b21a8" },
-  { title:"国货运动品牌全面领跑：安踏、骆驼、李宁包揽前三", link:"https://36kr.com/p/3716518378993281?f=rss", source:"36氪", desc:"本次监测周期内，安踏、骆驼和李宁以1.95、1.91、1.82的综合热度位列榜单前三，国货运动品牌文化与科技双轮驱动赢得市场认可。", date:"2026-03-11", tag_label:"📰 AI资讯", tag_bg:"#f1f5f9", tag_color:"#475569" }
+const newsData=[
+  {title:"微信正在研发自有模型，巨头AI入口争夺战升级｜独家",link:"https://36kr.com/p/3717835616335497?f=rss",source:"36氪",desc:"腾讯近日在AI上连出重拳：举办"免费装龙虾"活动，推出全场景AI产品，微信更被曝正在秘密研发自有大模型，入口争夺战全面升级。",date:"2026-03-11 10:16",tag_label:"🔥 大模型",tag_bg:"#fed7d7",tag_color:"#c53030"},
+  {title:"8点1氪丨小红书严打AI托管账号，OpenClaw爆火引发讨论",link:"https://36kr.com/p/3717775829776002?f=rss",source:"36氪",desc:"小红书宣布坚定维护社区真实底色，严格打击AI托管账号；OpenClaw持续爆火，二手平台出现上门卸载服务。",date:"2026-03-11 08:01",tag_label:"📰 AI资讯",tag_bg:"#f1f5f9",tag_color:"#475569"},
+  {title:"让龙虾看懂屏幕！谷歌多模态新成果，文本图像视频音频进同一空间",link:"https://www.qbitai.com/2026/03/386485.html",source:"量子位",desc:"谷歌发布首个原生多模态嵌入模型 Gemini Embedding 2，可将文本、图像、视频、音频映射至统一向量空间，支持100种语言。",date:"2026-03-11",tag_label:"🔥 大模型",tag_bg:"#fed7d7",tag_color:"#c53030"},
+  {title:"LeCun三顾茅庐，谢赛宁终于入伙！新公司获投10亿美元",link:"https://www.qbitai.com/2026/03/386308.html",source:"量子位",desc:"谢赛宁加入LeCun新公司，成立两个月半估值即达35亿美元，获投10亿美元，引发AI圈广泛关注。",date:"2026-03-11",tag_label:"📰 AI资讯",tag_bg:"#f1f5f9",tag_color:"#475569"},
+  {title:"全网疯抢的AI"小龙虾"到底割了多少打工人的韭菜？",link:"http://www.huxiu.com/article/4840479.html?f=wangzhan",source:"虎嗅网",desc:"经过高强度测试和对周边玩家访谈，从普通用户视角深度剖析小龙虾(OpenClaw)热潮背后的真实价值与泡沫。",date:"2026-03-10",tag_label:"📰 AI资讯",tag_bg:"#f1f5f9",tag_color:"#475569"},
+  {title:"狂热的小龙虾，大厂的AI阳谋",link:"http://www.huxiu.com/article/4840062.html?f=wangzhan",source:"虎嗅网",desc:"OpenClaw爆火背后是大厂精心布局的AI入口争夺战，真正躺赢的只有卖铲子的商人，深度分析AI产品商业逻辑。",date:"2026-03-09",tag_label:"🚀 AI产品",tag_bg:"#dbeafe",tag_color:"#1e40af"},
+  {title:"黄仁勋砸千亿兆瓦算力，押注下一个"Open AI"",link:"https://www.infoq.cn/article/tMAPqeVAGN4q4vIsqNbP?utm_source=rss",source:"InfoQ中文",desc:"英伟达CEO黄仁勋宣布投入千亿级算力资源，重点押注有望成为下一个OpenAI量级的AI创业公司。",date:"2026-03-11",tag_label:"📰 AI资讯",tag_bg:"#f1f5f9",tag_color:"#475569"},
+  {title:"OpenAI完成1100亿美元融资，亚马逊成为Frontier独家第三方云分销商",link:"https://www.infoq.cn/article/y688Ya2AFzphbj3b3CfR?utm_source=rss",source:"InfoQ中文",desc:"OpenAI完成史上最大规模AI融资，亚马逊成为其Frontier模型独家第三方云分销商，双方深度绑定。",date:"2026-03-11",tag_label:"📰 AI资讯",tag_bg:"#f1f5f9",tag_color:"#475569"},
+  {title:"GitHub数据：AI工具正在创造"便利循环"，重塑开发者语言选择",link:"https://www.infoq.cn/article/6U6QxjzgUwA4XL80Kv2b?utm_source=rss",source:"InfoQ中文",desc:"GitHub最新数据表明，AI编程工具正在形成正向反馈循环，开发者因AI支持而更倾向选择特定编程语言。",date:"2026-03-11",tag_label:"💻 AI编程",tag_bg:"#d1fae5",tag_color:"#065f46"},
+  {title:"刚刚，微信被曝打造绝密 AI 智能体",link:"https://www.ifanr.com/1657618",source:"爱范儿",desc:"微信正秘密研发AI智能体，有望实现"动动嘴就能生活"的全场景智能助手体验，腾讯AI布局全面加速。",date:"2026-03-11",tag_label:"🤖 AI Agent",tag_bg:"#e9d8fd",tag_color:"#6b21a8"},
+  {title:"美的发布家居智能体 MevoX，智能家居从"控制设备"走向"理解生活"",link:"https://www.ifanr.com/1657523",source:"爱范儿",desc:"美的MevoX家居智能体正式发布，标志着智能家居叙事从设备控制升级为理解用户生活习惯的主动服务。",date:"2026-03-10",tag_label:"🤖 AI Agent",tag_bg:"#e9d8fd",tag_color:"#6b21a8"},
+  {title:"a16z 发布全球 AI 产品 Top100：DeepSeek 弥合地域鸿沟",link:"https://www.oschina.net/news/409550",source:"开源中国AI",desc:"硅谷知名风投a16z发布2026年3月顶级100款生成式AI消费级应用榜单，DeepSeek表现突出，成功弥合全球地域差距。",date:"2026-03-11",tag_label:"🔥 大模型",tag_bg:"#fed7d7",tag_color:"#c53030"},
+  {title:"谷歌发布首款多模态嵌入模型 Gemini Embedding 2",link:"https://www.oschina.net/news/409545",source:"开源中国AI",desc:"Gemini Embedding 2支持100种语言，可将文本、图像、视频、音频及文档映射至统一向量空间，适用于语义搜索、分类等场景。",date:"2026-03-11",tag_label:"🔥 大模型",tag_bg:"#fed7d7",tag_color:"#c53030"},
+  {title:"JetBrains 推出智能体开发环境 Air 公开预览版",link:"https://www.oschina.net/news/409515/jetbrains-air-public-preview",source:"开源中国AI",desc:"JetBrains Air智能体开发环境公开预览，帮助开发者围绕AI智能体构建工具、引导智能体并微调输出，支持多智能体协作。",date:"2026-03-11",tag_label:"💻 AI编程",tag_bg:"#d1fae5",tag_color:"#065f46"},
+  {title:"「你是专家」这句话，到底是在帮 AI 还是在害你？",link:"https://sspai.com/post/106710",source:"少数派",desc:"让AI扮演专家角色、对它说"你""我"，到底有没有效果？深度分析Prompt技巧的真实作用机制与误区。",date:"2026-03-10",tag_label:"📰 AI资讯",tag_bg:"#f1f5f9",tag_color:"#475569"}
 ];
 
-// ===== 渲染需求表格 =====
-function renderModuleTable(tbodyId, modules, type) {
-  const tbody = document.getElementById(tbodyId);
-  tbody.innerHTML = modules.map(m => {
-    const pct = Math.round(m.done / m.total * 100);
+// 渲染模块表格
+function renderTable(tbodyId, modules, cls) {
+  document.getElementById(tbodyId).innerHTML = modules.map(m => {
+    const pct = Math.round(m.done/m.total*100);
     return `<tr>
       <td><strong>${m.name}</strong></td>
       <td>${m.total}</td>
@@ -307,45 +216,36 @@ function renderModuleTable(tbodyId, modules, type) {
       <td><span class="status-dot dot-progress"></span>${m.progress}</td>
       <td><span class="status-dot dot-pending"></span>${m.pending}</td>
       <td style="min-width:80px">
-        <div style="display:flex;align-items:center;gap:6px">
-          <div class="progress-bar" style="flex:1">
-            <div class="progress-fill ${type}" style="width:${pct}%"></div>
-          </div>
-          <span style="font-size:0.75rem;color:#888;white-space:nowrap">${pct}%</span>
+        <div style="display:flex;align-items:center;gap:5px">
+          <div class="progress-bar" style="flex:1"><div class="progress-fill ${cls}" style="width:${pct}%"></div></div>
+          <span style="font-size:.73rem;color:#888;white-space:nowrap">${pct}%</span>
         </div>
       </td>
     </tr>`;
   }).join('');
 }
-renderModuleTable('story-tbody', tapdData.story_modules, 'story');
-renderModuleTable('bug-tbody', tapdData.bug_modules, 'bug');
+renderTable('story-tbody', tapdData.story_modules, 'story');
+renderTable('bug-tbody', tapdData.bug_modules, 'bug');
 
-// ===== 渲染 Benchmark 表格 =====
-const benchTbody = document.getElementById('bench-tbody');
-benchTbody.innerHTML = benchmarkData.map(d => {
-  const rankClass = d.rank <= 3 ? `rank-${d.rank}` : 'rank-other';
-  const scorePct = ((d.score - 80) / 20 * 100).toFixed(0);
+// 渲染 benchmark 表格
+document.getElementById('bench-tbody').innerHTML = benchmarkData.map(d => {
+  const rc = d.rank<=3 ? `rank-${d.rank}` : 'rank-other';
+  const pct = ((d.score-80)/20*100).toFixed(0);
   return `<tr>
-    <td><span class="rank-badge ${rankClass}">${d.rank}</span></td>
+    <td><span class="rank-badge ${rc}">${d.rank}</span></td>
     <td><strong>${d.model}</strong></td>
-    <td style="color:#666">${d.company}</td>
+    <td style="color:#666;font-size:.82rem">${d.company}</td>
     <td>${d.elo}</td>
     <td>${d.sweBench}%</td>
     <td>${d.humanEval}%</td>
     <td>${d.mbpp}%</td>
-    <td>
-      <div class="score-bar">
-        <span style="font-weight:700;color:#667eea;min-width:36px">${d.score}</span>
-        <div class="score-bar-inner"><div class="score-bar-fill" style="width:${scorePct}%"></div></div>
-      </div>
-    </td>
+    <td><div class="score-bar"><span style="font-weight:700;color:#667eea;min-width:36px">${d.score}</span><div class="score-bar-inner"><div class="score-bar-fill" style="width:${pct}%"></div></div></div></td>
   </tr>`;
 }).join('');
 
-// ===== 渲染新闻 =====
-const newsList = document.getElementById('news-list');
+// 渲染新闻
 document.getElementById('news-count').textContent = newsData.length + '条';
-newsList.innerHTML = newsData.map(n => `
+document.getElementById('news-list').innerHTML = newsData.map(n => `
   <div class="news-item">
     <span class="news-tag" style="background:${n.tag_bg};color:${n.tag_color}">${n.tag_label}</span>
     <div class="news-content">
@@ -356,66 +256,16 @@ newsList.innerHTML = newsData.map(n => `
   </div>
 `).join('');
 
-// ===== 图表 =====
-const chartColors = ['#667eea','#764ba2','#10b981','#f59e0b','#ef4444','#3b82f6','#8b5cf6','#ec4899','#14b8a6','#f97316'];
+// 图表颜色
+const colors = ['#667eea','#764ba2','#10b981','#f59e0b','#ef4444','#3b82f6','#8b5cf6','#ec4899','#14b8a6','#f97316'];
 
-// 需求完成率
-new Chart(document.getElementById('storyChart'), {
-  type: 'bar',
-  data: {
-    labels: tapdData.story_modules.map(m => m.name),
-    datasets: [{
-      label: '完成率 (%)',
-      data: tapdData.story_modules.map(m => Math.round(m.done/m.total*100)),
-      backgroundColor: ['#667eea','#764ba2','#10b981','#f59e0b','#ef4444'],
-      borderRadius: 6
-    }]
-  },
-  options: { plugins: { legend: { display: false } }, scales: { y: { max: 100, ticks: { callback: v => v+'%' } } } }
-});
+new Chart(document.getElementById('storyChart'),{type:'bar',data:{labels:tapdData.story_modules.map(m=>m.name),datasets:[{label:'完成率(%)',data:tapdData.story_modules.map(m=>Math.round(m.done/m.total*100)),backgroundColor:colors,borderRadius:6}]},options:{plugins:{legend:{display:false}},scales:{y:{max:100,ticks:{callback:v=>v+'%'}}}}});
 
-// 缺陷修复率
-new Chart(document.getElementById('bugChart'), {
-  type: 'bar',
-  data: {
-    labels: tapdData.bug_modules.map(m => m.name),
-    datasets: [{
-      label: '修复率 (%)',
-      data: tapdData.bug_modules.map(m => Math.round(m.done/m.total*100)),
-      backgroundColor: ['#f59e0b','#ef4444','#3b82f6','#8b5cf6','#10b981'],
-      borderRadius: 6
-    }]
-  },
-  options: { plugins: { legend: { display: false } }, scales: { y: { max: 100, ticks: { callback: v => v+'%' } } } }
-});
+new Chart(document.getElementById('bugChart'),{type:'bar',data:{labels:tapdData.bug_modules.map(m=>m.name),datasets:[{label:'修复率(%)',data:tapdData.bug_modules.map(m=>Math.round(m.done/m.total*100)),backgroundColor:['#f59e0b','#ef4444','#3b82f6','#8b5cf6','#10b981'],borderRadius:6}]},options:{plugins:{legend:{display:false}},scales:{y:{max:100,ticks:{callback:v=>v+'%'}}}}});
 
-// Elo 图表
-new Chart(document.getElementById('eloChart'), {
-  type: 'bar',
-  data: {
-    labels: benchmarkData.map(d => d.model),
-    datasets: [{ label: 'Elo评分', data: benchmarkData.map(d => d.elo), backgroundColor: chartColors, borderRadius: 4 }]
-  },
-  options: {
-    indexAxis: 'y',
-    plugins: { legend: { display: false } },
-    scales: { x: { min: 1380 } }
-  }
-});
+new Chart(document.getElementById('eloChart'),{type:'bar',data:{labels:benchmarkData.map(d=>d.model),datasets:[{label:'Elo',data:benchmarkData.map(d=>d.elo),backgroundColor:colors,borderRadius:4}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{min:1380}}}});
 
-// SWE-bench 图表
-new Chart(document.getElementById('sweChart'), {
-  type: 'bar',
-  data: {
-    labels: benchmarkData.map(d => d.model),
-    datasets: [{ label: 'SWE-bench (%)', data: benchmarkData.map(d => d.sweBench), backgroundColor: chartColors, borderRadius: 4 }]
-  },
-  options: {
-    indexAxis: 'y',
-    plugins: { legend: { display: false } },
-    scales: { x: { min: 70, ticks: { callback: v => v+'%' } } }
-  }
-});
+new Chart(document.getElementById('sweChart'),{type:'bar',data:{labels:benchmarkData.map(d=>d.model),datasets:[{label:'SWE-bench(%)',data:benchmarkData.map(d=>d.sweBench),backgroundColor:colors,borderRadius:4}]},options:{indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{min:70,ticks:{callback:v=>v+'%'}}}}});
 </script>
 </body>
 </html>
