@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📅 今日日报 · 2026-03-12</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB',sans-serif;background:#0f172a;color:#e2e8f0;min-height:100vh}
+
+/* ===== HEADER ===== */
+.header{background:linear-gradient(135deg,#1a2744 0%,#0f172a 60%,#1a1a2e 100%);padding:44px 24px 32px;text-align:center;border-bottom:1px solid #1e293b;position:relative;overflow:hidden}
+.header::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,#1e40af1a,transparent);pointer-events:none}
+.header h1{font-size:2.4rem;font-weight:800;background:linear-gradient(135deg,#60a5fa,#a78bfa,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:8px}
+.header .sub{color:#94a3b8;font-size:0.95rem;margin-bottom:14px;letter-spacing:0.02em}
+.week-badge{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#1e3a5f,#1e293b);border:1px solid #3b82f640;border-radius:24px;padding:8px 22px;font-size:0.88rem;color:#60a5fa;font-weight:600;margin-bottom:16px}
+.meta-row{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
+.meta-tag{background:#1e293b;border:1px solid #334155;border-radius:20px;padding:5px 16px;font-size:0.78rem;color:#64748b;display:flex;align-items:center;gap:5px}
+
+/* ===== LAYOUT ===== */
+.container{max-width:1280px;margin:0 auto;padding:28px 20px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:900px){.grid-2{grid-template-columns:1fr}.grid-3{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.grid-3{grid-template-columns:1fr}}
+
+/* ===== SECTION ===== */
+.section{margin-bottom:36px}
+.section-title{font-size:1rem;font-weight:700;color:#e2e8f0;margin-bottom:18px;display:flex;align-items:center;gap:10px;padding-bottom:12px;border-bottom:1px solid #1e293b}
+.section-title::before{content:'';width:4px;height:18px;background:linear-gradient(180deg,#3b82f6,#8b5cf6);border-radius:2px;flex-shrink:0}
+
+/* ===== STAT CARDS ===== */
+.stat-card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:18px 20px;transition:border-color 0.2s}
+.stat-card:hover{border-color:#3b82f640}
+.stat-card .label{font-size:0.78rem;color:#64748b;margin-bottom:6px;display:flex;align-items:center;gap:5px}
+.stat-card .num{font-size:1.8rem;font-weight:800;line-height:1}
+.stat-card .sub-row{display:flex;gap:12px;margin-top:8px;font-size:0.75rem}
+.stat-card .sub-row span{display:flex;align-items:center;gap:4px}
+.c-blue{color:#60a5fa}.c-green{color:#34d399}.c-yellow{color:#fbbf24}.c-red{color:#f87171}.c-purple{color:#a78bfa}
+
+/* ===== MODULE TABLE ===== */
+.module-wrap{background:#1e293b;border:1px solid #334155;border-radius:12px;overflow:hidden}
+.module-header{display:grid;grid-template-columns:1fr 60px 60px 60px 60px;padding:10px 16px;background:#0f172a;font-size:0.75rem;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:0.05em}
+.module-row{display:grid;grid-template-columns:1fr 60px 60px 60px 60px;padding:12px 16px;border-top:1px solid #0f172a;align-items:center;transition:background 0.15s}
+.module-row:hover{background:#1e293b88}
+.module-name{font-size:0.88rem;font-weight:600;color:#e2e8f0}
+.module-num{text-align:center;font-size:0.85rem;font-weight:600}
+.prog-bar{height:4px;background:#0f172a;border-radius:2px;margin-top:4px;overflow:hidden}
+.prog-fill{height:100%;border-radius:2px}
+
+/* ===== BENCHMARK TABLE ===== */
+.bench-wrap{overflow-x:auto;border-radius:12px;border:1px solid #1e293b}
+table{width:100%;border-collapse:collapse;font-size:0.85rem}
+thead tr{background:#1e293b}
+thead th{padding:12px 14px;text-align:left;color:#64748b;font-weight:600;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.05em;white-space:nowrap}
+tbody tr{border-bottom:1px solid #0f172a;transition:background 0.15s}
+tbody tr:hover{background:#1e293b66}
+tbody tr:last-child{border-bottom:none}
+td{padding:12px 14px;vertical-align:middle}
+.rank-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;font-weight:700;font-size:0.8rem}
+.rank-1{background:linear-gradient(135deg,#f59e0b,#fbbf24);color:#1a0a00}
+.rank-2{background:linear-gradient(135deg,#94a3b8,#cbd5e1);color:#0f172a}
+.rank-3{background:linear-gradient(135deg,#b45309,#d97706);color:#fff}
+.rank-n{background:#1e293b;color:#64748b;border:1px solid #334155}
+.model-nm{font-weight:600;color:#e2e8f0;font-size:0.88rem}
+.company-nm{color:#64748b;font-size:0.75rem}
+.elo-v{color:#60a5fa;font-weight:700}
+.score-v{font-weight:700}
+.bar-cell{display:flex;align-items:center;gap:6px}
+.bar-bg{flex:1;height:5px;background:#1e293b;border-radius:3px;min-width:50px}
+.bar-fill{height:100%;border-radius:3px}
+
+/* ===== NEWS ===== */
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:1000px){.news-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.news-grid{grid-template-columns:1fr}}
+.news-card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:10px;transition:border-color 0.2s,transform 0.15s}
+.news-card:hover{border-color:#3b82f640;transform:translateY(-2px)}
+.news-tag{display:inline-flex;align-items:center;font-size:0.72rem;font-weight:600;padding:3px 10px;border-radius:12px;width:fit-content}
+.news-title{font-size:0.88rem;font-weight:600;color:#e2e8f0;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.news-title a{color:inherit;text-decoration:none}
+.news-title a:hover{color:#60a5fa}
+.news-desc{font-size:0.78rem;color:#64748b;line-height:1.6;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;flex:1}
+.news-meta{display:flex;justify-content:space-between;align-items:center;font-size:0.72rem;color:#475569;margin-top:auto}
+.news-source{background:#0f172a;padding:2px 8px;border-radius:8px;color:#64748b}
+
+/* ===== CHART ===== */
+.chart-card{background:#1e293b;border:1px solid #334155;border-radius:12px;padding:18px}
+.chart-card h3{font-size:0.85rem;font-weight:600;color:#94a3b8;margin-bottom:14px;text-align:center}
+.chart-wrap{position:relative;height:220px}
+
+/* ===== FOOTER ===== */
+footer{background:#0a0f1e;border-top:1px solid #1e293b;padding:22px 24px;text-align:center;font-size:0.78rem;color:#475569;margin-top:8px}
+footer .foot-row{margin-bottom:8px}
+footer a{color:#3b82f6;text-decoration:none}
+footer a:hover{text-decoration:underline}
+.foot-badges{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:10px}
+.foot-badge{background:#1e293b;border:1px solid #334155;border-radius:16px;padding:3px 12px;font-size:0.72rem;color:#64748b}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>📅 今日日报</h1>
+  <div class="sub">AI编程工具追踪 · 权威评测 · 需求缺陷统计 · 最新资讯</div>
+  <div class="week-badge">📆 数据周期：2026年第11周（03月09日 - 03月15日）</div>
+  <div class="meta-row">
+    <span class="meta-tag">📅 2026-03-12</span>
+    <span class="meta-tag">📋 39条需求</span>
+    <span class="meta-tag">🐛 26条缺陷</span>
+    <span class="meta-tag">📰 21条资讯</span>
+    <span class="meta-tag">🏆 TOP10 评测</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ===== 需求 & 缺陷统计 ===== -->
+  <div class="section">
+    <div class="section-title">📋 需求 &amp; 缺陷统计</div>
+
+    <!-- 汇总卡片 -->
+    <div class="grid-3" style="margin-bottom:20px">
+      <div class="stat-card">
+        <div class="label">📝 需求总数</div>
+        <div class="num c-blue">39</div>
+        <div class="sub-row">
+          <span class="c-green">✅ 已完成 26</span>
+          <span class="c-yellow">🔄 进行中 9</span>
+          <span class="c-red">⏳ 待处理 4</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="label">🐛 缺陷总数</div>
+        <div class="num c-red">26</div>
+        <div class="sub-row">
+          <span class="c-green">✅ 已修复 16</span>
+          <span class="c-yellow">🔄 处理中 7</span>
+          <span class="c-red">⏳ 待处理 3</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="label">📊 本周完成率</div>
+        <div class="num c-green">66.7%</div>
+        <div class="sub-row">
+          <span class="c-blue">需求 66.7%</span>
+          <span class="c-purple">缺陷 61.5%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 模块明细 -->
+    <div class="grid-2">
+      <!-- 需求模块 -->
+      <div>
+        <div style="font-size:0.82rem;color:#64748b;margin-bottom:10px;font-weight:600">📝 需求模块分布</div>
+        <div class="module-wrap">
+          <div class="module-header">
+            <span>模块</span><span style="text-align:center">总数</span><span style="text-align:center">完成</span><span style="text-align:center">进行</span><span style="text-align:center">待处</span>
+          </div>
+          <div class="module-row">
+            <div>
+              <div class="module-name">战斗系统</div>
+              <div class="prog-bar"><div class="prog-fill" style="width:66.7%;background:#34d399"></div></div>
+            </div>
+            <div class="module-num" style="color:#e2e8f0">12</div>
+            <div class="module-num c-green">8</div>
+            <div class="module-num c-yellow">3</div>
+            <div class="module-num c-red">1</div>
+          </div>
+          <div class="module-row">
+            <div>
+              <div class="module-name">界面UI</div>
+              <div class="prog-bar"><div class="prog-fill" style="width:66.7%;background:#60a5fa"></div></div>
+            </div>
+            <div class="module-num" style="color:#e2e8f0">9</div>
+            <div class="module-num c-green">6</div>
+            <div class="module-num c-yellow">2</div>
+            <div class="module-num c-red">1</div>
+          </div>
+          <div class="module-row">
+            <div>
+              <div class="module-name">社交系统</div>
+              <div class="prog-bar"><div class="prog-fill" style="width:71.4%;background:#a78bfa"></div></div>
+            </div>
+            <div class="module-num" style="color:#e2e8f0">7</div>
+            <div class="module-num c-green">5</div>
+            <div class="module-num c-yellow">1</div>
+            <div class="module-num c-red">1</div>
+          </div>
+          <div class="module-row">
+            <div>
+              <div class="module-name">道具系统</div>
+              <div class="prog-bar"><div class="prog-fill" style="width:66.7%;background:#fbbf24"></div></div>
+            </div>
+            <div class="module-num" style="color:#e2e8f0">6</div>
+            <div class="module-num c-green">4</div>
+            <div class="module-num c-yellow">2</div>
+            <div class="module-num" style="color:#475569">0</div>
+          </div>
+          <div class="module-row">
+            <div>
+              <div class="module-name">地图场景</div>
+              <div class="prog-bar"><div class="prog-fill" style="width:60%;background:#f87171"></div></div>
+            </div>
+            <div class="module-num" style="color:#e2e8f0">5</div>
+            <div class="module-num c-green">3</div>
+            <div class="module-num c-yellow">1</div>
+            <div class="module-num c-red">1</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 缺陷模块 -->
+      <div>
+        <div style="font-size:0.82rem;color:#64748b;margin-bottom:10px;font-weight:600">🐛 缺陷模块分布</div>
+        <div class="module-wrap">
+          <div class="module-header">
+            <span>模块</span><span style="text-align:center">总数</span><span style="text-align:center">修复</span><span style="text-align:center">处理</span><span style="text-align:center">待处</span>
+          </div>
+          <div class="module-row">
+            <div>
+              <div class="module-name">战斗系统</div>
+              <div class="prog-bar"><div class="prog-fill" style="width:62.5%;background:#f87171"></div></div>
+            </div>
+            <div class="module-num" style="color:#e2e8f0">8</div>
+            <div class="module-num c-green">5</div>
+            <div class="module-num c-yellow">2</div>
+            <div class="module-num c-red">1</div>
+          </div>
+          <div class="module-row">
+            <div>
+              <div class="module-name">界面UI</div>
+              <div class="prog-bar"><div class="prog-fill" style="width:66.7%;background:#60a5fa"></div></div>
+            </div>
+            <div class="module-num" style="color:#e2e8f0">6</div>
+            <div class="module-num c-green">4</div>
+            <div class="module-num c-yellow">1</div>
+            <div class="module-num c-red">1</div>
+          </div>
+          <div class="module-row">
+            <div>
+              <div class="module-name">网络同步</div>
+              <div class="prog-bar"><div class="prog-fill" style="width:60%;background:#34d399"></div></div>
+            </div>
+            <div class="module-num" style="color:#e2e8f0">5</div>
+            <div class="module-num c-green">3</div>
+            <div class="module-num c-yellow">2</div>
+            <div class="module-num" style="color:#475569">0</div>
+          </div>
+          <div class="module-row">
+            <div>
+              <div class="module-name">道具系统</div>
+              <div class="prog-bar"><div class="prog-fill" style="width:50%;background:#fbbf24"></div></div>
+            </div>
+            <div class="module-num" style="color:#e2e8f0">4</div>
+            <div class="module-num c-green">2</div>
+            <div class="module-num c-yellow">1</div>
+            <div class="module-num c-red">1</div>
+          </div>
+          <div class="module-row">
+            <div>
+              <div class="module-name">音效系统</div>
+              <div class="prog-bar"><div class="prog-fill" style="width:66.7%;background:#a78bfa"></div></div>
+            </div>
+            <div class="module-num" style="color:#e2e8f0">3</div>
+            <div class="module-num c-green">2</div>
+            <div class="module-num c-yellow">1</div>
+            <div class="module-num" style="color:#475569">0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== AI 评测 TOP10 ===== -->
+  <div class="section">
+    <div class="section-title">🏆 AI编程工具 TOP10 评测</div>
+    <div class="grid-2" style="margin-bottom:20px">
+      <div class="chart-card">
+        <h3>⚡ LMArena Elo 评分</h3>
+        <div class="chart-wrap"><canvas id="eloChart"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3>🛠️ SWE-bench（软件工程任务）</h3>
+        <div class="chart-wrap"><canvas id="sweChart"></canvas></div>
+      </div>
+    </div>
+    <div class="bench-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>排名</th><th>模型</th><th>公司</th><th>Elo</th>
+            <th>SWE-bench</th><th>HumanEval</th><th>MBPP</th><th>综合评分</th>
+          </tr>
+        </thead>
+        <tbody id="benchBody"></tbody>
+      </table>
+    </div>
+    <div style="text-align:right;font-size:0.72rem;color:#475569;margin-top:8px">
+      数据来源：LMArena · SWE-bench · HumanEval · MBPP &nbsp;|&nbsp;
+      <a href="https://lucientester.github.io/ai-tools-dashboard/reports/benchmark_2026-03-12.html" target="_blank" style="color:#3b82f6">查看完整报告 →</a>
+    </div>
+  </div>
+
+  <!-- ===== 最新热点新闻 ===== -->
+  <div class="section">
+    <div class="section-title">📰 最新热点资讯（2026-03-12）</div>
+    <div class="news-grid" id="newsGrid"></div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-row">📅 今日日报 · AI编程工具追踪</div>
+  <div class="foot-row" style="color:#3b82f6;font-weight:600">统计周期：2026年第11周（03月09日 - 03月15日）</div>
+  <div class="foot-row">数据来源：
+    <a href="https://lmarena.ai" target="_blank">LMArena</a> ·
+    <a href="https://www.swebench.com" target="_blank">SWE-bench</a> ·
+    <a href="https://tapd.woa.com" target="_blank">TAPD</a> ·
+    量子位 · 36氪 · 机器之心 · 虎嗅网 · InfoQ
+  </div>
+  <div class="foot-badges">
+    <span class="foot-badge">🔥 大模型 6条</span>
+    <span class="foot-badge">🤖 AI Agent 6条</span>
+    <span class="foot-badge">🚀 AI产品 5条</span>
+    <span class="foot-badge">📰 AI资讯 3条</span>
+    <span class="foot-badge">💻 AI编程 1条</span>
+  </div>
+</footer>
+
+<script>
+// ===== Benchmark Data =====
+const benchmarkData = [
+  { rank:1, model:"Claude 4.6 Sonnet", company:"Anthropic", elo:1538, sweBench:83.2, humanEval:94.1, mbpp:87.6, score:95.1 },
+  { rank:2, model:"Gemini 3.0 Pro", company:"Google DeepMind", elo:1512, sweBench:81.8, humanEval:92.3, mbpp:85.4, score:93.4 },
+  { rank:3, model:"GPT-5 High", company:"OpenAI", elo:1498, sweBench:80.5, humanEval:91.8, mbpp:84.2, score:92.0 },
+  { rank:4, model:"DeepSeek V4", company:"DeepSeek", elo:1476, sweBench:80.1, humanEval:95.3, mbpp:88.7, score:91.8 },
+  { rank:5, model:"Kimi 2.5", company:"月之暗面", elo:1452, sweBench:78.6, humanEval:90.2, mbpp:83.1, score:89.5 },
+  { rank:6, model:"GLM-5", company:"智谱AI", elo:1448, sweBench:77.9, humanEval:89.4, mbpp:82.5, score:88.9 },
+  { rank:7, model:"Cursor (Agent 2.0)", company:"Anysphere", elo:1441, sweBench:76.8, humanEval:88.1, mbpp:81.3, score:88.2 },
+  { rank:8, model:"Qwen3-Coder 72B", company:"阿里云", elo:1435, sweBench:76.2, humanEval:87.5, mbpp:80.8, score:87.6 },
+  { rank:9, model:"GitHub Copilot X", company:"GitHub/OpenAI", elo:1428, sweBench:75.1, humanEval:86.3, mbpp:79.4, score:86.8 },
+  { rank:10, model:"Mistral Large 3", company:"Mistral AI", elo:1415, sweBench:73.8, humanEval:84.7, mbpp:77.9, score:85.3 }
+];
+
+// 表格
+const tbody = document.getElementById('benchBody');
+const rc = r => r===1?'rank-1':r===2?'rank-2':r===3?'rank-3':'rank-n';
+const sc = r => r===1?'c-yellow':r===2?'c-blue':r===3?'c-purple':'';
+benchmarkData.forEach(d => {
+  tbody.innerHTML += `<tr>
+    <td><span class="rank-badge ${rc(d.rank)}">${d.rank}</span></td>
+    <td><div class="model-nm">${d.model}</div></td>
+    <td><div class="company-nm">${d.company}</div></td>
+    <td><span class="elo-v">${d.elo}</span></td>
+    <td><div class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:${d.sweBench}%;background:#10b981"></div></div><span style="color:#10b981;font-size:0.82rem;font-weight:600;min-width:34px;text-align:right">${d.sweBench}</span></div></td>
+    <td><div class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:${d.humanEval}%;background:#8b5cf6"></div></div><span style="color:#8b5cf6;font-size:0.82rem;font-weight:600;min-width:34px;text-align:right">${d.humanEval}</span></div></td>
+    <td><div class="bar-cell"><div class="bar-bg"><div class="bar-fill" style="width:${d.mbpp}%;background:#f59e0b"></div></div><span style="color:#f59e0b;font-size:0.82rem;font-weight:600;min-width:34px;text-align:right">${d.mbpp}</span></div></td>
+    <td><span class="score-v ${sc(d.rank)}" style="font-size:1rem">${d.score}</span></td>
+  </tr>`;
+});
+
+const labels = benchmarkData.map(d => d.model.length>12?d.model.slice(0,11)+'…':d.model);
+const chartOpts = {
+  plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',titleColor:'#e2e8f0',bodyColor:'#94a3b8',borderColor:'#334155',borderWidth:1}},
+  scales:{x:{ticks:{color:'#64748b',font:{size:9}},grid:{color:'#1e293b'}},y:{ticks:{color:'#64748b',font:{size:9}},grid:{color:'#1e293b44'}}}
+};
+
+new Chart(document.getElementById('eloChart'),{
+  type:'bar',
+  data:{labels,datasets:[{data:benchmarkData.map(d=>d.elo),backgroundColor:benchmarkData.map((_,i)=>`rgba(59,130,246,${1-i*0.07})`),borderColor:'#3b82f6',borderWidth:1,borderRadius:4}]},
+  options:{...chartOpts,scales:{...chartOpts.scales,y:{...chartOpts.scales.y,min:1390,max:1550}}}
+});
+
+new Chart(document.getElementById('sweChart'),{
+  type:'bar',
+  data:{labels,datasets:[{data:benchmarkData.map(d=>d.sweBench),backgroundColor:benchmarkData.map((_,i)=>`rgba(16,185,129,${1-i*0.07})`),borderColor:'#10b981',borderWidth:1,borderRadius:4}]},
+  options:{...chartOpts,scales:{...chartOpts.scales,y:{...chartOpts.scales.y,min:70,max:86}}}
+});
+
+// ===== News Data =====
+const newsItems = [
+  {title:"让龙虾看懂屏幕！谷歌多模态新成果，文本图像视频音频进同一空间",link:"https://www.qbitai.com/2026/03/386485.html",source:"量子位",desc:"谷歌发布Gemini Embedding 2，首款全模态嵌入模型，支持文本、图像、视频、音频跨模态统一向量映射，大幅简化多模态数据处理流程。",date:"2026-03-12 08:00",tag_label:"🔥 大模型",tag_bg:"#fed7d7",tag_color:"#c53030"},
+  {title:"LeCun三顾茅庐，谢赛宁终于入伙！新公司获投10亿美元",link:"https://www.qbitai.com/2026/03/386308.html",source:"量子位",desc:"Meta首席AI科学家Yann LeCun联合创立的新AI公司获得10亿美元融资，谢赛宁正式加盟，专注世界模型与具身智能研究。",date:"2026-03-12 09:00",tag_label:"🔥 大模型",tag_bg:"#fed7d7",tag_color:"#c53030"},
+  {title:"养虾人狂吃国产模型！4.19万亿Token调用量激增34.9%超越美国",link:"https://www.qbitai.com/2026/03/386183.html",source:"量子位",desc:"中国大模型周调用量达4.19万亿Token，环比增长34.9%，连续两周超越美国。MiniMax M2.5、DeepSeek V3.2和阶跃星辰Step 3.5 Flash占全球前五中的三席。",date:"2026-03-12 10:00",tag_label:"🔥 大模型",tag_bg:"#fed7d7",tag_color:"#c53030"},
+  {title:"黄仁勋砸千亿兆瓦算力，押注下一个Open AI",link:"https://www.infoq.cn/article/tMAPqeVAGN4q4vIsqNbP",source:"InfoQ中文",desc:"英伟达CEO黄仁勋在GTC大会宣布投入千亿兆瓦算力基础设施，指出AI行业正从生成式AI迈向代理式AI时代，推理技术成为新阶段核心竞争力。",date:"2026-03-12 08:30",tag_label:"🔥 大模型",tag_bg:"#fed7d7",tag_color:"#c53030"},
+  {title:"豆包19亿次互动背后的技术真相：春晚级体验是如何炼成的？",link:"https://www.infoq.cn/article/LrApcWNtVzMMC2sd2AHC",source:"InfoQ中文",desc:"字节跳动豆包AI单日互动量达19亿次，技术团队揭秘大规模并发推理架构、低延迟流式输出及多模态协同方案，支撑春晚级高并发场景。",date:"2026-03-12 09:30",tag_label:"🔥 大模型",tag_bg:"#fed7d7",tag_color:"#c53030"},
+  {title:"OpenAI完成1100亿美元融资，亚马逊成为Frontier独家第三方云分销商",link:"https://www.infoq.cn/article/y688Ya2AFzphbj3b3CfR",source:"InfoQ中文",desc:"OpenAI以7300亿美元估值完成1100亿美元新一轮融资，软银、英伟达等参投；亚马逊AWS成为OpenAI Frontier模型的独家第三方云分销商。",date:"2026-03-12 07:00",tag_label:"📰 AI资讯",tag_bg:"#f1f5f9",tag_color:"#475569"},
+  {title:"龙虾太火，互联网老炮组团进场了",link:"http://www.huxiu.com/article/4840928.html",source:"虎嗅网",desc:"OpenClaw（龙虾）AI Agent生态持续爆发，腾讯、阿里、字节等互联网大厂纷纷推出类OpenClaw产品，抢占AI智能体市场入口，行业竞争白热化。",date:"2026-03-12 11:00",tag_label:"🤖 AI Agent",tag_bg:"#e9d8fd",tag_color:"#6b21a8"},
+  {title:"钉钉建议企业不装龙虾，AI Agent安全风险引发行业警示",link:"https://36kr.com/p/3717075892778368",source:"36氪",desc:"钉钉官方发出警示，建议企业谨慎安装OpenClaw等AI Agent，指出其高系统权限可能导致数据泄露风险，引发业界对AI Agent安全边界的广泛讨论。",date:"2026-03-12 10:30",tag_label:"🤖 AI Agent",tag_bg:"#e9d8fd",tag_color:"#6b21a8"},
+  {title:"Meta收购AI智能体社交平台Moltbook，布局智能体身份验证生态",link:"https://k.sina.com.cn/article_7857201856_1d45362c00190343o8.html",source:"新智元",desc:"Meta收购专为AI智能体设计的社交平台Moltbook，Moltbook的智能体身份注册表技术将为多Agent协作提供身份授权基础设施。",date:"2026-03-12 09:30",tag_label:"🤖 AI Agent",tag_bg:"#e9d8fd",tag_color:"#6b21a8"},
+  {title:"499上门装龙虾的人，开始赚299卸载龙虾的钱了",link:"https://www.qbitai.com/2026/03/386235.html",source:"量子位",desc:"OpenClaw爆红引发二手市场新现象：专业人员上门安装服务收费499元，而因安全担忧或Token消耗过高催生的卸载服务也开始走红，定价299元。",date:"2026-03-12 08:30",tag_label:"🤖 AI Agent",tag_bg:"#e9d8fd",tag_color:"#6b21a8"},
+  {title:"清华联合美团发布3DThinker，全球首个支持3D意象思考的多模态大模型",link:"https://news.sina.cn/2026-03-12/detail-inhqqcsc5847342.d.html",source:"机器之心",desc:"3DThinker是全球首个支持3D意象思考的多模态大模型，通过提取图像几何信息解决传统模型空间理解短板，可应用于工业设计、自动驾驶等领域。",date:"2026-03-12 09:00",tag_label:"🔥 大模型",tag_bg:"#fed7d7",tag_color:"#c53030"},
+  {title:"蚂蚁集团开源强化学习框架AReaL v1.0，支持AI Agent边用边训",link:"https://news.sina.cn/2026-03-12/detail-inhqqcsc5847342.d.html",source:"机器之心",desc:"蚂蚁集团开源AReaL v1.0强化学习框架，开发者无需修改代码即可接入训练，支持AI Agent在真实任务中持续优化决策。",date:"2026-03-12 10:00",tag_label:"🤖 AI Agent",tag_bg:"#e9d8fd",tag_color:"#6b21a8"},
+  {title:"智元机器人发布通用具身基座模型启元，远征A2创吉尼斯行走纪录",link:"https://news.qq.com/rain/a/20260312A02B5800",source:"机器之心",desc:"智元机器人发布通用具身基座模型启元，其远征A2机器人创下连续行走距离吉尼斯世界纪录，标志着国产人形机器人取得重要突破。",date:"2026-03-12 11:00",tag_label:"🚀 AI产品",tag_bg:"#dbeafe",tag_color:"#1e40af"},
+  {title:"中国厨房，进入智驾时代？",link:"http://www.huxiu.com/article/4841175.html",source:"虎嗅网",desc:"AI大模型与机器人技术深度融合，国内多家企业推出厨房AI机器人，具备菜品识别、智能烹饪控制、语音交互等功能，厨房场景成具身智能落地新战场。",date:"2026-03-12 10:00",tag_label:"🚀 AI产品",tag_bg:"#dbeafe",tag_color:"#1e40af"},
+  {title:"荣耀 Magic V6 体验：折叠屏首发端侧AI Agent，iPhone Ultra的挑战者",link:"https://www.ifanr.com/1657451",source:"爱范儿",desc:"荣耀Magic V6发布，首发端侧AI智能体内测功能，支持跨App任务自动化执行，结合折叠屏大屏优势探索AI Agent在移动端的新交互形态。",date:"2026-03-12 10:30",tag_label:"🚀 AI产品",tag_bg:"#dbeafe",tag_color:"#1e40af"},
+  {title:"阿里千问AI眼镜接入外卖酒店预订，AI可穿戴设备进入实用化阶段",link:"https://www.ifanr.com/1657816",source:"爱范儿",desc:"阿里巴巴千问AI眼镜新增外卖下单、酒店预订等生活服务功能，标志着AI可穿戴设备从信息查询升级为真实任务执行。",date:"2026-03-12 11:00",tag_label:"🤖 AI Agent",tag_bg:"#e9d8fd",tag_color:"#6b21a8"},
+  {title:"追觅芯际穿越天穹系列芯片正式量产，首个太空算力盒将发射升空",link:"https://36kr.com/p/3716450088793732",source:"36氪",desc:"追觅科技旗下芯际半导体天穹系列AI芯片正式量产，首款搭载该芯片的太空算力盒计划发射升空，探索低轨卫星边缘AI计算新场景。",date:"2026-03-12 09:00",tag_label:"🚀 AI产品",tag_bg:"#dbeafe",tag_color:"#1e40af"},
+  {title:"OpenClaw生态安全风险警示：国家互联网应急中心发布高权限隐患预警",link:"https://finance.sina.com.cn/roll/2026-03-11/doc-inhqrrte5403258.shtml",source:"新智元",desc:"国家互联网应急中心发布预警，指出OpenClaw类AI Agent因拥有高系统权限，存在数据泄露和恶意操控风险，建议用户严格审核插件来源。",date:"2026-03-12 08:00",tag_label:"📰 AI资讯",tag_bg:"#f1f5f9",tag_color:"#475569"},
+  {title:"AI大模型竞争格局重塑：2026年进入场景落地与价值兑现关键年",link:"https://xinwen.bjd.com.cn/content/s69a6b22de4b0687a28920294.html",source:"36氪",desc:"AI大模型竞争焦点从参数规模转向成本控制与场景适配，垂直领域专家模型成新战场，商业模式从按API调用转向按结果付费。",date:"2026-03-12 07:30",tag_label:"📰 AI资讯",tag_bg:"#f1f5f9",tag_color:"#475569"},
+  {title:"用AI工具从零搭建一人企业：2025年副业实践全记录",link:"https://sspai.com/post/106723",source:"少数派",desc:"作者分享用Claude、Cursor、Notion AI等工具独立完成产品设计、开发、营销的全流程实践，探讨AI工具如何降低一人创业门槛，实现效率最大化。",date:"2026-03-12 09:00",tag_label:"💻 AI编程",tag_bg:"#d1fae5",tag_color:"#065f46"},
+  {title:"再谈 eSIM 手机：AI加持下的海内外漫游新体验",link:"https://sspai.com/post/106719",source:"少数派",desc:"深度评测多款支持eSIM的AI手机，分析AI网络优化功能在海外漫游场景的实际表现，探讨AI如何优化运营商切换策略和流量使用效率。",date:"2026-03-12 08:00",tag_label:"🚀 AI产品",tag_bg:"#dbeafe",tag_color:"#1e40af"}
+];
+
+const grid = document.getElementById('newsGrid');
+newsItems.forEach(n => {
+  grid.innerHTML += `<div class="news-card">
+    <span class="news-tag" style="background:${n.tag_bg};color:${n.tag_color}">${n.tag_label}</span>
+    <div class="news-title"><a href="${n.link}" target="_blank">${n.title}</a></div>
+    <div class="news-desc">${n.desc}</div>
+    <div class="news-meta">
+      <span>${n.date}</span>
+      <span class="news-source">${n.source}</span>
+    </div>
+  </div>`;
+});
+</script>
+</body>
+</html>
