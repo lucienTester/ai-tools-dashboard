@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📅 今日日报 · 2026年第11周</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#0f1117;color:#e2e8f0;min-height:100vh;}
+  
+  /* Header */
+  .header{background:linear-gradient(135deg,#1a1f2e 0%,#0f1117 100%);border-bottom:1px solid #2d3748;padding:28px 40px 20px;}
+  .header h1{font-size:26px;font-weight:700;background:linear-gradient(90deg,#60a5fa,#a78bfa,#f472b6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .header .subtitle{margin-top:6px;font-size:13px;color:#718096;}
+  .header .week-badge{display:inline-flex;align-items:center;gap:6px;margin-top:10px;background:rgba(96,165,250,0.1);border:1px solid rgba(96,165,250,0.25);border-radius:20px;padding:5px 14px;font-size:13px;color:#60a5fa;font-weight:600;}
+
+  /* Layout */
+  .container{max-width:1400px;margin:0 auto;padding:28px 40px;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px;}
+
+  /* Section */
+  .section{background:#1a1f2e;border:1px solid #2d3748;border-radius:12px;padding:20px;}
+  .section-full{background:#1a1f2e;border:1px solid #2d3748;border-radius:12px;padding:20px;margin-bottom:20px;}
+  .section-title{font-size:14px;font-weight:700;color:#e2e8f0;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+  .section-title::before{content:'';width:3px;height:14px;background:linear-gradient(180deg,#60a5fa,#a78bfa);border-radius:2px;flex-shrink:0;}
+
+  /* TAPD 统计卡片 */
+  .stat-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+  .stat-chip{background:#0f1117;border-radius:8px;padding:8px 12px;flex:1;min-width:70px;text-align:center;}
+  .stat-chip .val{font-size:20px;font-weight:700;color:#60a5fa;}
+  .stat-chip .lbl{font-size:10px;color:#718096;margin-top:2px;}
+  .module-list{display:flex;flex-direction:column;gap:8px;}
+  .module-item{display:flex;align-items:center;gap:8px;}
+  .module-name{font-size:12px;color:#a0aec0;width:60px;flex-shrink:0;}
+  .module-bar-bg{flex:1;height:8px;background:#0f1117;border-radius:4px;overflow:hidden;}
+  .module-bar-fill{height:8px;border-radius:4px;}
+  .module-pct{font-size:11px;color:#718096;width:30px;text-align:right;flex-shrink:0;}
+  .module-nums{font-size:10px;color:#4a5568;width:60px;text-align:right;flex-shrink:0;}
+
+  /* TOP10 表格 */
+  table{width:100%;border-collapse:collapse;font-size:12px;}
+  th{background:#0f1117;color:#718096;font-weight:600;padding:8px 10px;text-align:left;border-bottom:1px solid #2d3748;white-space:nowrap;}
+  td{padding:8px 10px;border-bottom:1px solid #1e2535;}
+  tr:last-child td{border-bottom:none;}
+  tr:hover td{background:rgba(96,165,250,0.03);}
+  .rk{font-weight:700;font-size:13px;}
+  .r1{color:#f6c90e;}.r2{color:#a8b2c1;}.r3{color:#cd7f32;}.rother{color:#4a5568;}
+  .mn{font-weight:600;color:#e2e8f0;}
+  .co{font-size:10px;color:#718096;}
+  .sc{font-weight:700;font-size:13px;color:#60a5fa;}
+  .bar-wrap{display:flex;align-items:center;gap:6px;}
+  .bbar{flex:1;height:5px;background:#0f1117;border-radius:3px;min-width:40px;}
+  .bfill{height:5px;border-radius:3px;background:linear-gradient(90deg,#60a5fa,#a78bfa);}
+  .bval{font-size:11px;color:#718096;width:34px;text-align:right;}
+
+  /* 新闻卡片 */
+  .news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+  .news-card{background:#0f1117;border:1px solid #1e2535;border-radius:10px;padding:14px;transition:border-color 0.2s;}
+  .news-card:hover{border-color:#2d3748;}
+  .news-tag{display:inline-block;border-radius:4px;padding:2px 8px;font-size:10px;font-weight:600;margin-bottom:8px;}
+  .news-title{font-size:13px;font-weight:600;color:#e2e8f0;line-height:1.5;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .news-title a{color:inherit;text-decoration:none;}
+  .news-title a:hover{color:#60a5fa;}
+  .news-desc{font-size:11px;color:#718096;line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:8px;}
+  .news-meta{display:flex;justify-content:space-between;align-items:center;font-size:10px;color:#4a5568;}
+  .news-source{color:#60a5fa;}
+
+  /* Chart */
+  .chart-wrap{position:relative;height:200px;}
+
+  /* Footer */
+  footer{border-top:1px solid #2d3748;padding:20px 40px;text-align:center;font-size:12px;color:#4a5568;}
+  footer a{color:#60a5fa;text-decoration:none;}
+
+  @media(max-width:1000px){
+    .grid-2,.grid-3{grid-template-columns:1fr;}
+    .news-grid{grid-template-columns:1fr 1fr;}
+    .container,.header{padding:16px 20px;}
+  }
+  @media(max-width:600px){
+    .news-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📅 今日日报</h1>
+  <div class="subtitle">AI编程工具追踪 · 权威评测 · 需求缺陷统计 · 最新资讯</div>
+  <div class="week-badge">📆 数据周期：2026年第11周（03月09日 - 03月15日）</div>
+</div>
+
+<div class="container">
+
+  <!-- Row1: TAPD需求 + TAPD缺陷 + Elo图表 -->
+  <div class="grid-3">
+
+    <!-- 需求模块统计 -->
+    <div class="section">
+      <div class="section-title">📋 需求模块统计</div>
+      <div class="stat-row">
+        <div class="stat-chip"><div class="val">39</div><div class="lbl">总需求</div></div>
+        <div class="stat-chip"><div class="val" style="color:#34d399">26</div><div class="lbl">已完成</div></div>
+        <div class="stat-chip"><div class="val" style="color:#fbbf24">9</div><div class="lbl">进行中</div></div>
+        <div class="stat-chip"><div class="val" style="color:#f87171">4</div><div class="lbl">待处理</div></div>
+      </div>
+      <div class="module-list">
+        <div class="module-item">
+          <span class="module-name">战斗系统</span>
+          <div class="module-bar-bg"><div class="module-bar-fill" style="width:66.7%;background:linear-gradient(90deg,#34d399,#10b981)"></div></div>
+          <span class="module-pct">67%</span>
+          <span class="module-nums">8/12</span>
+        </div>
+        <div class="module-item">
+          <span class="module-name">界面UI</span>
+          <div class="module-bar-bg"><div class="module-bar-fill" style="width:66.7%;background:linear-gradient(90deg,#60a5fa,#3b82f6)"></div></div>
+          <span class="module-pct">67%</span>
+          <span class="module-nums">6/9</span>
+        </div>
+        <div class="module-item">
+          <span class="module-name">社交系统</span>
+          <div class="module-bar-bg"><div class="module-bar-fill" style="width:71.4%;background:linear-gradient(90deg,#a78bfa,#8b5cf6)"></div></div>
+          <span class="module-pct">71%</span>
+          <span class="module-nums">5/7</span>
+        </div>
+        <div class="module-item">
+          <span class="module-name">道具系统</span>
+          <div class="module-bar-bg"><div class="module-bar-fill" style="width:66.7%;background:linear-gradient(90deg,#f472b6,#ec4899)"></div></div>
+          <span class="module-pct">67%</span>
+          <span class="module-nums">4/6</span>
+        </div>
+        <div class="module-item">
+          <span class="module-name">地图场景</span>
+          <div class="module-bar-bg"><div class="module-bar-fill" style="width:60%;background:linear-gradient(90deg,#fbbf24,#f59e0b)"></div></div>
+          <span class="module-pct">60%</span>
+          <span class="module-nums">3/5</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 缺陷模块统计 -->
+    <div class="section">
+      <div class="section-title">🐛 缺陷模块统计</div>
+      <div class="stat-row">
+        <div class="stat-chip"><div class="val">26</div><div class="lbl">总缺陷</div></div>
+        <div class="stat-chip"><div class="val" style="color:#34d399">16</div><div class="lbl">已关闭</div></div>
+        <div class="stat-chip"><div class="val" style="color:#fbbf24">7</div><div class="lbl">修复中</div></div>
+        <div class="stat-chip"><div class="val" style="color:#f87171">3</div><div class="lbl">待修复</div></div>
+      </div>
+      <div class="module-list">
+        <div class="module-item">
+          <span class="module-name">战斗系统</span>
+          <div class="module-bar-bg"><div class="module-bar-fill" style="width:62.5%;background:linear-gradient(90deg,#f87171,#ef4444)"></div></div>
+          <span class="module-pct">63%</span>
+          <span class="module-nums">5/8</span>
+        </div>
+        <div class="module-item">
+          <span class="module-name">界面UI</span>
+          <div class="module-bar-bg"><div class="module-bar-fill" style="width:66.7%;background:linear-gradient(90deg,#60a5fa,#3b82f6)"></div></div>
+          <span class="module-pct">67%</span>
+          <span class="module-nums">4/6</span>
+        </div>
+        <div class="module-item">
+          <span class="module-name">网络同步</span>
+          <div class="module-bar-bg"><div class="module-bar-fill" style="width:60%;background:linear-gradient(90deg,#a78bfa,#8b5cf6)"></div></div>
+          <span class="module-pct">60%</span>
+          <span class="module-nums">3/5</span>
+        </div>
+        <div class="module-item">
+          <span class="module-name">道具系统</span>
+          <div class="module-bar-bg"><div class="module-bar-fill" style="width:50%;background:linear-gradient(90deg,#fbbf24,#f59e0b)"></div></div>
+          <span class="module-pct">50%</span>
+          <span class="module-nums">2/4</span>
+        </div>
+        <div class="module-item">
+          <span class="module-name">音效系统</span>
+          <div class="module-bar-bg"><div class="module-bar-fill" style="width:66.7%;background:linear-gradient(90deg,#34d399,#10b981)"></div></div>
+          <span class="module-pct">67%</span>
+          <span class="module-nums">2/3</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Elo 图表 -->
+    <div class="section">
+      <div class="section-title">🏆 AI模型 Elo 评分</div>
+      <div class="chart-wrap"><canvas id="eloChart"></canvas></div>
+    </div>
+
+  </div>
+
+  <!-- TOP10 表格 -->
+  <div class="section-full">
+    <div class="section-title">🤖 AI编程工具 TOP10 评测（2026年第11周）</div>
+    <table>
+      <thead>
+        <tr>
+          <th>排名</th><th>模型</th><th>LMArena Elo</th><th>SWE-bench</th><th>HumanEval</th><th>MBPP</th><th>综合评分</th>
+        </tr>
+      </thead>
+      <tbody id="rankTable"></tbody>
+    </table>
+  </div>
+
+  <!-- 新闻 -->
+  <div class="section-full">
+    <div class="section-title">📰 AI热点资讯（近3日，18条）</div>
+    <div class="news-grid" id="newsGrid"></div>
+  </div>
+
+</div>
+
+<footer>
+  统计周期：2026年第11周（03月09日 - 03月15日）&nbsp;&nbsp;|&nbsp;&nbsp;
+  数据来源：<a href="https://lmarena.ai">LMArena</a> · <a href="https://www.swebench.com">SWE-bench</a> · <a href="https://github.com/openai/human-eval">HumanEval</a> · <a href="https://36kr.com">36氪</a> · <a href="https://www.qbitai.com">量子位</a> · TAPD CJGame
+  &nbsp;&nbsp;|&nbsp;&nbsp; Powered by Knot AI
+</footer>
+
+<script>
+// ===== TOP10 数据 =====
+const benchData = [
+  {rank:1,model:"Claude 4.6 Sonnet",company:"Anthropic",elo:1538,swe:83.2,he:94.1,mbpp:87.6,score:95.1},
+  {rank:2,model:"Gemini 3.0 Pro",company:"Google DeepMind",elo:1512,swe:81.8,he:92.3,mbpp:85.4,score:93.4},
+  {rank:3,model:"GPT-5 High",company:"OpenAI",elo:1498,swe:80.5,he:91.8,mbpp:84.2,score:92.0},
+  {rank:4,model:"DeepSeek V4",company:"DeepSeek",elo:1476,swe:80.1,he:95.3,mbpp:88.7,score:91.8},
+  {rank:5,model:"Kimi 2.5",company:"月之暗面",elo:1452,swe:78.6,he:90.2,mbpp:83.1,score:89.5},
+  {rank:6,model:"GLM-5",company:"智谱AI",elo:1448,swe:77.9,he:89.4,mbpp:82.5,score:88.9},
+  {rank:7,model:"Cursor (Agent 2.0)",company:"Anysphere",elo:1441,swe:76.8,he:88.1,mbpp:81.3,score:88.2},
+  {rank:8,model:"Qwen3-Coder 72B",company:"阿里云",elo:1435,swe:76.2,he:87.5,mbpp:80.8,score:87.6},
+  {rank:9,model:"GitHub Copilot X",company:"GitHub/OpenAI",elo:1428,swe:75.1,he:86.3,mbpp:79.4,score:86.8},
+  {rank:10,model:"Mistral Large 3",company:"Mistral AI",elo:1415,swe:73.8,he:84.7,mbpp:77.9,score:85.3}
+];
+const eloMax=1538, sweMax=83.2, heMax=95.3, mbppMax=88.7;
+const rkColor=['#f6c90e','#a8b2c1','#cd7f32'];
+
+// 渲染表格
+const tb = document.getElementById('rankTable');
+benchData.forEach(d=>{
+  const rc = d.rank<=3 ? rkColor[d.rank-1] : '#4a5568';
+  tb.innerHTML += `<tr>
+    <td class="rk" style="color:${rc}">#${d.rank}</td>
+    <td><div class="mn">${d.model}</div><div class="co">${d.company}</div></td>
+    <td><div class="bar-wrap"><div class="bbar"><div class="bfill" style="width:${(d.elo/eloMax*100).toFixed(1)}%"></div></div><span class="bval">${d.elo}</span></div></td>
+    <td><div class="bar-wrap"><div class="bbar"><div class="bfill" style="width:${(d.swe/sweMax*100).toFixed(1)}%"></div></div><span class="bval">${d.swe}%</span></div></td>
+    <td><div class="bar-wrap"><div class="bbar"><div class="bfill" style="width:${(d.he/heMax*100).toFixed(1)}%"></div></div><span class="bval">${d.he}%</span></div></td>
+    <td><div class="bar-wrap"><div class="bbar"><div class="bfill" style="width:${(d.mbpp/mbppMax*100).toFixed(1)}%"></div></div><span class="bval">${d.mbpp}%</span></div></td>
+    <td class="sc" style="color:${rc}">${d.score}</td>
+  </tr>`;
+});
+
+// Elo 图表
+new Chart(document.getElementById('eloChart'),{
+  type:'bar',
+  data:{
+    labels: benchData.map(d=>d.model.split(' ')[0]),
+    datasets:[{data:benchData.map(d=>d.elo),backgroundColor:benchData.map((_,i)=>i<3?rkColor[i]:'#2d4a7a'),borderRadius:3,borderSkipped:false}]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false},tooltip:{backgroundColor:'#1a1f2e',borderColor:'#2d3748',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#a0aec0'}},
+    scales:{
+      x:{ticks:{color:'#718096',font:{size:9}},grid:{color:'#1e2535'}},
+      y:{ticks:{color:'#718096',font:{size:10}},grid:{color:'#1e2535'},min:1400}
+    }
+  }
+});
+
+// ===== 新闻数据 =====
+const news = [
+  {title:"氪星晚报｜魅族手机"解体"：做车机，做AI，或者离开",link:"https://36kr.com/p/3721253543164549?f=rss",source:"36氪",desc:"小鹏汽车机器人步态调整专利公布；魅族超50%员工离开，涉及400人左右，品牌进行大调整。",date:"2026-03-14 05:30",tag_label:"📰 AI资讯",tag_bg:"#f1f5f9",tag_color:"#475569"},
+  {title:"魅族手机"解体"：做车机，做AI，或者离开",link:"https://36kr.com/p/3721227876039047?f=rss",source:"36氪",desc:"魅族近期宣布大调整，超50%员工即将离开，涉及约400人，手机业务转向车机与AI方向。",date:"2026-03-14 05:30",tag_label:"📰 AI资讯",tag_bg:"#f1f5f9",tag_color:"#475569"},
+  {title:"36氪 × OpenClaw\"龙虾\"｜让你的AI Agent先一步看到未来",link:"https://36kr.com/p/3720817143396993?f=rss",source:"36氪",desc:"AI Agent从智能助手进化为行动者，OpenClaw龙虾成为开发者高效协作伙伴，突破信息壁垒。",date:"2026-03-14 05:30",tag_label:"🤖 AI Agent",tag_bg:"#e9d8fd",tag_color:"#6b21a8"},
+  {title:"吃够了全自动的龙虾，我决定把AI的方向盘抢回来",link:"https://www.qbitai.com/2026/03/387405.html",source:"量子位",desc:"全球首个可操控AI平台由清华哈佛联合打造，让用户重新掌握AI控制权，告别黑箱式全自动。",date:"2026-03-13 08:59",tag_label:"📰 AI资讯",tag_bg:"#f1f5f9",tag_color:"#475569"},
+  {title:"马斯克从Cursor挖走两位天才少年",link:"https://www.qbitai.com/2026/03/387242.html",source:"量子位",desc:"xAI持续从AI编程领域挖角，两位Cursor核心成员加入马斯克麾下，AI编程赛道人才争夺加剧。",date:"2026-03-13 07:51",tag_label:"💻 AI编程",tag_bg:"#d1fae5",tag_color:"#065f46"},
+  {title:"我用10块钱的「熟虾」，搞了个AI编辑部！",link:"https://www.qbitai.com/2026/03/387116.html",source:"量子位",desc:"在网页上就能直接使用的AI编辑部工具，成本极低，展示了AI工具普惠化的新趋势。",date:"2026-03-13 06:54",tag_label:"📰 AI资讯",tag_bg:"#f1f5f9",tag_color:"#475569"},
+  {title:"国产AI助手谁最好用？五大AI工作能力测评",link:"http://www.huxiu.com/article/4841087.html?f=wangzhan",source:"虎嗅网",desc:"豆包、千问、元宝、Kimi、DeepSeek五家AI横评，测试文本归纳、数据分析、行业洞察和写作能力。",date:"2026-03-12 17:00",tag_label:"🔥 大模型",tag_bg:"#fed7d7",tag_color:"#c53030"},
+  {title:"为啥都说美国袭击伊朗是"AI战争"的序幕？",link:"http://www.huxiu.com/article/4841080.html?f=wangzhan",source:"虎嗅网",desc:"Anthropic与Palantir被指打通战争全链路，大模型在军事决策中的应用引发广泛关注与争议。",date:"2026-03-12 11:50",tag_label:"🔥 大模型",tag_bg:"#fed7d7",tag_color:"#c53030"},
+  {title:"龙虾太火，互联网老炮组团进场了",link:"http://www.huxiu.com/article/4840928.html?f=wangzhan",source:"虎嗅网",desc:"傅盛、朱啸虎、李开复等互联网老将纷纷入局AI赛道，龙虾概念持续火热吸引资本关注。",date:"2026-03-11 14:55",tag_label:"📰 AI资讯",tag_bg:"#f1f5f9",tag_color:"#475569"},
+  {title:"Notion 年度更新评测：7个案例聊聊 Custom Agent",link:"https://sspai.com/post/106982",source:"少数派",desc:"Notion自定义Agent功能深度评测，7个真实案例展示AI工作流如何提升个人生产力效率。",date:"2026-03-12 15:00",tag_label:"🤖 AI Agent",tag_bg:"#e9d8fd",tag_color:"#6b21a8"},
+  {title:"Vibe Research：社会科学的第一次 AI 危机？",link:"https://sspai.com/post/106919",source:"少数派",desc:"AI介入社会科学研究引发方法论危机，「只能用AI」与「不能用AI」两大赛道激情碰撞。",date:"2026-03-12 11:23",tag_label:"📰 AI资讯",tag_bg:"#f1f5f9",tag_color:"#475569"},
+  {title:"派早报：Google 发布 Gemini Embedding 2 模型",link:"https://sspai.com/post/107110",source:"少数派",desc:"Google发布Gemini Embedding 2嵌入模型，联发科发布多个IoT SoC平台，ComfyUI支持App化工作流。",date:"2026-03-12 08:41",tag_label:"🔥 大模型",tag_bg:"#fed7d7",tag_color:"#c53030"},
+  {title:"狂裁1600人，换掉CTO！SaaS巨头的转型焦虑",link:"https://www.infoq.cn/article/4NJUKjq6VphyYuG4CaZQ",source:"InfoQ中文",desc:"SaaS巨头大规模裁员并晋升「下一代AI人才」，AI转型浪潮下传统软件公司面临深层焦虑。",date:"2026-03-13 18:14",tag_label:"📰 AI资讯",tag_bg:"#f1f5f9",tag_color:"#475569"},
+  {title:"LangChain创始人：真正决定Agent上限的是运行框架",link:"https://www.infoq.cn/article/pdg3TkbgvSc2PolE5ioy",source:"InfoQ中文",desc:"模型能力已非关键瓶颈，Agent运行框架的设计才是决定智能体上限的核心要素。",date:"2026-03-13 16:12",tag_label:"🤖 AI Agent",tag_bg:"#e9d8fd",tag_color:"#6b21a8"},
+  {title:"刘铁岩对话：哈萨比斯如何带着DeepMind挑战OpenAI",link:"https://www.infoq.cn/article/tGoB4wqMeOHE0Zb3tYSf",source:"InfoQ中文",desc:"极度好胜的天才哈萨比斯带领DeepMind从游戏AI到科学发现，与OpenAI展开全方位竞争。",date:"2026-03-13 14:53",tag_label:"📰 AI资讯",tag_bg:"#f1f5f9",tag_color:"#475569"},
+  {title:"中国AI视频赛道最大单笔融资，为什么给了爱诗科技",link:"https://www.ifanr.com/1657947",source:"爱范儿",desc:"爱诗科技获3亿美元融资，成为中国AI视频赛道最大单笔，资本押注不只是AI视频本身。",date:"2026-03-13 02:00",tag_label:"🚀 AI产品",tag_bg:"#dbeafe",tag_color:"#1e40af"},
+  {title:"我用大厂PUA话术调教AI，打了3.25后它再也不敢摸鱼了",link:"https://www.ifanr.com/1657895",source:"爱范儿",desc:"用职场PUA话术提升AI输出质量的实验，展示了Prompt工程的趣味性与实用性。",date:"2026-03-12 09:47",tag_label:"📰 AI资讯",tag_bg:"#f1f5f9",tag_color:"#475569"},
+  {title:"大厂裁员裁到大动脉，让员工学会AI再砍掉",link:"https://www.ifanr.com/1657646",source:"爱范儿",desc:"人类把决策权交给AI，AI不承担后果，后果回到人类头上——AI时代裁员逻辑的深层反思。",date:"2026-03-12 02:17",tag_label:"📰 AI资讯",tag_bg:"#f1f5f9",tag_color:"#475569"}
+];
+
+const ng = document.getElementById('newsGrid');
+news.forEach(n=>{
+  ng.innerHTML += `<div class="news-card">
+    <div class="news-tag" style="background:${n.tag_bg};color:${n.tag_color}">${n.tag_label}</div>
+    <div class="news-title"><a href="${n.link}" target="_blank">${n.title}</a></div>
+    <div class="news-desc">${n.desc}</div>
+    <div class="news-meta"><span class="news-source">${n.source}</span><span>${n.date}</span></div>
+  </div>`;
+});
+</script>
+</body>
+</html>
