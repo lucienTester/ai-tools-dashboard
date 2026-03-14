@@ -1,6 +1,11 @@
 {
-  "updated": "2026-03-11 18:36:45",
+  "updated": "2026-03-15 05:56:54",
   "reports": [
+    {
+      "date": "2026-03-15",
+      "file": "reports/benchmark_2026-03-15.html",
+      "type": "benchmark"
+    },
     {
       "date": "2026-03-11",
       "file": "reports/dashboard_2026-03-11.html"
