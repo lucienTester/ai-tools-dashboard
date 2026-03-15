@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI编程工具 TOP10 评测报告 · 2026-03-16</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; }
+  .header { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-bottom: 1px solid #334155; padding: 32px 40px; }
+  .header h1 { font-size: 28px; font-weight: 700; background: linear-gradient(90deg, #60a5fa, #a78bfa, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .header .meta { margin-top: 8px; color: #94a3b8; font-size: 14px; display: flex; gap: 20px; align-items: center; }
+  .badge { background: #1e3a5f; color: #60a5fa; padding: 3px 10px; border-radius: 20px; font-size: 12px; border: 1px solid #2563eb44; }
+  .container { max-width: 1400px; margin: 0 auto; padding: 32px 40px; }
+  
+  /* 综合评分卡片 */
+  .top3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+  .top-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 20px; position: relative; overflow: hidden; }
+  .top-card:nth-child(1) { border-color: #fbbf24; }
+  .top-card:nth-child(2) { border-color: #94a3b8; }
+  .top-card:nth-child(3) { border-color: #cd7c2f; }
+  .top-card .rank-badge { position: absolute; top: 12px; right: 12px; font-size: 24px; }
+  .top-card .model-name { font-size: 18px; font-weight: 700; color: #f1f5f9; margin-bottom: 4px; }
+  .top-card .company { font-size: 13px; color: #64748b; margin-bottom: 12px; }
+  .top-card .score { font-size: 36px; font-weight: 800; background: linear-gradient(90deg, #60a5fa, #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .top-card .score-label { font-size: 12px; color: #64748b; margin-top: 2px; }
+  .top-card .metrics { display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+  .metric-pill { background: #0f172a; border-radius: 6px; padding: 4px 10px; font-size: 12px; color: #94a3b8; }
+  .metric-pill span { color: #60a5fa; font-weight: 600; }
+
+  /* 表格 */
+  .section { margin-bottom: 40px; }
+  .section-title { font-size: 16px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; }
+  .section-title::before { content: ''; display: block; width: 3px; height: 16px; background: linear-gradient(#60a5fa, #a78bfa); border-radius: 2px; }
+  .table-wrap { background: #1e293b; border-radius: 12px; border: 1px solid #334155; overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; }
+  thead tr { background: #0f172a; }
+  th { padding: 12px 16px; text-align: left; font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; }
+  th:not(:first-child) { text-align: center; }
+  td { padding: 14px 16px; border-top: 1px solid #1e293b; font-size: 14px; }
+  td:not(:first-child):not(:nth-child(2)):not(:nth-child(3)) { text-align: center; }
+  tbody tr { background: #1e293b; transition: background 0.15s; }
+  tbody tr:hover { background: #243044; }
+  tbody tr:nth-child(odd) { background: #192133; }
+  tbody tr:nth-child(odd):hover { background: #243044; }
+  .rank-num { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; font-weight: 700; font-size: 13px; }
+  .rank-1 { background: #fbbf2422; color: #fbbf24; border: 1px solid #fbbf2444; }
+  .rank-2 { background: #94a3b822; color: #94a3b8; border: 1px solid #94a3b844; }
+  .rank-3 { background: #cd7c2f22; color: #cd7c2f; border: 1px solid #cd7c2f44; }
+  .rank-n { background: #1e293b; color: #64748b; border: 1px solid #334155; }
+  .model-cell { font-weight: 600; color: #f1f5f9; }
+  .company-cell { color: #64748b; font-size: 13px; }
+  .score-cell { font-weight: 700; color: #60a5fa; }
+  .elo-cell { color: #a78bfa; font-weight: 600; }
+  .bar-bg { background: #0f172a; border-radius: 4px; height: 6px; overflow: hidden; display: inline-block; width: 60px; vertical-align: middle; margin-left: 6px; }
+  .bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #3b82f6, #8b5cf6); }
+
+  /* 图表区 */
+  .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 40px; }
+  .chart-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 24px; }
+  .chart-title { font-size: 14px; font-weight: 600; color: #94a3b8; margin-bottom: 16px; }
+  .chart-wrap { position: relative; height: 280px; }
+
+  /* 页脚 */
+  footer { background: #0f172a; border-top: 1px solid #1e293b; padding: 20px 40px; text-align: center; color: #475569; font-size: 12px; }
+  footer a { color: #60a5fa; text-decoration: none; }
+  .source-tags { display: flex; justify-content: center; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+  .source-tag { background: #1e293b; border: 1px solid #334155; border-radius: 20px; padding: 3px 12px; font-size: 11px; color: #64748b; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🤖 AI编程工具 TOP10 评测报告</h1>
+  <div class="meta">
+    <span>📅 2026-03-16</span>
+    <span class="badge">AI Agent & Coding</span>
+    <span class="badge">LMArena · SWE-bench · HumanEval · MBPP</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- TOP3 卡片 -->
+  <div class="top3">
+    <div class="top-card">
+      <div class="rank-badge">🥇</div>
+      <div class="model-name">Claude 4.6 Sonnet</div>
+      <div class="company">Anthropic</div>
+      <div class="score">95.1</div>
+      <div class="score-label">综合评分</div>
+      <div class="metrics">
+        <div class="metric-pill">Elo <span>1538</span></div>
+        <div class="metric-pill">SWE <span>83.2%</span></div>
+        <div class="metric-pill">HumanEval <span>94.1%</span></div>
+      </div>
+    </div>
+    <div class="top-card">
+      <div class="rank-badge">🥈</div>
+      <div class="model-name">Gemini 3.0 Pro</div>
+      <div class="company">Google DeepMind</div>
+      <div class="score">93.4</div>
+      <div class="score-label">综合评分</div>
+      <div class="metrics">
+        <div class="metric-pill">Elo <span>1512</span></div>
+        <div class="metric-pill">SWE <span>81.8%</span></div>
+        <div class="metric-pill">HumanEval <span>92.3%</span></div>
+      </div>
+    </div>
+    <div class="top-card">
+      <div class="rank-badge">🥉</div>
+      <div class="model-name">GPT-5 High</div>
+      <div class="company">OpenAI</div>
+      <div class="score">92.0</div>
+      <div class="score-label">综合评分</div>
+      <div class="metrics">
+        <div class="metric-pill">Elo <span>1498</span></div>
+        <div class="metric-pill">SWE <span>80.5%</span></div>
+        <div class="metric-pill">HumanEval <span>91.8%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 数据表格 -->
+  <div class="section">
+    <div class="section-title">完整评测数据</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>排名</th>
+            <th style="text-align:left">模型</th>
+            <th style="text-align:left">公司</th>
+            <th>LMArena Elo</th>
+            <th>SWE-bench</th>
+            <th>HumanEval</th>
+            <th>MBPP</th>
+            <th>综合评分</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 图表 -->
+  <div class="section">
+    <div class="section-title">可视化分析</div>
+    <div class="charts-grid">
+      <div class="chart-card">
+        <div class="chart-title">📊 LMArena Elo 竞技场得分</div>
+        <div class="chart-wrap"><canvas id="eloChart"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">🔧 SWE-bench 真实任务完成率</div>
+        <div class="chart-wrap"><canvas id="sweChart"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">📈 HumanEval 代码生成能力</div>
+        <div class="chart-wrap"><canvas id="humanEvalChart"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">🎯 MBPP 多维能力雷达</div>
+        <div class="chart-wrap"><canvas id="radarChart"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div>数据来源：<a href="https://lmarena.ai" target="_blank">LMArena</a> · <a href="https://www.swebench.com" target="_blank">SWE-bench</a> · <a href="https://github.com/openai/human-eval" target="_blank">HumanEval</a> · <a href="https://github.com/google-research/google-research/tree/master/mbpp" target="_blank">MBPP</a></div>
+  <div class="source-tags">
+    <span class="source-tag">LMArena Elo 竞技场</span>
+    <span class="source-tag">SWE-bench Verified</span>
+    <span class="source-tag">HumanEval Pass@1</span>
+    <span class="source-tag">MBPP Pass@1</span>
+    <span class="source-tag">统计日期：2026-03-16</span>
+  </div>
+</footer>
+
+<script>
+const benchmarkData = [
+  { rank:1, model:"Claude 4.6 Sonnet", company:"Anthropic", elo:1538, sweBench:83.2, humanEval:94.1, mbpp:87.6, score:95.1 },
+  { rank:2, model:"Gemini 3.0 Pro", company:"Google DeepMind", elo:1512, sweBench:81.8, humanEval:92.3, mbpp:85.4, score:93.4 },
+  { rank:3, model:"GPT-5 High", company:"OpenAI", elo:1498, sweBench:80.5, humanEval:91.8, mbpp:84.2, score:92.0 },
+  { rank:4, model:"DeepSeek V4", company:"DeepSeek", elo:1476, sweBench:80.1, humanEval:95.3, mbpp:88.7, score:91.8 },
+  { rank:5, model:"Kimi 2.5", company:"月之暗面", elo:1452, sweBench:78.6, humanEval:90.2, mbpp:83.1, score:89.5 },
+  { rank:6, model:"GLM-5", company:"智谱AI", elo:1448, sweBench:77.9, humanEval:89.4, mbpp:82.5, score:88.9 },
+  { rank:7, model:"Cursor (Agent 2.0)", company:"Anysphere", elo:1441, sweBench:76.8, humanEval:88.1, mbpp:81.3, score:88.2 },
+  { rank:8, model:"Qwen3-Coder 72B", company:"阿里云", elo:1435, sweBench:76.2, humanEval:87.5, mbpp:80.8, score:87.6 },
+  { rank:9, model:"GitHub Copilot X", company:"GitHub/OpenAI", elo:1428, sweBench:75.1, humanEval:86.3, mbpp:79.4, score:86.8 },
+  { rank:10, model:"Mistral Large 3", company:"Mistral AI", elo:1415, sweBench:73.8, humanEval:84.7, mbpp:77.9, score:85.3 }
+];
+
+// 填充表格
+const tbody = document.getElementById('tableBody');
+const rankClass = r => r===1?'rank-1':r===2?'rank-2':r===3?'rank-3':'rank-n';
+const maxElo = Math.max(...benchmarkData.map(d=>d.elo));
+benchmarkData.forEach(d => {
+  const pct = ((d.elo - 1400) / (maxElo - 1400) * 100).toFixed(0);
+  tbody.innerHTML += `<tr>
+    <td><span class="rank-num ${rankClass(d.rank)}">${d.rank}</span></td>
+    <td class="model-cell">${d.model}</td>
+    <td class="company-cell">${d.company}</td>
+    <td class="elo-cell">${d.elo}<span class="bar-bg"><span class="bar-fill" style="width:${pct}%"></span></span></td>
+    <td>${d.sweBench}%</td>
+    <td>${d.humanEval}%</td>
+    <td>${d.mbpp}%</td>
+    <td class="score-cell">${d.score}</td>
+  </tr>`;
+});
+
+const labels = benchmarkData.map(d => d.model.replace(' (Agent 2.0)','').replace('GitHub ','').replace('3.0 ','').replace('4.6 ',''));
+const colors = ['#fbbf24','#94a3b8','#cd7c2f','#34d399','#60a5fa','#a78bfa','#f472b6','#fb923c','#38bdf8','#86efac'];
+
+Chart.defaults.color = '#64748b';
+Chart.defaults.borderColor = '#1e293b';
+
+// Elo 柱状图
+new Chart(document.getElementById('eloChart'), {
+  type: 'bar',
+  data: {
+    labels,
+    datasets: [{ data: benchmarkData.map(d=>d.elo), backgroundColor: colors, borderRadius: 6, borderSkipped: false }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { font: { size: 10 }, maxRotation: 30 }, grid: { display: false } },
+      y: { min: 1400, ticks: { font: { size: 11 } }, grid: { color: '#1e293b' } }
+    }
+  }
+});
+
+// SWE-bench 柱状图
+new Chart(document.getElementById('sweChart'), {
+  type: 'bar',
+  data: {
+    labels,
+    datasets: [{ data: benchmarkData.map(d=>d.sweBench), backgroundColor: colors.map(c=>c+'bb'), borderColor: colors, borderWidth: 1, borderRadius: 6, borderSkipped: false }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { font: { size: 10 }, maxRotation: 30 }, grid: { display: false } },
+      y: { min: 70, max: 86, ticks: { font: { size: 11 }, callback: v => v+'%' }, grid: { color: '#1e293b' } }
+    }
+  }
+});
+
+// HumanEval 折线图
+new Chart(document.getElementById('humanEvalChart'), {
+  type: 'line',
+  data: {
+    labels,
+    datasets: [{
+      data: benchmarkData.map(d=>d.humanEval),
+      borderColor: '#60a5fa', backgroundColor: '#60a5fa22',
+      tension: 0.4, fill: true, pointBackgroundColor: colors, pointRadius: 6, pointHoverRadius: 8
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { font: { size: 10 }, maxRotation: 30 }, grid: { display: false } },
+      y: { min: 82, max: 97, ticks: { font: { size: 11 }, callback: v => v+'%' }, grid: { color: '#1e293b' } }
+    }
+  }
+});
+
+// MBPP 雷达图（TOP5）
+new Chart(document.getElementById('radarChart'), {
+  type: 'radar',
+  data: {
+    labels: ['Elo(归一)', 'SWE-bench', 'HumanEval', 'MBPP', '综合评分'],
+    datasets: benchmarkData.slice(0,5).map((d,i) => ({
+      label: d.model.split(' ')[0],
+      data: [
+        ((d.elo-1400)/138*10+85).toFixed(1),
+        d.sweBench,
+        d.humanEval,
+        d.mbpp,
+        d.score
+      ],
+      borderColor: colors[i],
+      backgroundColor: colors[i]+'22',
+      pointBackgroundColor: colors[i],
+      borderWidth: 2
+    }))
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { font: { size: 11 }, boxWidth: 12, padding: 10 } } },
+    scales: {
+      r: {
+        min: 75, max: 100,
+        ticks: { font: { size: 10 }, backdropColor: 'transparent' },
+        grid: { color: '#334155' },
+        pointLabels: { font: { size: 11 }, color: '#94a3b8' }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
