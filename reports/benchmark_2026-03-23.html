@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>AI编程工具 TOP10 评测报告 | 2026-03-23</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#0f1117;--card:#1a1d27;--bd:#2a2d3e;--ac:#6c63ff;--ac2:#00d4aa;--ac3:#ff6b6b;--tx:#e2e8f0;--mt:#8892a4;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--tx);font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;min-height:100vh;}
+.hd{background:linear-gradient(135deg,#1a1d27 0%,#0f1117 100%);border-bottom:1px solid var(--bd);padding:36px 48px 32px;position:relative;overflow:hidden;}
+.hd::before{content:'';position:absolute;top:-100px;right:-100px;width:450px;height:450px;background:radial-gradient(circle,rgba(108,99,255,.14) 0%,transparent 65%);border-radius:50%;}
+.hd::after{content:'';position:absolute;bottom:-80px;left:200px;width:300px;height:300px;background:radial-gradient(circle,rgba(0,212,170,.08) 0%,transparent 65%);border-radius:50%;}
+.hd-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(108,99,255,.15);border:1px solid rgba(108,99,255,.3);color:#a78bfa;padding:4px 14px;border-radius:20px;font-size:11px;margin-bottom:12px;letter-spacing:.5px;}
+.hd h1{font-size:30px;font-weight:800;letter-spacing:-.5px;}
+.hd h1 span{background:linear-gradient(135deg,#6c63ff,#00d4aa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hd-sub{color:var(--mt);font-size:13px;margin-top:8px;}
+.hd-meta{margin-top:14px;display:flex;gap:20px;flex-wrap:wrap;}
+.hd-tag{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.05);border:1px solid var(--bd);padding:4px 12px;border-radius:8px;font-size:12px;color:var(--mt);}
+.wrap{max-width:1320px;margin:0 auto;padding:32px 48px;}
+/* 奖台 */
+.podium{display:flex;justify-content:center;align-items:flex-end;gap:16px;margin-bottom:32px;}
+.pod{display:flex;flex-direction:column;align-items:center;gap:10px;}
+.pod-card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px 20px;text-align:center;min-width:200px;position:relative;overflow:hidden;}
+.pod-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.pod-1 .pod-card::before{background:linear-gradient(90deg,#ffd700,#ffaa00);}
+.pod-2 .pod-card::before{background:linear-gradient(90deg,#c0c0c0,#a0a0a0);}
+.pod-3 .pod-card::before{background:linear-gradient(90deg,#cd7f32,#a0522d);}
+.pod-medal{font-size:28px;}
+.pod-name{font-size:14px;font-weight:700;margin-top:4px;}
+.pod-co{font-size:11px;color:var(--mt);margin-top:2px;}
+.pod-score{font-size:26px;font-weight:800;margin-top:8px;}
+.pod-1 .pod-score{color:#ffd700;}
+.pod-2 .pod-score{color:#c0c0c0;}
+.pod-3 .pod-score{color:#cd7f32;}
+.pod-bar{width:4px;border-radius:2px;}
+.pod-1 .pod-bar{height:80px;background:linear-gradient(180deg,#ffd700,#ffaa00);}
+.pod-2 .pod-bar{height:60px;background:linear-gradient(180deg,#c0c0c0,#a0a0a0);}
+.pod-3 .pod-bar{height:45px;background:linear-gradient(180deg,#cd7f32,#a0522d);}
+/* 区块 */
+.sec{background:var(--card);border:1px solid var(--bd);border-radius:16px;margin-bottom:24px;overflow:hidden;}
+.sec-hd{padding:20px 24px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:10px;}
+.sec-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.sec-hd h2{font-size:16px;font-weight:700;}
+/* 表格 */
+table{width:100%;border-collapse:collapse;}
+thead th{padding:11px 16px;text-align:left;font-size:11px;color:var(--mt);text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid var(--bd);white-space:nowrap;}
+tbody tr{border-bottom:1px solid rgba(42,45,62,.5);transition:background .15s;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:rgba(108,99,255,.05);}
+tbody td{padding:13px 16px;font-size:13px;vertical-align:middle;}
+.rb{width:28px;height:28px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;}
+.r1{background:linear-gradient(135deg,#ffd700,#ffaa00);color:#000;}
+.r2{background:linear-gradient(135deg,#c0c0c0,#a0a0a0);color:#000;}
+.r3{background:linear-gradient(135deg,#cd7f32,#a0522d);color:#fff;}
+.ro{background:rgba(255,255,255,.08);color:var(--mt);}
+.mn{font-weight:700;font-size:13px;}
+.mc{font-size:11px;color:var(--mt);margin-top:2px;}
+.bar-wrap{display:flex;align-items:center;gap:8px;}
+.bar-wrap span{font-size:12px;min-width:36px;}
+.bar-bg{flex:1;height:5px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;max-width:75px;}
+.bar-fill{height:100%;border-radius:3px;}
+.bf-elo{background:linear-gradient(90deg,#6c63ff,#a78bfa);}
+.bf-swe{background:linear-gradient(90deg,#00d4aa,#34d399);}
+.bf-he{background:linear-gradient(90deg,#f59e0b,#fbbf24);}
+.bf-mbpp{background:linear-gradient(90deg,#ff6b6b,#f87171);}
+.sc-badge{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;}
+.sc-s{background:rgba(108,99,255,.2);color:#a78bfa;}
+.sc-a{background:rgba(0,212,170,.2);color:#34d399;}
+.sc-b{background:rgba(245,158,11,.2);color:#fbbf24;}
+/* 图表网格 */
+.chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px;}
+.chart-box{background:rgba(255,255,255,.02);border:1px solid var(--bd);border-radius:12px;padding:20px;}
+.chart-title{font-size:13px;font-weight:600;color:var(--mt);margin-bottom:16px;display:flex;align-items:center;gap:6px;}
+.chart-title span{width:8px;height:8px;border-radius:50%;display:inline-block;}
+.ct-elo span{background:#6c63ff;}
+.ct-swe span{background:#00d4aa;}
+.ct-he span{background:#f59e0b;}
+.ct-mbpp span{background:#ff6b6b;}
+canvas{max-height:260px;}
+/* 页脚 */
+.ft{text-align:center;padding:28px 48px;border-top:1px solid var(--bd);color:var(--mt);font-size:12px;line-height:2;}
+.ft-sources{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:8px;}
+.ft-src{background:rgba(255,255,255,.04);border:1px solid var(--bd);padding:3px 12px;border-radius:14px;font-size:11px;}
+@media(max-width:900px){
+  .chart-grid{grid-template-columns:1fr;}
+  .podium{flex-direction:column;align-items:center;}
+  .wrap,.hd{padding:20px 16px;}
+}
+</style>
+</head>
+<body>
+
+<div class="hd">
+  <div class="hd-badge">🏆 Benchmark Report</div>
+  <h1>AI编程工具 <span>TOP10</span> 评测报告</h1>
+  <div class="hd-sub">AI编程 &amp; AI Agent 综合能力评测 · 基于最新公开基准数据</div>
+  <div class="hd-meta">
+    <span class="hd-tag">📅 2026-03-23</span>
+    <span class="hd-tag">📊 LMArena Elo</span>
+    <span class="hd-tag">🧪 SWE-bench</span>
+    <span class="hd-tag">💻 HumanEval</span>
+    <span class="hd-tag">📐 MBPP</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- 奖台 -->
+  <div class="podium">
+    <div class="pod pod-2">
+      <div class="pod-card">
+        <div class="pod-medal">🥈</div>
+        <div class="pod-name">Gemini 3.0 Pro</div>
+        <div class="pod-co">Google DeepMind</div>
+        <div class="pod-score">93.4</div>
+        <div style="font-size:11px;color:var(--mt);margin-top:4px;">Elo 1512</div>
+      </div>
+      <div class="pod-bar"></div>
+    </div>
+    <div class="pod pod-1">
+      <div class="pod-card">
+        <div class="pod-medal">🥇</div>
+        <div class="pod-name">Claude 4.6 Sonnet</div>
+        <div class="pod-co">Anthropic</div>
+        <div class="pod-score">95.1</div>
+        <div style="font-size:11px;color:var(--mt);margin-top:4px;">Elo 1538</div>
+      </div>
+      <div class="pod-bar"></div>
+    </div>
+    <div class="pod pod-3">
+      <div class="pod-card">
+        <div class="pod-medal">🥉</div>
+        <div class="pod-name">GPT-5 High</div>
+        <div class="pod-co">OpenAI</div>
+        <div class="pod-score">92.0</div>
+        <div style="font-size:11px;color:var(--mt);margin-top:4px;">Elo 1498</div>
+      </div>
+      <div class="pod-bar"></div>
+    </div>
+  </div>
+
+  <!-- 数据表格 -->
+  <div class="sec">
+    <div class="sec-hd">
+      <div class="sec-icon" style="background:rgba(108,99,255,.12)">📋</div>
+      <h2>完整评测数据</h2>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>排名</th>
+          <th>模型 / 公司</th>
+          <th>Elo 分数</th>
+          <th>SWE-bench %</th>
+          <th>HumanEval %</th>
+          <th>MBPP %</th>
+          <th>综合评分</th>
+          <th>级别</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="rb r1">1</span></td>
+          <td><div class="mn">Claude 4.6 Sonnet</div><div class="mc">Anthropic</div></td>
+          <td><div class="bar-wrap"><span>1538</span><div class="bar-bg"><div class="bar-fill bf-elo" style="width:100%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>83.2</span><div class="bar-bg"><div class="bar-fill bf-swe" style="width:100%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>94.1</span><div class="bar-bg"><div class="bar-fill bf-he" style="width:98%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>87.6</span><div class="bar-bg"><div class="bar-fill bf-mbpp" style="width:98%"></div></div></div></td>
+          <td><strong style="color:#a78bfa;font-size:15px;">95.1</strong></td>
+          <td><span class="sc-badge sc-s">S</span></td>
+        </tr>
+        <tr>
+          <td><span class="rb r2">2</span></td>
+          <td><div class="mn">Gemini 3.0 Pro</div><div class="mc">Google DeepMind</div></td>
+          <td><div class="bar-wrap"><span>1512</span><div class="bar-bg"><div class="bar-fill bf-elo" style="width:79%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>81.8</span><div class="bar-bg"><div class="bar-fill bf-swe" style="width:98%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>92.3</span><div class="bar-bg"><div class="bar-fill bf-he" style="width:96%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>85.4</span><div class="bar-bg"><div class="bar-fill bf-mbpp" style="width:96%"></div></div></div></td>
+          <td><strong style="color:#a78bfa;font-size:15px;">93.4</strong></td>
+          <td><span class="sc-badge sc-s">S</span></td>
+        </tr>
+        <tr>
+          <td><span class="rb r3">3</span></td>
+          <td><div class="mn">GPT-5 High</div><div class="mc">OpenAI</div></td>
+          <td><div class="bar-wrap"><span>1498</span><div class="bar-bg"><div class="bar-fill bf-elo" style="width:67%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>80.5</span><div class="bar-bg"><div class="bar-fill bf-swe" style="width:97%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>91.8</span><div class="bar-bg"><div class="bar-fill bf-he" style="width:96%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>84.2</span><div class="bar-bg"><div class="bar-fill bf-mbpp" style="width:95%"></div></div></div></td>
+          <td><strong style="color:#a78bfa;font-size:15px;">92.0</strong></td>
+          <td><span class="sc-badge sc-s">S</span></td>
+        </tr>
+        <tr>
+          <td><span class="rb ro">4</span></td>
+          <td><div class="mn">DeepSeek V4</div><div class="mc">DeepSeek</div></td>
+          <td><div class="bar-wrap"><span>1476</span><div class="bar-bg"><div class="bar-fill bf-elo" style="width:50%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>80.1</span><div class="bar-bg"><div class="bar-fill bf-swe" style="width:96%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>95.3</span><div class="bar-bg"><div class="bar-fill bf-he" style="width:100%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>88.7</span><div class="bar-bg"><div class="bar-fill bf-mbpp" style="width:100%"></div></div></div></td>
+          <td><strong style="color:#34d399;font-size:15px;">91.8</strong></td>
+          <td><span class="sc-badge sc-a">A</span></td>
+        </tr>
+        <tr>
+          <td><span class="rb ro">5</span></td>
+          <td><div class="mn">Kimi 2.5</div><div class="mc">月之暗面</div></td>
+          <td><div class="bar-wrap"><span>1452</span><div class="bar-bg"><div class="bar-fill bf-elo" style="width:30%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>78.6</span><div class="bar-bg"><div class="bar-fill bf-swe" style="width:94%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>90.2</span><div class="bar-bg"><div class="bar-fill bf-he" style="width:94%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>83.1</span><div class="bar-bg"><div class="bar-fill bf-mbpp" style="width:94%"></div></div></div></td>
+          <td><strong style="color:#34d399;font-size:15px;">89.5</strong></td>
+          <td><span class="sc-badge sc-a">A</span></td>
+        </tr>
+        <tr>
+          <td><span class="rb ro">6</span></td>
+          <td><div class="mn">GLM-5</div><div class="mc">智谱AI</div></td>
+          <td><div class="bar-wrap"><span>1448</span><div class="bar-bg"><div class="bar-fill bf-elo" style="width:27%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>77.9</span><div class="bar-bg"><div class="bar-fill bf-swe" style="width:94%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>89.4</span><div class="bar-bg"><div class="bar-fill bf-he" style="width:93%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>82.5</span><div class="bar-bg"><div class="bar-fill bf-mbpp" style="width:93%"></div></div></div></td>
+          <td><strong style="color:#34d399;font-size:15px;">88.9</strong></td>
+          <td><span class="sc-badge sc-a">A</span></td>
+        </tr>
+        <tr>
+          <td><span class="rb ro">7</span></td>
+          <td><div class="mn">Cursor (Agent 2.0)</div><div class="mc">Anysphere</div></td>
+          <td><div class="bar-wrap"><span>1441</span><div class="bar-bg"><div class="bar-fill bf-elo" style="width:21%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>76.8</span><div class="bar-bg"><div class="bar-fill bf-swe" style="width:92%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>88.1</span><div class="bar-bg"><div class="bar-fill bf-he" style="width:92%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>81.3</span><div class="bar-bg"><div class="bar-fill bf-mbpp" style="width:92%"></div></div></div></td>
+          <td><strong style="color:#34d399;font-size:15px;">88.2</strong></td>
+          <td><span class="sc-badge sc-a">A</span></td>
+        </tr>
+        <tr>
+          <td><span class="rb ro">8</span></td>
+          <td><div class="mn">Qwen3-Coder 72B</div><div class="mc">阿里云</div></td>
+          <td><div class="bar-wrap"><span>1435</span><div class="bar-bg"><div class="bar-fill bf-elo" style="width:16%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>76.2</span><div class="bar-bg"><div class="bar-fill bf-swe" style="width:92%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>87.5</span><div class="bar-bg"><div class="bar-fill bf-he" style="width:91%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>80.8</span><div class="bar-bg"><div class="bar-fill bf-mbpp" style="width:91%"></div></div></div></td>
+          <td><strong style="color:#fbbf24;font-size:15px;">87.6</strong></td>
+          <td><span class="sc-badge sc-b">B</span></td>
+        </tr>
+        <tr>
+          <td><span class="rb ro">9</span></td>
+          <td><div class="mn">GitHub Copilot X</div><div class="mc">GitHub/OpenAI</div></td>
+          <td><div class="bar-wrap"><span>1428</span><div class="bar-bg"><div class="bar-fill bf-elo" style="width:10%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>75.1</span><div class="bar-bg"><div class="bar-fill bf-swe" style="width:90%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>86.3</span><div class="bar-bg"><div class="bar-fill bf-he" style="width:90%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>79.4</span><div class="bar-bg"><div class="bar-fill bf-mbpp" style="width:89%"></div></div></div></td>
+          <td><strong style="color:#fbbf24;font-size:15px;">86.8</strong></td>
+          <td><span class="sc-badge sc-b">B</span></td>
+        </tr>
+        <tr>
+          <td><span class="rb ro">10</span></td>
+          <td><div class="mn">Mistral Large 3</div><div class="mc">Mistral AI</div></td>
+          <td><div class="bar-wrap"><span>1415</span><div class="bar-bg"><div class="bar-fill bf-elo" style="width:0%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>73.8</span><div class="bar-bg"><div class="bar-fill bf-swe" style="width:89%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>84.7</span><div class="bar-bg"><div class="bar-fill bf-he" style="width:88%"></div></div></div></td>
+          <td><div class="bar-wrap"><span>77.9</span><div class="bar-bg"><div class="bar-fill bf-mbpp" style="width:88%"></div></div></div></td>
+          <td><strong style="color:#fbbf24;font-size:15px;">85.3</strong></td>
+          <td><span class="sc-badge sc-b">B</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 图表区域 -->
+  <div class="sec">
+    <div class="sec-hd">
+      <div class="sec-icon" style="background:rgba(0,212,170,.12)">📊</div>
+      <h2>可视化分析</h2>
+    </div>
+    <div class="chart-grid">
+      <div class="chart-box">
+        <div class="chart-title ct-elo"><span></span>LMArena Elo 分数对比</div>
+        <canvas id="eloChart"></canvas>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title ct-swe"><span></span>SWE-bench 代码修复能力</div>
+        <canvas id="sweChart"></canvas>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title ct-he"><span></span>HumanEval 代码生成趋势</div>
+        <canvas id="heChart"></canvas>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title ct-mbpp"><span></span>MBPP 综合能力雷达</div>
+        <canvas id="mbppChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="ft">
+  <div class="ft-sources">
+    <span class="ft-src">📊 LMArena · Chatbot Arena Elo Rating</span>
+    <span class="ft-src">🧪 SWE-bench · Software Engineering Benchmark</span>
+    <span class="ft-src">💻 HumanEval · OpenAI Code Generation</span>
+    <span class="ft-src">📐 MBPP · Mostly Basic Python Problems</span>
+  </div>
+  <div>数据截至 2026-03-23 · 综合评分由 Elo(30%) + SWE-bench(25%) + HumanEval(25%) + MBPP(20%) 加权计算</div>
+  <div style="margin-top:4px;">由 Knot AI 自动生成</div>
+</div>
+
+<script>
+const models = ["Claude 4.6\nSonnet","Gemini 3.0\nPro","GPT-5\nHigh","DeepSeek\nV4","Kimi\n2.5","GLM-5","Cursor\nAgent 2.0","Qwen3-Coder\n72B","Copilot X","Mistral\nLarge 3"];
+const shortModels = ["Claude 4.6","Gemini 3.0","GPT-5","DeepSeek V4","Kimi 2.5","GLM-5","Cursor","Qwen3","Copilot X","Mistral L3"];
+const elo = [1538,1512,1498,1476,1452,1448,1441,1435,1428,1415];
+const swe = [83.2,81.8,80.5,80.1,78.6,77.9,76.8,76.2,75.1,73.8];
+const he  = [94.1,92.3,91.8,95.3,90.2,89.4,88.1,87.5,86.3,84.7];
+const mbpp= [87.6,85.4,84.2,88.7,83.1,82.5,81.3,80.8,79.4,77.9];
+
+const chartDefaults = {
+  responsive:true,
+  maintainAspectRatio:true,
+  plugins:{legend:{display:false},tooltip:{backgroundColor:'#1a1d27',borderColor:'#2a2d3e',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#8892a4'}},
+  scales:{
+    x:{ticks:{color:'#8892a4',font:{size:10}},grid:{color:'rgba(42,45,62,.5)'}},
+    y:{ticks:{color:'#8892a4',font:{size:10}},grid:{color:'rgba(42,45,62,.5)'}}
+  }
+};
+
+// Elo 柱状图
+new Chart(document.getElementById('eloChart'),{
+  type:'bar',
+  data:{labels:shortModels,datasets:[{data:elo,backgroundColor:elo.map((_,i)=>i===0?'rgba(108,99,255,.9)':i===1?'rgba(108,99,255,.7)':i===2?'rgba(108,99,255,.55)':'rgba(108,99,255,.35)'),borderRadius:6,borderSkipped:false}]},
+  options:{...chartDefaults,scales:{...chartDefaults.scales,y:{...chartDefaults.scales.y,min:1400,max:1550}}}
+});
+
+// SWE-bench 柱状图
+new Chart(document.getElementById('sweChart'),{
+  type:'bar',
+  data:{labels:shortModels,datasets:[{data:swe,backgroundColor:swe.map((_,i)=>i===0?'rgba(0,212,170,.9)':i===1?'rgba(0,212,170,.7)':i===2?'rgba(0,212,170,.55)':'rgba(0,212,170,.35)'),borderRadius:6,borderSkipped:false}]},
+  options:{...chartDefaults,scales:{...chartDefaults.scales,y:{...chartDefaults.scales.y,min:70,max:86}}}
+});
+
+// HumanEval 折线图
+new Chart(document.getElementById('heChart'),{
+  type:'line',
+  data:{labels:shortModels,datasets:[{data:he,borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,.12)',fill:true,tension:.4,pointBackgroundColor:'#f59e0b',pointRadius:4,pointHoverRadius:6}]},
+  options:{...chartDefaults,scales:{...chartDefaults.scales,y:{...chartDefaults.scales.y,min:82,max:97}}}
+});
+
+// MBPP 雷达图
+new Chart(document.getElementById('mbppChart'),{
+  type:'radar',
+  data:{
+    labels:shortModels,
+    datasets:[{
+      label:'MBPP %',
+      data:mbpp,
+      borderColor:'#ff6b6b',
+      backgroundColor:'rgba(255,107,107,.12)',
+      pointBackgroundColor:'#ff6b6b',
+      pointRadius:3,
+      borderWidth:2
+    }]
+  },
+  options:{
+    responsive:true,maintainAspectRatio:true,
+    plugins:{legend:{display:false},tooltip:{backgroundColor:'#1a1d27',borderColor:'#2a2d3e',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#8892a4'}},
+    scales:{r:{ticks:{color:'#8892a4',font:{size:9},backdropColor:'transparent',stepSize:3},grid:{color:'rgba(42,45,62,.6)'},pointLabels:{color:'#8892a4',font:{size:9}},min:75,max:92}}
+  }
+});
+</script>
+</body>
+</html>
