@@ -12,10 +12,7 @@
             min-height: 100vh;
             color: #e2e8f0;
         }
-        .hero {
-            text-align: center;
-            padding: 60px 20px 40px;
-        }
+        .hero { text-align: center; padding: 60px 20px 40px; }
         .hero h1 {
             font-size: 3em;
             background: linear-gradient(135deg, #667eea 0%, #f093fb 100%);
@@ -24,13 +21,9 @@
             margin-bottom: 12px;
             letter-spacing: -1px;
         }
-        .hero p {
-            color: #a0aec0;
-            font-size: 1.1em;
-        }
+        .hero p { color: #a0aec0; font-size: 1.1em; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px 60px; }
 
-        /* 模块卡片网格 */
         .modules-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -45,138 +38,57 @@
             transition: transform 0.2s, box-shadow 0.2s;
             backdrop-filter: blur(10px);
         }
-        .module-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        }
-        .module-header {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 20px;
-        }
-        .module-icon {
-            width: 52px;
-            height: 52px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.6em;
-        }
+        .module-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+        .module-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+        .module-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.6em; }
         .icon-blue { background: linear-gradient(135deg, #667eea, #764ba2); }
         .icon-green { background: linear-gradient(135deg, #43e97b, #38f9d7); }
         .icon-orange { background: linear-gradient(135deg, #f093fb, #f5576c); }
         .icon-yellow { background: linear-gradient(135deg, #fee140, #fa709a); }
-
         .module-title { font-size: 1.25em; font-weight: 700; color: #f7fafc; }
         .module-desc { font-size: 0.9em; color: #a0aec0; margin-top: 2px; }
 
-        /* 日报列表 */
-        .report-list { list-style: none; }
+        .report-list { list-style: none; max-height: 420px; overflow-y: auto; padding-right: 4px; }
+        .report-list::-webkit-scrollbar { width: 5px; }
+        .report-list::-webkit-scrollbar-track { background: rgba(255,255,255,0.04); border-radius: 3px; }
+        .report-list::-webkit-scrollbar-thumb { background: rgba(102,126,234,0.4); border-radius: 3px; }
         .report-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            display: flex; align-items: center; justify-content: space-between;
             padding: 12px 16px;
             background: rgba(255,255,255,0.04);
-            border-radius: 10px;
-            margin-bottom: 8px;
+            border-radius: 10px; margin-bottom: 8px;
             border: 1px solid rgba(255,255,255,0.06);
             transition: background 0.15s;
         }
+        .report-item:first-child { background: rgba(102,126,234,0.15); border-color: rgba(102,126,234,0.3); }
         .report-item:hover { background: rgba(102,126,234,0.15); }
-        .report-item a {
-            color: #90cdf4;
-            text-decoration: none;
-            font-size: 0.95em;
-            font-weight: 500;
-        }
+        .report-item a { color: #90cdf4; text-decoration: none; font-size: 0.95em; font-weight: 500; }
         .report-item a:hover { color: #667eea; }
-        .report-date {
-            font-size: 0.8em;
-            color: #718096;
-            background: rgba(255,255,255,0.06);
-            padding: 3px 10px;
-            border-radius: 20px;
-        }
-        .report-badge {
-            font-size: 0.75em;
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-weight: 600;
-        }
+        .report-date { font-size: 0.8em; color: #718096; background: rgba(255,255,255,0.06); padding: 3px 10px; border-radius: 20px; }
+        .report-badge { font-size: 0.75em; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
         .badge-new { background: rgba(72,187,120,0.2); color: #68d391; }
-        .badge-latest { background: rgba(102,126,234,0.2); color: #90cdf4; }
+        .empty-hint { text-align: center; color: #4a5568; padding: 20px; font-size: 0.9em; }
 
-        .empty-hint {
-            text-align: center;
-            color: #4a5568;
-            padding: 20px;
-            font-size: 0.9em;
-        }
-
-        /* 快捷入口 */
-        .quick-links {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
+        .quick-links { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
         .quick-link {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 16px;
-            background: rgba(255,255,255,0.04);
-            border-radius: 10px;
-            text-decoration: none;
-            color: #cbd5e0;
-            font-size: 0.9em;
-            border: 1px solid rgba(255,255,255,0.06);
-            transition: all 0.15s;
+            display: flex; align-items: center; gap: 10px;
+            padding: 12px 16px; background: rgba(255,255,255,0.04);
+            border-radius: 10px; text-decoration: none; color: #cbd5e0;
+            font-size: 0.9em; border: 1px solid rgba(255,255,255,0.06); transition: all 0.15s;
         }
-        .quick-link:hover {
-            background: rgba(102,126,234,0.2);
-            color: #90cdf4;
-            border-color: rgba(102,126,234,0.3);
-        }
+        .quick-link:hover { background: rgba(102,126,234,0.2); color: #90cdf4; border-color: rgba(102,126,234,0.3); }
 
-        /* 状态栏 */
         .status-bar {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            padding: 14px 24px;
-            background: rgba(255,255,255,0.04);
-            border-radius: 12px;
-            margin-bottom: 30px;
-            border: 1px solid rgba(255,255,255,0.08);
-            font-size: 0.88em;
-            color: #a0aec0;
-            flex-wrap: wrap;
+            display: flex; align-items: center; justify-content: center;
+            gap: 20px; padding: 14px 24px;
+            background: rgba(255,255,255,0.04); border-radius: 12px; margin-bottom: 30px;
+            border: 1px solid rgba(255,255,255,0.08); font-size: 0.88em; color: #a0aec0; flex-wrap: wrap;
         }
-        .status-dot {
-            width: 8px; height: 8px;
-            background: #48bb78;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-            display: inline-block;
-            margin-right: 6px;
-        }
-        @keyframes pulse {
-            0%,100% { opacity:1; transform:scale(1); }
-            50% { opacity:0.5; transform:scale(1.2); }
-        }
+        .status-dot { width: 8px; height: 8px; background: #48bb78; border-radius: 50%; animation: pulse 2s infinite; display: inline-block; margin-right: 6px; }
+        @keyframes pulse { 0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(1.2);} }
         .divider { color: #2d3748; }
 
-        footer {
-            text-align: center;
-            color: #4a5568;
-            font-size: 0.85em;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.06);
-        }
+        footer { text-align: center; color: #4a5568; font-size: 0.85em; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.06); }
     </style>
 </head>
 <body>
@@ -184,35 +96,43 @@
         <h1>🧠 AI辅助学习中心</h1>
         <p>每日追踪 AI 编程工具动态，持续学习，保持领先</p>
     </div>
-
     <div class="container">
-        <!-- 状态栏 -->
         <div class="status-bar">
             <span><span class="status-dot"></span>系统运行中</span>
             <span class="divider">|</span>
             <span>📅 最后更新：<span id="lastUpdate">--</span></span>
             <span class="divider">|</span>
-            <span>📊 已收录日报：<span id="reportCount">0</span> 期</span>
+            <span>📊 日报：<span id="dashCount">0</span> 期 &nbsp;🏆 评测：<span id="benchCount">0</span> 期</span>
             <span class="divider">|</span>
-            <span>🔄 每日凌晨 3:00 自动更新</span>
+            <span>🔄 每日自动更新</span>
         </div>
 
         <div class="modules-grid">
-            <!-- AI编程工具日报 -->
-            <div class="module-card" style="grid-column: span 2;">
+            <!-- 日报列表 -->
+            <div class="module-card" style="grid-column: span 1;">
                 <div class="module-header">
                     <div class="module-icon icon-blue">📊</div>
                     <div>
                         <div class="module-title">AI编程工具 TOP10 日报</div>
-                        <div class="module-desc">每日追踪权威评测数据 · LMArena · SWE-bench · HumanEval · MBPP</div>
+                        <div class="module-desc">每日新闻 · 工具动态 · 趋势分析</div>
                     </div>
                 </div>
-                <ul class="report-list" id="reportList">
-                    <li class="empty-hint">加载中...</li>
-                </ul>
+                <ul class="report-list" id="dashList"><li class="empty-hint">加载中...</li></ul>
             </div>
 
-            <!-- 学习资源快捷入口 -->
+            <!-- 评测报告列表 -->
+            <div class="module-card" style="grid-column: span 1;">
+                <div class="module-header">
+                    <div class="module-icon icon-orange">🏆</div>
+                    <div>
+                        <div class="module-title">AI编程工具 TOP10 评测报告</div>
+                        <div class="module-desc">LMArena · SWE-bench · HumanEval · MBPP</div>
+                    </div>
+                </div>
+                <ul class="report-list" id="benchList"><li class="empty-hint">加载中...</li></ul>
+            </div>
+
+            <!-- 快捷入口 -->
             <div class="module-card">
                 <div class="module-header">
                     <div class="module-icon icon-green">🚀</div>
@@ -240,14 +160,12 @@
                         <div class="module-desc">自动化 AI 工具追踪系统</div>
                     </div>
                 </div>
-                <div style="color: #a0aec0; font-size: 0.9em; line-height: 1.8;">
+                <div style="color:#a0aec0;font-size:0.9em;line-height:1.8;">
                     <p>📌 <strong style="color:#cbd5e0">数据来源</strong>：LMArena / SWE-bench / HumanEval / MBPP</p>
                     <p>🤖 <strong style="color:#cbd5e0">生成方式</strong>：AnyDev + Knot AI 自动采集</p>
-                    <p>⏰ <strong style="color:#cbd5e0">更新频率</strong>：每日凌晨 3:00 自动执行</p>
+                    <p>⏰ <strong style="color:#cbd5e0">更新频率</strong>：每日自动执行</p>
                     <p>☁️ <strong style="color:#cbd5e0">托管平台</strong>：GitHub Pages</p>
-                    <p style="margin-top: 12px; font-size: 0.85em; color: #4a5568;">
-                        Powered by AnyDev & Knot AI
-                    </p>
+                    <p style="margin-top:12px;font-size:0.85em;color:#4a5568;">Powered by AnyDev & Knot AI</p>
                 </div>
             </div>
         </div>
@@ -258,40 +176,40 @@
     </div>
 
     <script>
-        // 从 reports-index.json 加载日报列表
         async function loadReports() {
             try {
                 const res = await fetch('./reports-index.json?t=' + Date.now());
                 const data = await res.json();
-                const list = document.getElementById('reportList');
-                const reports = data.reports || [];
+                const all = data.reports || [];
 
-                document.getElementById('reportCount').textContent = reports.length;
-                if (reports.length > 0) {
-                    document.getElementById('lastUpdate').textContent = reports[0].date;
+                const dashboards = all.filter(r => r.type === 'dashboard');
+                const benchmarks = all.filter(r => r.type === 'benchmark');
+
+                document.getElementById('dashCount').textContent = dashboards.length;
+                document.getElementById('benchCount').textContent = benchmarks.length;
+                document.getElementById('lastUpdate').textContent = data.updated || '--';
+
+                function renderList(items, listId, labelPrefix) {
+                    const el = document.getElementById(listId);
+                    if (!items.length) { el.innerHTML = '<li class="empty-hint">暂无记录</li>'; return; }
+                    el.innerHTML = items.map((r, i) => `
+                        <li class="report-item">
+                            <a href="${r.file}" target="_blank">${labelPrefix} · ${r.date}</a>
+                            <div style="display:flex;gap:8px;align-items:center;">
+                                ${i === 0 ? '<span class="report-badge badge-new">最新</span>' : ''}
+                                <span class="report-date">${r.date}</span>
+                            </div>
+                        </li>`).join('');
                 }
 
-                if (reports.length === 0) {
-                    list.innerHTML = '<li class="empty-hint">暂无日报，等待首次自动生成...</li>';
-                    return;
-                }
-
-                list.innerHTML = reports.map((r, i) => `
-                    <li class="report-item">
-                        <a href="${r.file}" target="_blank">
-                            📊 AI编程工具 TOP10 日报 · ${r.date}
-                        </a>
-                        <div style="display:flex;gap:8px;align-items:center;">
-                            ${i === 0 ? '<span class="report-badge badge-new">最新</span>' : ''}
-                            <span class="report-date">${r.date}</span>
-                        </div>
-                    </li>
-                `).join('');
+                renderList(dashboards, 'dashList', '📊 AI编程工具 TOP10 日报');
+                renderList(benchmarks, 'benchList', '🏆 AI编程工具 TOP10 评测报告');
             } catch(e) {
-                document.getElementById('reportList').innerHTML = '<li class="empty-hint">暂无日报记录，等待首次自动生成...</li>';
+                ['dashList','benchList'].forEach(id => {
+                    document.getElementById(id).innerHTML = '<li class="empty-hint">加载失败，请刷新重试</li>';
+                });
             }
         }
-
         loadReports();
     </script>
 </body>
