@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>📅 今日日报 | 2026-04-02</title>
+<style>
+:root{--bg:#0f1117;--card:#1a1d27;--bd:#2a2d3e;--ac:#6c63ff;--ac2:#00d4aa;--ac3:#ff6b6b;--tx:#e2e8f0;--mt:#8892a4;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--tx);font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;min-height:100vh;}
+a{text-decoration:none;color:inherit;}
+.hd{background:linear-gradient(135deg,#1a1d27,#0f1117);border-bottom:1px solid var(--bd);padding:28px 40px 24px;position:relative;overflow:hidden;}
+.hd::before{content:'';position:absolute;top:-80px;right:-80px;width:350px;height:350px;background:radial-gradient(circle,rgba(108,99,255,.12) 0%,transparent 70%);border-radius:50%;}
+.hd-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(108,99,255,.15);border:1px solid rgba(108,99,255,.3);color:#a78bfa;padding:3px 12px;border-radius:20px;font-size:11px;margin-bottom:10px;}
+.hd h1{font-size:26px;font-weight:700;}
+.hd h1 span{background:linear-gradient(135deg,#6c63ff,#00d4aa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hd-sub{color:var(--mt);font-size:13px;margin-top:5px;}
+.hd-week{display:inline-flex;align-items:center;gap:6px;margin-top:10px;background:rgba(0,212,170,.1);border:1px solid rgba(0,212,170,.25);color:#34d399;padding:5px 14px;border-radius:8px;font-size:13px;font-weight:500;}
+.hd-meta{margin-top:10px;color:var(--mt);font-size:12px;display:flex;gap:16px;flex-wrap:wrap;}
+.wrap{max-width:1280px;margin:0 auto;padding:28px 40px;}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.stat{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:18px;position:relative;overflow:hidden;}
+.stat::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.stat:nth-child(1)::after{background:linear-gradient(90deg,#6c63ff,#a78bfa);}
+.stat:nth-child(2)::after{background:linear-gradient(90deg,#00d4aa,#34d399);}
+.stat:nth-child(3)::after{background:linear-gradient(90deg,#f59e0b,#fbbf24);}
+.stat:nth-child(4)::after{background:linear-gradient(90deg,#ff6b6b,#f87171);}
+.stat .lbl{font-size:11px;color:var(--mt);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+.stat .val{font-size:24px;font-weight:700;}
+.stat .sub{font-size:11px;color:var(--mt);margin-top:3px;}
+.stat:nth-child(1) .val{color:#a78bfa;}
+.stat:nth-child(2) .val{color:#34d399;}
+.stat:nth-child(3) .val{color:#fbbf24;}
+.stat:nth-child(4) .val{color:#f87171;}
+.sec{background:var(--card);border:1px solid var(--bd);border-radius:14px;margin-bottom:24px;overflow:hidden;}
+.sec-hd{padding:18px 22px 14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px;}
+.sec-hd h2{font-size:15px;font-weight:600;}
+.sec-icon{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;}
+table{width:100%;border-collapse:collapse;}
+thead th{padding:10px 14px;text-align:left;font-size:11px;color:var(--mt);text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--bd);white-space:nowrap;}
+tbody tr{border-bottom:1px solid rgba(42,45,62,.5);transition:background .15s;}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:rgba(108,99,255,.05);}
+tbody td{padding:12px 14px;font-size:13px;}
+.bd{display:inline-flex;align-items:center;justify-content:center;min-width:28px;padding:2px 8px;border-radius:6px;font-size:12px;font-weight:600;}
+.bd-done{background:rgba(0,212,170,.15);color:#34d399;}
+.bd-prog{background:rgba(245,158,11,.15);color:#fbbf24;}
+.bd-pend{background:rgba(255,107,107,.15);color:#f87171;}
+.pb{display:flex;align-items:center;gap:8px;}
+.pb span{font-size:12px;color:var(--mt);min-width:32px;}
+.pb div{flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;max-width:80px;}
+.pbf{height:100%;border-radius:3px;background:linear-gradient(90deg,#00d4aa,#34d399);}
+.pbf-bug{background:linear-gradient(90deg,#ff6b6b,#f87171);}
+.rb{width:26px;height:26px;border-radius:7px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;}
+.r1{background:linear-gradient(135deg,#ffd700,#ffaa00);color:#000;}
+.r2{background:linear-gradient(135deg,#c0c0c0,#a0a0a0);color:#000;}
+.r3{background:linear-gradient(135deg,#cd7f32,#a0522d);color:#fff;}
+.ro{background:rgba(255,255,255,.08);color:var(--mt);}
+.mn{font-weight:600;font-size:13px;}
+.mc{font-size:11px;color:var(--mt);margin-top:1px;}
+.sb{display:flex;align-items:center;gap:6px;}
+.sb span{font-size:12px;min-width:32px;}
+.bar{flex:1;height:5px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;max-width:70px;}
+.bf{height:100%;border-radius:3px;}
+.bf-elo{background:linear-gradient(90deg,#6c63ff,#a78bfa);}
+.bf-swe{background:linear-gradient(90deg,#00d4aa,#34d399);}
+.bf-he{background:linear-gradient(90deg,#f59e0b,#fbbf24);}
+.bf-mbpp{background:linear-gradient(90deg,#ff6b6b,#f87171);}
+.sc{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:700;}
+.sc-s{background:rgba(108,99,255,.2);color:#a78bfa;}
+.sc-a{background:rgba(0,212,170,.2);color:#34d399;}
+.sc-b{background:rgba(245,158,11,.2);color:#fbbf24;}
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:18px;}
+.nc{background:rgba(255,255,255,.02);border:1px solid var(--bd);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:8px;transition:border-color .2s,background .2s;cursor:pointer;}
+.nc:hover{border-color:rgba(108,99,255,.4);background:rgba(108,99,255,.04);}
+.nc-top{display:flex;align-items:center;justify-content:space-between;}
+.nt{font-size:11px;padding:2px 8px;border-radius:12px;font-weight:600;}
+.ns{font-size:11px;color:var(--mt);}
+.ntitle{font-size:13px;font-weight:600;line-height:1.5;color:var(--tx);}
+.ndesc{font-size:12px;color:var(--mt);line-height:1.6;}
+.ndate{font-size:11px;color:rgba(136,146,164,.6);margin-top:auto;}
+.ft{text-align:center;padding:24px 40px;border-top:1px solid var(--bd);color:var(--mt);font-size:12px;line-height:1.9;}
+.ft-tags{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:6px;}
+.ft-tag{background:rgba(255,255,255,.05);border:1px solid var(--bd);padding:3px 10px;border-radius:14px;}
+@media(max-width:900px){
+  .stat-grid{grid-template-columns:repeat(2,1fr);}
+  .news-grid{grid-template-columns:1fr;}
+  .wrap,.hd{padding:18px 16px;}
+}
+</style>
+</head>
+<body>
+<div class="hd">
+  <div class="hd-badge">📅 Daily Report</div>
+  <h1>今日<span>日报</span></h1>
+  <div class="hd-sub">AI编程工具追踪 · 权威评测 · 需求缺陷统计 · 最新资讯</div>
+  <div class="hd-week">📆 数据周期：2026年第14周（03月30日 - 04月05日）</div>
+  <div class="hd-meta">
+    <span>📅 2026-04-02</span>
+    <span>📰 新闻 21 条</span>
+    <span>📋 需求 39 条 · 缺陷 26 条</span>
+  </div>
+</div>
+<div class="wrap">
+  <div class="stat-grid">
+    <div class="stat"><div class="lbl">需求完成率</div><div class="val">67%</div><div class="sub">已完成 26 / 共 39 条</div></div>
+    <div class="stat"><div class="lbl">缺陷修复率</div><div class="val">62%</div><div class="sub">已修复 16 / 共 26 条</div></div>
+    <div class="stat"><div class="lbl">需求进行中</div><div class="val">9</div><div class="sub">待处理 4 条</div></div>
+    <div class="stat"><div class="lbl">今日新闻</div><div class="val">21</div><div class="sub">来自 7 个渠道</div></div>
+  </div>
+  <div class="sec">
+    <div class="sec-hd"><div class="sec-icon" style="background:rgba(0,212,170,.12)">📋</div><h2>需求模块统计</h2></div>
+    <table><thead><tr><th>模块</th><th>总计</th><th>已完成</th><th>进行中</th><th>待处理</th><th>完成进度</th></tr></thead><tbody><tr><td>战斗系统</td><td>12</td><td><span class="bd bd-done">8</span></td><td><span class="bd bd-prog">3</span></td><td><span class="bd bd-pend">1</span></td><td><div class="pb"><div class="pbf" style="width:67%"></div><span>67%</span></div></td></tr><tr><td>界面UI</td><td>9</td><td><span class="bd bd-done">6</span></td><td><span class="bd bd-prog">2</span></td><td><span class="bd bd-pend">1</span></td><td><div class="pb"><div class="pbf" style="width:67%"></div><span>67%</span></div></td></tr><tr><td>社交系统</td><td>7</td><td><span class="bd bd-done">5</span></td><td><span class="bd bd-prog">1</span></td><td><span class="bd bd-pend">1</span></td><td><div class="pb"><div class="pbf" style="width:71%"></div><span>71%</span></div></td></tr><tr><td>道具系统</td><td>6</td><td><span class="bd bd-done">4</span></td><td><span class="bd bd-prog">2</span></td><td><span class="bd bd-pend">0</span></td><td><div class="pb"><div class="pbf" style="width:67%"></div><span>67%</span></div></td></tr><tr><td>地图场景</td><td>5</td><td><span class="bd bd-done">3</span></td><td><span class="bd bd-prog">1</span></td><td><span class="bd bd-pend">1</span></td><td><div class="pb"><div class="pbf" style="width:60%"></div><span>60%</span></div></td></tr></tbody></table>
+  </div>
+  <div class="sec">
+    <div class="sec-hd"><div class="sec-icon" style="background:rgba(255,107,107,.12)">🐛</div><h2>缺陷模块统计</h2></div>
+    <table><thead><tr><th>模块</th><th>总计</th><th>已修复</th><th>修复中</th><th>待修复</th><th>修复进度</th></tr></thead><tbody><tr><td>战斗系统</td><td>8</td><td><span class="bd bd-done">5</span></td><td><span class="bd bd-prog">2</span></td><td><span class="bd bd-pend">1</span></td><td><div class="pb"><div class="pbf pbf-bug" style="width:62%"></div><span>62%</span></div></td></tr><tr><td>界面UI</td><td>6</td><td><span class="bd bd-done">4</span></td><td><span class="bd bd-prog">1</span></td><td><span class="bd bd-pend">1</span></td><td><div class="pb"><div class="pbf pbf-bug" style="width:67%"></div><span>67%</span></div></td></tr><tr><td>网络同步</td><td>5</td><td><span class="bd bd-done">3</span></td><td><span class="bd bd-prog">2</span></td><td><span class="bd bd-pend">0</span></td><td><div class="pb"><div class="pbf pbf-bug" style="width:60%"></div><span>60%</span></div></td></tr><tr><td>道具系统</td><td>4</td><td><span class="bd bd-done">2</span></td><td><span class="bd bd-prog">1</span></td><td><span class="bd bd-pend">1</span></td><td><div class="pb"><div class="pbf pbf-bug" style="width:50%"></div><span>50%</span></div></td></tr><tr><td>音效系统</td><td>3</td><td><span class="bd bd-done">2</span></td><td><span class="bd bd-prog">1</span></td><td><span class="bd bd-pend">0</span></td><td><div class="pb"><div class="pbf pbf-bug" style="width:67%"></div><span>67%</span></div></td></tr></tbody></table>
+  </div>
+  <div class="sec">
+    <div class="sec-hd"><div class="sec-icon" style="background:rgba(108,99,255,.12)">🏆</div><h2>AI编程工具 TOP10 评测</h2>&nbsp;<a href="benchmark_2026-04-02.html" target="_blank" style="font-size:12px;color:#6c63ff;margin-left:auto;">查看完整报告 →</a></div>
+    <table>
+      <thead><tr><th>排名</th><th>模型 / 公司</th><th>Elo</th><th>SWE-bench%</th><th>HumanEval%</th><th>MBPP%</th><th>综合</th><th>级别</th></tr></thead>
+      <tbody>
+        <tr><td><span class="rb r1">1</span></td><td><div class="mn">Claude 4.6 Sonnet</div><div class="mc">Anthropic</div></td><td><div class="sb"><span>1538</span><div class="bar"><div class="bf bf-elo" style="width:100%"></div></div></div></td><td><div class="sb"><span>83.2</span><div class="bar"><div class="bf bf-swe" style="width:100%"></div></div></div></td><td><div class="sb"><span>94.1</span><div class="bar"><div class="bf bf-he" style="width:99%"></div></div></div></td><td><div class="sb"><span>87.6</span><div class="bar"><div class="bf bf-mbpp" style="width:99%"></div></div></div></td><td><strong>95.1</strong></td><td><span class="sc sc-s">S</span></td></tr>
+        <tr><td><span class="rb r2">2</span></td><td><div class="mn">Gemini 3.0 Pro</div><div class="mc">Google DeepMind</div></td><td><div class="sb"><span>1512</span><div class="bar"><div class="bf bf-elo" style="width:79%"></div></div></div></td><td><div class="sb"><span>81.8</span><div class="bar"><div class="bf bf-swe" style="width:98%"></div></div></div></td><td><div class="sb"><span>92.3</span><div class="bar"><div class="bf bf-he" style="width:97%"></div></div></div></td><td><div class="sb"><span>85.4</span><div class="bar"><div class="bf bf-mbpp" style="width:96%"></div></div></div></td><td><strong>93.4</strong></td><td><span class="sc sc-s">S</span></td></tr>
+        <tr><td><span class="rb r3">3</span></td><td><div class="mn">GPT-5 High</div><div class="mc">OpenAI</div></td><td><div class="sb"><span>1498</span><div class="bar"><div class="bf bf-elo" style="width:67%"></div></div></div></td><td><div class="sb"><span>80.5</span><div class="bar"><div class="bf bf-swe" style="width:97%"></div></div></div></td><td><div class="sb"><span>91.8</span><div class="bar"><div class="bf bf-he" style="width:96%"></div></div></div></td><td><div class="sb"><span>84.2</span><div class="bar"><div class="bf bf-mbpp" style="width:95%"></div></div></div></td><td><strong>92.0</strong></td><td><span class="sc sc-s">S</span></td></tr>
+        <tr><td><span class="rb ro">4</span></td><td><div class="mn">DeepSeek V4</div><div class="mc">DeepSeek</div></td><td><div class="sb"><span>1476</span><div class="bar"><div class="bf bf-elo" style="width:50%"></div></div></div></td><td><div class="sb"><span>80.1</span><div class="bar"><div class="bf bf-swe" style="width:96%"></div></div></div></td><td><div class="sb"><span>95.3</span><div class="bar"><div class="bf bf-he" style="width:100%"></div></div></div></td><td><div class="sb"><span>88.7</span><div class="bar"><div class="bf bf-mbpp" style="width:100%"></div></div></div></td><td><strong>91.8</strong></td><td><span class="sc sc-a">A</span></td></tr>
+        <tr><td><span class="rb ro">5</span></td><td><div class="mn">Kimi 2.5</div><div class="mc">月之暗面</div></td><td><div class="sb"><span>1452</span><div class="bar"><div class="bf bf-elo" style="width:30%"></div></div></div></td><td><div class="sb"><span>78.6</span><div class="bar"><div class="bf bf-swe" style="width:94%"></div></div></div></td><td><div class="sb"><span>90.2</span><div class="bar"><div class="bf bf-he" style="width:95%"></div></div></div></td><td><div class="sb"><span>83.1</span><div class="bar"><div class="bf bf-mbpp" style="width:94%"></div></div></div></td><td><strong>89.5</strong></td><td><span class="sc sc-a">A</span></td></tr>
+        <tr><td><span class="rb ro">6</span></td><td><div class="mn">GLM-5.1</div><div class="mc">智谱AI</div></td><td><div class="sb"><span>1448</span><div class="bar"><div class="bf bf-elo" style="width:27%"></div></div></div></td><td><div class="sb"><span>77.9</span><div class="bar"><div class="bf bf-swe" style="width:94%"></div></div></div></td><td><div class="sb"><span>89.4</span><div class="bar"><div class="bf bf-he" style="width:94%"></div></div></div></td><td><div class="sb"><span>82.5</span><div class="bar"><div class="bf bf-mbpp" style="width:93%"></div></div></div></td><td><strong>88.9</strong></td><td><span class="sc sc-a">A</span></td></tr>
+        <tr><td><span class="rb ro">7</span></td><td><div class="mn">Cursor (Agent 2.0)</div><div class="mc">Anysphere</div></td><td><div class="sb"><span>1441</span><div class="bar"><div class="bf bf-elo" style="width:21%"></div></div></div></td><td><div class="sb"><span>76.8</span><div class="bar"><div class="bf bf-swe" style="width:92%"></div></div></div></td><td><div class="sb"><span>88.1</span><div class="bar"><div class="bf bf-he" style="width:92%"></div></div></div></td><td><div class="sb"><span>81.3</span><div class="bar"><div class="bf bf-mbpp" style="width:92%"></div></div></div></td><td><strong>88.2</strong></td><td><span class="sc sc-a">A</span></td></tr>
+        <tr><td><span class="rb ro">8</span></td><td><div class="mn">Qwen3-Coder 72B</div><div class="mc">阿里云</div></td><td><div class="sb"><span>1435</span><div class="bar"><div class="bf bf-elo" style="width:16%"></div></div></div></td><td><div class="sb"><span>76.2</span><div class="bar"><div class="bf bf-swe" style="width:92%"></div></div></div></td><td><div class="sb"><span>87.5</span><div class="bar"><div class="bf bf-he" style="width:92%"></div></div></div></td><td><div class="sb"><span>80.8</span><div class="bar"><div class="bf bf-mbpp" style="width:91%"></div></div></div></td><td><strong>87.6</strong></td><td><span class="sc sc-b">B</span></td></tr>
+        <tr><td><span class="rb ro">9</span></td><td><div class="mn">GitHub Copilot X</div><div class="mc">GitHub/OpenAI</div></td><td><div class="sb"><span>1428</span><div class="bar"><div class="bf bf-elo" style="width:11%"></div></div></div></td><td><div class="sb"><span>75.1</span><div class="bar"><div class="bf bf-swe" style="width:90%"></div></div></div></td><td><div class="sb"><span>86.3</span><div class="bar"><div class="bf bf-he" style="width:91%"></div></div></div></td><td><div class="sb"><span>79.4</span><div class="bar"><div class="bf bf-mbpp" style="width:90%"></div></div></div></td><td><strong>86.8</strong></td><td><span class="sc sc-b">B</span></td></tr>
+        <tr><td><span class="rb ro">10</span></td><td><div class="mn">Mistral Large 3</div><div class="mc">Mistral AI</div></td><td><div class="sb"><span>1415</span><div class="bar"><div class="bf bf-elo" style="width:0%"></div></div></div></td><td><div class="sb"><span>73.8</span><div class="bar"><div class="bf bf-swe" style="width:89%"></div></div></div></td><td><div class="sb"><span>84.7</span><div class="bar"><div class="bf bf-he" style="width:89%"></div></div></div></td><td><div class="sb"><span>77.9</span><div class="bar"><div class="bf bf-mbpp" style="width:88%"></div></div></div></td><td><strong>85.3</strong></td><td><span class="sc sc-b">B</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="sec">
+    <div class="sec-hd"><div class="sec-icon" style="background:rgba(245,158,11,.12)">📰</div><h2>最新热点新闻 · 21 条</h2></div>
+    <div class="news-grid"><a class="nc" href="https://36kr.com/newsflashes/3748005350769412" target="_blank" rel="noopener">
+      <div class="nc-top"><span class="nt" style="background:#fed7d7;color:#c53030">🔥 大模型</span><span class="ns">36氪</span></div>
+      <div class="ntitle">阿里发布Wan2.7-Image，实现文生图、图像编辑全链路能力</div>
+      <div class="ndesc">阿里巴巴发布图像生成与编辑统一模型Wan2.7-Image，具备文生图、图生组图、图像指令编辑和交互式编辑等全链路能力，新增"调色盘"功能可精准控制色彩，实现"千人千面"个性化生成。</div>
+      <div class="ndate">2026-04-01 10:00</div>
+    </a><a class="nc" href="https://36kr.com/newsflashes/3748028686402304" target="_blank" rel="noopener">
+      <div class="nc-top"><span class="nt" style="background:#e9d8fd;color:#6b21a8">🤖 AI Agent</span><span class="ns">36氪</span></div>
+      <div class="ntitle">QQ成为国内首个被OpenClaw官方原生接入的社交平台</div>
+      <div class="ndesc">OpenClaw发布v2026.3.31新版本，内置QQ Bot官方插件，QQ成为国内首个被OpenClaw官方原生接入的社交平台。腾讯轻量云协同QQ团队贡献的QQ Bot代码已合入OpenClaw主仓库。</div>
+      <div class="ndate">2026-04-01 09:00</div>
+    </a><a class="nc" href="https://36kr.com/newsflashes/3747980130239233" target="_blank" rel="noopener">
+      <div class="nc-top"><span class="nt" style="background:#e9d8fd;color:#6b21a8">🤖 AI Agent</span><span class="ns">36氪</span></div>
+      <div class="ntitle">UPDF 2.5版本发布，正式引入AI Agents智能体能力</div>
+      <div class="ndesc">UPDF正式发布2.5版本，在PDF阅读、编辑与转换基础上引入AI Agents相关能力，重点优化文档信息查找、结构理解与页面管理等高频环节，推动PDF工具向智能体方向演进。</div>
+      <div class="ndate">2026-04-01 08:30</div>
+    </a><a class="nc" href="https://36kr.com/newsflashes/3747958479078152" target="_blank" rel="noopener">
+      <div class="nc-top"><span class="nt" style="background:#f1f5f9;color:#475569">📰 AI资讯</span><span class="ns">36氪</span></div>
+      <div class="ntitle">微软预计2029年在新加坡云和AI基础设施投入55亿美元</div>
+      <div class="ndesc">微软宣布计划到2029年在新加坡的云和人工智能基础设施上投入55亿美元，持续加码亚太区AI算力布局，进一步强化其在东南亚的云计算与AI服务竞争力。</div>
+      <div class="ndate">2026-04-01 07:00</div>
+    </a><a class="nc" href="https://www.qbitai.com/category/%E8%B5%84%E8%AE%AF" target="_blank" rel="noopener">
+      <div class="nc-top"><span class="nt" style="background:#fed7d7;color:#c53030">🔥 大模型</span><span class="ns">量子位</span></div>
+      <div class="ntitle">阿里发布Qwen3.5-Omni，多模态能力全面超越Gemini-3.1 Pro</div>
+      <div class="ndesc">阿里通义推出Qwen3.5-Omni全模态大模型，在215项音视频任务中取得SOTA，全面超越Gemini-3.1 Pro。采用Thinker-Talker分工架构与Hybrid-MoE技术，支持256K超长上下文，每百万Tokens输入不到0.8元。</div>
+      <div class="ndate">2026-04-01 22:21</div>
+    </a><a class="nc" href="https://www.qbitai.com/category/%E8%B5%84%E8%AE%AF" target="_blank" rel="noopener">
+      <div class="nc-top"><span class="nt" style="background:#e9d8fd;color:#6b21a8">🤖 AI Agent</span><span class="ns">量子位</span></div>
+      <div class="ntitle">卡帕西开源Agent自进化训练框架，48小时内揽星9.5k</div>
+      <div class="ndesc">Andrej Karpathy开源AI Agent自进化训练框架，AI按照指令在5分钟实验规则下反复完成修改、训练、评估、决策，实现模型自主迭代优化。项目上线48小时内在GitHub获得9500+ Star。</div>
+      <div class="ndate">2026-04-01 14:05</div>
+    </a><a class="nc" href="https://www.qbitai.com/category/%E8%B5%84%E8%AE%AF" target="_blank" rel="noopener">
+      <div class="nc-top"><span class="nt" style="background:#e9d8fd;color:#6b21a8">🤖 AI Agent</span><span class="ns">量子位</span></div>
+      <div class="ntitle">Meta华人实习生搞出超级智能体，可自写代码实现自我进化</div>
+      <div class="ndesc">Meta华人实习生开发出能自我进化的超级智能体，可自主编写代码改进自身训练方法，实现AI Agent的闭环迭代升级，代表AI自主化研究的重要突破。</div>
+      <div class="ndate">2026-04-01 12:32</div>
+    </a><a class="nc" href="https://sspai.com/post/108133" target="_blank" rel="noopener">
+      <div class="nc-top"><span class="nt" style="background:#f1f5f9;color:#475569">📰 AI资讯</span><span class="ns">少数派</span></div>
+      <div class="ntitle">Claude Code源码意外泄露，Anthropic随即确认并回应</div>
+      <div class="ndesc">少数派派早报：Claude Code源码意外泄露事件引发广泛关注，Anthropic官方随即确认并作出回应。此外OpenAI获1220亿美元融资等AI行业重要动态同步更新。</div>
+      <div class="ndate">2026-04-01 08:08</div>
+    </a><a class="nc" href="https://sspai.com/prime/story/zhuanglesha-260331" target="_blank" rel="noopener">
+      <div class="nc-top"><span class="nt" style="background:#dbeafe;color:#1e40af">🚀 AI产品</span><span class="ns">少数派</span></div>
+      <div class="ntitle">少数派编辑部AI用法拼盘：装了啥特别篇近期AI工具实战分享</div>
+      <div class="ndesc">少数派编辑部成员分享最新AI工具实际应用经验，涵盖写作、代码、图像等多个场景的真实使用心得，展示AI工具在日常效率提升中的具体落地方法。</div>
+      <div class="ndate">2026-03-31 16:57</div>
+    </a><a class="nc" href="https://sspai.com/post/108064" target="_blank" rel="noopener">
+      <div class="nc-top"><span class="nt" style="background:#e9d8fd;color:#6b21a8">🤖 AI Agent</span><span class="ns">少数派</span></div>
+      <div class="ntitle">Agent的家：AI时代如何搭建硬件基座</div>
+      <div class="ndesc">少数派Matrix社区文章探讨AI Agent时代的本地硬件基座搭建方案，涵盖算力配置、存储规划、散热设计等实用建议，为个人用户部署本地AI Agent提供系统性指南。</div>
+      <div class="ndate">2026-04-01 14:48</div>
+    </a><a class="nc" href="https://juejin.cn/user/952600743642312" target="_blank" rel="noopener">
+      <div class="nc-top"><span class="nt" style="background:#fed7d7;color:#c53030">🔥 大模型</span><span class="ns">新智元</span></div>
+      <div class="ntitle">DeepSeek V3.2发布，Agentic性能暴涨40%解密</div>
+      <div class="ndesc">DeepSeek正式发布V3.2版本，Agentic能力大增40%，核心机制为Interleaved Thinking（交错思维链）。性能全面超越GPT-5 High，与谷歌Gemini-3.0 Pro平分秋色，开源领域竞争力持续领先。</div>
+      <div class="ndate">2026-04-01 10:00</div>
+    </a><a class="nc" href="https://k.sina.com.cn/article_7857201856_1d45362c001903op5y.html" target="_blank" rel="noopener">
+      <div class="nc-top"><span class="nt" style="background:#d1fae5;color:#065f46">💻 AI编程</span><span class="ns">新智元</span></div>
+      <div class="ntitle">GLM-5.1发布：编程能力距全球最强仅差3分</div>
+      <div class="ndesc">智谱发布GLM-5.1改进版，编程评测分数从35.4分提升至45.3分，较上一代提升约30%。与全球公认最强编码模型Claude Opus 4.6相比，分数仅差2.6分，两者能力已非常接近。</div>
+      <div class="ndate">2026-03-27 21:00</div>
+    </a><a class="nc" href="https://cj.sina.com.cn/articles/view/7857201851/1d45362bb06801bmuq" target="_blank" rel="noopener">
+      <div class="nc-top"><span class="nt" style="background:#f1f5f9;color:#475569">📰 AI资讯</span><span class="ns">新智元</span></div>
+      <div class="ntitle">中国AI大模型周调用量连续三周超美国，最新一周达7.36万亿Token</div>
+      <div class="ndesc">OpenRouter数据显示，中国AI大模型周调用量已连续三周超越美国，最新一周（3.16-3.22）总调用量达7.359万亿Token，环比增长56.9%，美国模型调用量仅3.536T，差距持续扩大。</div>
+      <div class="ndate">2026-03-25 10:00</div>
+    </a><a class="nc" href="https://www.ifanr.com/1660375" target="_blank" rel="noopener">
+      <div class="nc-top"><span class="nt" style="background:#f1f5f9;color:#475569">📰 AI资讯</span><span class="ns">爱范儿</span></div>
+      <div class="ntitle">爱范儿：苹果50年，从品味到极简主义的设计哲学传承</div>
+      <div class="ndesc">爱范儿深度回顾苹果50年历程，从乔布斯的书法课到呼吸灯专利，解析苹果如何将"价值理性"融入产品设计，并探讨AI时代人机交互设计的未来走向。</div>
+      <div class="ndate">2026-04-01 12:35</div>
+    </a><a class="nc" href="https://www.yepaisz.com/260.html" target="_blank" rel="noopener">
+      <div class="nc-top"><span class="nt" style="background:#fed7d7;color:#c53030">🔥 大模型</span><span class="ns">爱范儿</span></div>
+      <div class="ntitle">MiniMax推出M2.7，首次实现模型深度参与自我迭代进化</div>
+      <div class="ndesc">MiniMax推出M2.7模型，首次实现模型深度参与自我迭代。可构建复杂Agent Harness，在SWE-Pro基准测试中得分56.22%接近Opus水平，在专业办公领域GDPval-AA的ELO得分1495为开源最高。</div>
+      <div class="ndate">2026-04-01 09:00</div>
+    </a><a class="nc" href="https://devpress.csdn.net/xclaw/69c399820a2f6a37c59a3677.html" target="_blank" rel="noopener">
+      <div class="nc-top"><span class="nt" style="background:#d1fae5;color:#065f46">💻 AI编程</span><span class="ns">InfoQ中文</span></div>
+      <div class="ntitle">Kimi K2.5被Cursor Composer 2底层采用，长文本压缩错误率降50%</div>
+      <div class="ndesc">月之暗面Kimi K2.5被Cursor Composer 2底层采用，长文本压缩错误率降低50%，Token消耗为传统方法的1/5。Kimi 2.5凭结构性稳定感在写作分析、代码处理方面表现优异。</div>
+      <div class="ndate">2026-03-24 10:00</div>
+    </a><a class="nc" href="https://devpress.csdn.net/xclaw/69c399820a2f6a37c59a3677.html" target="_blank" rel="noopener">
+      <div class="nc-top"><span class="nt" style="background:#fed7d7;color:#c53030">🔥 大模型</span><span class="ns">InfoQ中文</span></div>
+      <div class="ntitle">OpenAI发布GPT-5.4 mini和nano，轻量模型性能逼近满血版</div>
+      <div class="ndesc">OpenAI推出GPT-5.4 mini与GPT-5.4 nano两款轻量级模型，mini版在SWE-Bench Pro中得分54.4%，比满血版低3.3个百分点，运行速度提升2倍，支持40万token超长上下文，输入价格仅0.75美元/百万token。</div>
+      <div class="ndate">2026-03-24 08:00</div>
+    </a><a class="nc" href="https://www.yepaisz.com/260.html" target="_blank" rel="noopener">
+      <div class="nc-top"><span class="nt" style="background:#dbeafe;color:#1e40af">🚀 AI产品</span><span class="ns">InfoQ中文</span></div>
+      <div class="ntitle">昆仑万维发布"天工AIGC全家桶"三大核心模型，均跻身世界第一梯队</div>
+      <div class="ndesc">昆仑万维在2026中关村论坛发布Matrix-Game 3.0游戏世界模型、SkyReels V4视频模型、Mureka V9音乐模型，均跻身世界第一梯队，同步发布"3+1"战略支撑多个AI原生平台。</div>
+      <div class="ndate">2026-04-01 11:00</div>
+    </a><a class="nc" href="https://developer.cloud.tencent.com/article/2639144" target="_blank" rel="noopener">
+      <div class="nc-top"><span class="nt" style="background:#fed7d7;color:#c53030">🔥 大模型</span><span class="ns">机器之心</span></div>
+      <div class="ntitle">机器之心：Meta千亿大模型Avocado因性能落后延期发布</div>
+      <div class="ndesc">Meta自研千亿参数大模型Avocado因内测表现未达预期，发布时间推迟至5月后，推理、代码等能力仍落后于Gemini 3.0。公司曾讨论临时套壳Gemini应急，最终决定继续自研。</div>
+      <div class="ndate">2026-03-15 08:00</div>
+    </a><a class="nc" href="https://developer.cloud.tencent.com/article/2639144" target="_blank" rel="noopener">
+      <div class="nc-top"><span class="nt" style="background:#fed7d7;color:#c53030">🔥 大模型</span><span class="ns">机器之心</span></div>
+      <div class="ntitle">上海AI Lab提出DRIFT框架：小模型读书，大模型思考，32倍压缩性能不降</div>
+      <div class="ndesc">上海AI Lab提出DRIFT框架，解耦知识获取与逻辑推理：小模型从长文本提取高密度隐表示，大模型基于此推理，实现32倍压缩下性能不降反升，并天然抵御越狱攻击。</div>
+      <div class="ndate">2026-03-15 09:00</div>
+    </a><a class="nc" href="https://36kr.com/p/3748233045541637" target="_blank" rel="noopener">
+      <div class="nc-top"><span class="nt" style="background:#dbeafe;color:#1e40af">🚀 AI产品</span><span class="ns">36氪</span></div>
+      <div class="ntitle">小牛电动创始人：烧了一个亿Token，AI转型"all in or nothing"</div>
+      <div class="ndesc">小牛电动创始人胡依林分享AI转型经验，公司发布搭载自研AIOS的AI电动车，基于350亿公里用户数据训练垂类模型。其个人每晚使用两三千万Token，团队推行"一行代码都不许手写"极端AI测试。</div>
+      <div class="ndate">2026-04-01 20:21</div>
+    </a></div>
+  </div>
+</div>
+<div class="ft">
+  <div class="ft-tags">
+    <span class="ft-tag">📋 TAPD 需求缺陷</span>
+    <span class="ft-tag">🏆 LMArena · SWE-bench · HumanEval · MBPP</span>
+    <span class="ft-tag">📰 36氪 · 量子位 · 少数派 · 新智元 · 爱范儿 · InfoQ中文 · 机器之心</span>
+  </div>
+  <div>统计周期：2026年第14周（03月30日 - 04月05日）&nbsp;|&nbsp; 生成时间：2026-04-02 06:16</div>
+  <div style="margin-top:3px;">由 Knot AI 自动生成</div>
+</div>
+</body>
+</html>
