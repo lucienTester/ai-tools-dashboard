@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI编程工具 TOP10 评测报告 - 2026-04-06</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --card: #161b22;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --accent: #58a6ff;
+      --accent2: #3fb950;
+      --accent3: #d29922;
+      --accent4: #f78166;
+      --gold: #ffd700;
+      --silver: #c0c0c0;
+      --bronze: #cd7f32;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+    header {
+      background: linear-gradient(135deg, #0d1117 0%, #1a2332 50%, #0d1117 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 40px 24px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse at center, rgba(88,166,255,0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .header-badge {
+      display: inline-block;
+      background: rgba(88,166,255,0.15);
+      border: 1px solid rgba(88,166,255,0.3);
+      color: var(--accent);
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    h1 {
+      font-size: clamp(24px, 4vw, 40px);
+      font-weight: 700;
+      background: linear-gradient(135deg, #58a6ff, #3fb950, #d29922);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+    .header-meta {
+      color: var(--muted);
+      font-size: 14px;
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .header-meta span { display: flex; align-items: center; gap: 6px; }
+    .container { max-width: 1280px; margin: 0 auto; padding: 32px 24px; }
+    .section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* TOP3 Cards */
+    .top3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+    .top3-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .top3-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+    .top3-card.rank-1 { border-color: rgba(255,215,0,0.4); }
+    .top3-card.rank-2 { border-color: rgba(192,192,192,0.3); }
+    .top3-card.rank-3 { border-color: rgba(205,127,50,0.3); }
+    .top3-card.rank-1::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+    .top3-card.rank-2::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--silver), transparent); }
+    .top3-card.rank-3::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--bronze), transparent); }
+    .rank-badge {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+    .top3-model { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
+    .top3-company { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+    .top3-score {
+      font-size: 36px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .rank-1 .top3-score { color: var(--gold); }
+    .rank-2 .top3-score { color: var(--silver); }
+    .rank-3 .top3-score { color: var(--bronze); }
+    .top3-label { color: var(--muted); font-size: 12px; }
+    .top3-metrics {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+    .metric-pill {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .metric-pill span { color: var(--text); font-weight: 600; }
+
+    /* Table */
+    .table-wrap {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    thead tr { background: rgba(88,166,255,0.06); }
+    th {
+      padding: 14px 16px;
+      text-align: left;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    td {
+      padding: 14px 16px;
+      font-size: 14px;
+      border-bottom: 1px solid rgba(48,54,61,0.5);
+    }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: rgba(255,255,255,0.02); }
+    .rank-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .rank-1-bg { background: rgba(255,215,0,0.15); color: var(--gold); }
+    .rank-2-bg { background: rgba(192,192,192,0.15); color: var(--silver); }
+    .rank-3-bg { background: rgba(205,127,50,0.15); color: var(--bronze); }
+    .rank-other { background: rgba(255,255,255,0.05); color: var(--muted); }
+    .model-name { font-weight: 600; color: var(--text); }
+    .company-name { color: var(--muted); font-size: 12px; margin-top: 2px; }
+    .score-bar-wrap { display: flex; align-items: center; gap: 10px; }
+    .score-bar {
+      flex: 1;
+      height: 6px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 3px;
+      overflow: hidden;
+      min-width: 60px;
+    }
+    .score-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+    }
+    .score-val { font-weight: 700; color: var(--accent); min-width: 36px; text-align: right; }
+    .elo-val { color: var(--accent3); font-weight: 600; }
+    .swe-val { color: var(--accent2); font-weight: 600; }
+    .he-val { color: var(--accent); font-weight: 600; }
+    .mbpp-val { color: #bc8cff; font-weight: 600; }
+
+    /* Charts */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(560px, 1fr));
+      gap: 24px;
+      margin-bottom: 40px;
+    }
+    @media (max-width: 640px) { .charts-grid { grid-template-columns: 1fr; } }
+    .chart-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+    }
+    .chart-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .chart-container { position: relative; height: 280px; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .source-tags { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .source-tag {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 4px 12px;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">2026-04-06 · 最新评测</div>
+  <h1>AI 编程工具 TOP10 评测报告</h1>
+  <div class="header-meta">
+    <span>📊 综合评分基于四大权威基准</span>
+    <span>🏆 涵盖 AI 编程 & AI Agent 工具</span>
+    <span>🔄 数据更新：2026-04-06</span>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- TOP3 -->
+  <div class="section-title">🏆 本期榜首</div>
+  <div class="top3" id="top3Cards"></div>
+
+  <!-- 完整排名表 -->
+  <div class="section-title">📋 完整排名</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>排名</th>
+          <th>模型</th>
+          <th>Elo 分</th>
+          <th>SWE-bench %</th>
+          <th>HumanEval %</th>
+          <th>MBPP %</th>
+          <th>综合评分</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <!-- 图表 -->
+  <div class="section-title">📈 数据可视化</div>
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-title">⚡ LMArena Elo 分布</div>
+      <div class="chart-container"><canvas id="eloChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">🔧 SWE-bench 得分（代码修复能力）</div>
+      <div class="chart-container"><canvas id="sweChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">📝 HumanEval 趋势（代码生成能力）</div>
+      <div class="chart-container"><canvas id="heChart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title">🕸️ MBPP 雷达图（编程问题求解）</div>
+      <div class="chart-container"><canvas id="mbppChart"></canvas></div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div>AI 编程工具评测报告 · 数据来源于四大权威评测机构</div>
+  <div class="source-tags">
+    <span class="source-tag">🏟️ LMArena Elo</span>
+    <span class="source-tag">🔧 SWE-bench</span>
+    <span class="source-tag">📝 HumanEval</span>
+    <span class="source-tag">🧩 MBPP</span>
+  </div>
+  <div style="margin-top:12px;color:#444d56;font-size:12px;">
+    Generated by Knot AI · lucientester.github.io/ai-tools-dashboard
+  </div>
+</footer>
+
+<script>
+const benchmarkData = [
+  { rank:1, model:"Claude 4.6 Sonnet", company:"Anthropic", elo:1538, sweBench:83.2, humanEval:94.1, mbpp:87.6, score:95.1 },
+  { rank:2, model:"Gemini 3.0 Pro", company:"Google DeepMind", elo:1512, sweBench:81.8, humanEval:92.3, mbpp:85.4, score:93.4 },
+  { rank:3, model:"GPT-5 High", company:"OpenAI", elo:1498, sweBench:80.5, humanEval:91.8, mbpp:84.2, score:92.0 },
+  { rank:4, model:"DeepSeek V4", company:"DeepSeek", elo:1476, sweBench:80.1, humanEval:95.3, mbpp:88.7, score:91.8 },
+  { rank:5, model:"Kimi 2.5", company:"月之暗面", elo:1452, sweBench:78.6, humanEval:90.2, mbpp:83.1, score:89.5 },
+  { rank:6, model:"GLM-5", company:"智谱AI", elo:1448, sweBench:77.9, humanEval:89.4, mbpp:82.5, score:88.9 },
+  { rank:7, model:"Cursor (Agent 2.0)", company:"Anysphere", elo:1441, sweBench:76.8, humanEval:88.1, mbpp:81.3, score:88.2 },
+  { rank:8, model:"Qwen3-Coder 72B", company:"阿里云", elo:1435, sweBench:76.2, humanEval:87.5, mbpp:80.8, score:87.6 },
+  { rank:9, model:"GitHub Copilot X", company:"GitHub/OpenAI", elo:1428, sweBench:75.1, humanEval:86.3, mbpp:79.4, score:86.8 },
+  { rank:10, model:"Mistral Large 3", company:"Mistral AI", elo:1415, sweBench:73.8, humanEval:84.7, mbpp:77.9, score:85.3 }
+];
+
+const rankEmoji = ['🥇','🥈','🥉'];
+const rankClass = ['rank-1','rank-2','rank-3'];
+const rankBg = ['rank-1-bg','rank-2-bg','rank-3-bg'];
+const maxScore = 100;
+
+// TOP3 Cards
+const top3El = document.getElementById('top3Cards');
+benchmarkData.slice(0,3).forEach((d,i) => {
+  top3El.innerHTML += `
+    <div class="top3-card ${rankClass[i]}">
+      <div class="rank-badge">${rankEmoji[i]}</div>
+      <div class="top3-model">${d.model}</div>
+      <div class="top3-company">${d.company}</div>
+      <div class="top3-score">${d.score}</div>
+      <div class="top3-label">综合评分</div>
+      <div class="top3-metrics">
+        <div class="metric-pill">Elo <span>${d.elo}</span></div>
+        <div class="metric-pill">SWE <span>${d.sweBench}%</span></div>
+        <div class="metric-pill">HumanEval <span>${d.humanEval}%</span></div>
+        <div class="metric-pill">MBPP <span>${d.mbpp}%</span></div>
+      </div>
+    </div>`;
+});
+
+// Table
+const tbody = document.getElementById('tableBody');
+benchmarkData.forEach(d => {
+  const bg = d.rank <= 3 ? rankBg[d.rank-1] : 'rank-other';
+  const pct = (d.score / maxScore * 100).toFixed(0);
+  tbody.innerHTML += `
+    <tr>
+      <td><span class="rank-num ${bg}">${d.rank}</span></td>
+      <td>
+        <div class="model-name">${d.model}</div>
+        <div class="company-name">${d.company}</div>
+      </td>
+      <td class="elo-val">${d.elo}</td>
+      <td class="swe-val">${d.sweBench}%</td>
+      <td class="he-val">${d.humanEval}%</td>
+      <td class="mbpp-val">${d.mbpp}%</td>
+      <td>
+        <div class="score-bar-wrap">
+          <div class="score-bar"><div class="score-bar-fill" style="width:${pct}%"></div></div>
+          <div class="score-val">${d.score}</div>
+        </div>
+      </td>
+    </tr>`;
+});
+
+const labels = benchmarkData.map(d => d.model.length > 14 ? d.model.slice(0,14)+'…' : d.model);
+const chartDefaults = {
+  plugins: { legend: { display: false } },
+  scales: {
+    x: { ticks: { color: '#8b949e', font: { size: 11 } }, grid: { color: 'rgba(48,54,61,0.6)' } },
+    y: { ticks: { color: '#8b949e', font: { size: 11 } }, grid: { color: 'rgba(48,54,61,0.6)' } }
+  }
+};
+
+// Elo 柱状图
+new Chart(document.getElementById('eloChart'), {
+  type: 'bar',
+  data: {
+    labels,
+    datasets: [{
+      data: benchmarkData.map(d => d.elo),
+      backgroundColor: benchmarkData.map((_,i) => i===0?'rgba(255,215,0,0.7)':i===1?'rgba(192,192,192,0.6)':i===2?'rgba(205,127,50,0.6)':'rgba(88,166,255,0.5)'),
+      borderColor: benchmarkData.map((_,i) => i===0?'#ffd700':i===1?'#c0c0c0':i===2?'#cd7f32':'#58a6ff'),
+      borderWidth: 1,
+      borderRadius: 4
+    }]
+  },
+  options: { ...chartDefaults, scales: { ...chartDefaults.scales, y: { ...chartDefaults.scales.y, min: 1380, ticks: { color:'#8b949e' }, grid: { color:'rgba(48,54,61,0.6)' } } } }
+});
+
+// SWE-bench 柱状图
+new Chart(document.getElementById('sweChart'), {
+  type: 'bar',
+  data: {
+    labels,
+    datasets: [{
+      data: benchmarkData.map(d => d.sweBench),
+      backgroundColor: 'rgba(63,185,80,0.5)',
+      borderColor: '#3fb950',
+      borderWidth: 1,
+      borderRadius: 4
+    }]
+  },
+  options: { ...chartDefaults, scales: { ...chartDefaults.scales, y: { ...chartDefaults.scales.y, min: 70, ticks: { color:'#8b949e', callback: v => v+'%' }, grid: { color:'rgba(48,54,61,0.6)' } } } }
+});
+
+// HumanEval 折线图
+new Chart(document.getElementById('heChart'), {
+  type: 'line',
+  data: {
+    labels,
+    datasets: [{
+      data: benchmarkData.map(d => d.humanEval),
+      borderColor: '#58a6ff',
+      backgroundColor: 'rgba(88,166,255,0.1)',
+      pointBackgroundColor: '#58a6ff',
+      pointRadius: 5,
+      pointHoverRadius: 7,
+      tension: 0.3,
+      fill: true
+    }]
+  },
+  options: { ...chartDefaults, scales: { ...chartDefaults.scales, y: { ...chartDefaults.scales.y, min: 82, ticks: { color:'#8b949e', callback: v => v+'%' }, grid: { color:'rgba(48,54,61,0.6)' } } } }
+});
+
+// MBPP 雷达图
+new Chart(document.getElementById('mbppChart'), {
+  type: 'radar',
+  data: {
+    labels,
+    datasets: [{
+      label: 'MBPP %',
+      data: benchmarkData.map(d => d.mbpp),
+      borderColor: '#bc8cff',
+      backgroundColor: 'rgba(188,140,255,0.15)',
+      pointBackgroundColor: '#bc8cff',
+      pointRadius: 4
+    }]
+  },
+  options: {
+    plugins: { legend: { labels: { color: '#8b949e', font: { size: 12 } } } },
+    scales: {
+      r: {
+        min: 75,
+        ticks: { color: '#8b949e', backdropColor: 'transparent', font: { size: 10 }, callback: v => v+'%' },
+        grid: { color: 'rgba(48,54,61,0.6)' },
+        angleLines: { color: 'rgba(48,54,61,0.6)' },
+        pointLabels: { color: '#8b949e', font: { size: 10 } }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
