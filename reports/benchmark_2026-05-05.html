@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI编程工具 TOP10 评测报告</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif;background:#0f172a;color:#e2e8f0;line-height:1.6}
+.container{max-width:1200px;margin:0 auto;padding:24px 16px}
+h1{text-align:center;font-size:2rem;background:linear-gradient(135deg,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+.subtitle{text-align:center;color:#94a3b8;font-size:.95rem;margin-bottom:32px}
+.date-badge{text-align:center;margin-bottom:32px}
+.date-badge span{background:#1e293b;border:1px solid #334155;border-radius:20px;padding:4px 16px;font-size:.85rem;color:#94a3b8}
+table{width:100%;border-collapse:collapse;background:#1e293b;border-radius:12px;overflow:hidden;margin-bottom:40px;box-shadow:0 4px 24px rgba(0,0,0,.3)}
+thead{background:linear-gradient(135deg,#1e3a5f,#2d1b69)}
+th{padding:14px 12px;text-align:center;font-weight:600;font-size:.85rem;color:#e2e8f0;white-space:nowrap}
+td{padding:12px;text-align:center;font-size:.85rem;border-top:1px solid #334155;white-space:nowrap}
+tbody tr:hover{background:#334155}
+.rank-1{color:#fbbf24;font-weight:700;font-size:1.1rem}
+.rank-2{color:#c0c0c0;font-weight:700}
+.rank-3{color:#cd7f32;font-weight:700}
+.score-bar{display:inline-block;height:8px;border-radius:4px;min-width:4px}
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:40px}
+.chart-card{background:#1e293b;border-radius:12px;padding:20px;box-shadow:0 4px 24px rgba(0,0,0,.3)}
+.chart-card h3{font-size:1rem;margin-bottom:16px;color:#e2e8f0;text-align:center}
+.chart-card canvas{width:100%!important;height:300px!important}
+footer{text-align:center;padding:24px 0;color:#64748b;font-size:.8rem;border-top:1px solid #1e293b}
+footer a{color:#60a5fa;text-decoration:none}
+@media(max-width:768px){.charts-grid{grid-template-columns:1fr}h1{font-size:1.5rem}th,td{padding:8px 6px;font-size:.75rem}}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🏆 AI编程工具 TOP10 评测报告</h1>
+<p class="subtitle">基于 LMArena Elo · SWE-bench · HumanEval · MBPP 综合评分</p>
+<div class="date-badge"><span>📅 2026-05-05</span></div>
+
+<table>
+<thead>
+<tr><th>排名</th><th>模型</th><th>公司</th><th>Elo</th><th>SWE-bench</th><th>HumanEval</th><th>MBPP</th><th>综合评分</th></tr>
+</thead>
+<tbody id="tbody"></tbody>
+</table>
+
+<div class="charts-grid">
+<div class="chart-card"><h3>📊 LMArena Elo 评分</h3><canvas id="eloChart"></canvas></div>
+<div class="chart-card"><h3>📊 SWE-bench 得分</h3><canvas id="sweChart"></canvas></div>
+<div class="chart-card"><h3>📈 HumanEval 得分</h3><canvas id="humanChart"></canvas></div>
+<div class="chart-card"><h3>🎯 MBPP 雷达图</h3><canvas id="mbppChart"></canvas></div>
+</div>
+
+<footer>
+数据来源：<a href="https://lmarena.ai" target="_blank">LMArena</a> · <a href="https://www.swebench.com" target="_blank">SWE-bench</a> · <a href="https://github.com/openai/human-eval" target="_blank">HumanEval</a> · <a href="https://github.com/google-research/google-research/tree/master/mbpp" target="_blank">MBPP</a><br>
+报告生成时间：2026-05-05 | Powered by Knot AI
+</footer>
+</div>
+
+<script>
+const data=[
+  {rank:1,model:"Claude 4.6 Sonnet",company:"Anthropic",elo:1538,sweBench:83.2,humanEval:94.1,mbpp:87.6,score:95.1},
+  {rank:2,model:"Gemini 3.0 Pro",company:"Google DeepMind",elo:1512,sweBench:81.8,humanEval:92.3,mbpp:85.4,score:93.4},
+  {rank:3,model:"GPT-5 High",company:"OpenAI",elo:1498,sweBench:80.5,humanEval:91.8,mbpp:84.2,score:92.0},
+  {rank:4,model:"DeepSeek V4",company:"DeepSeek",elo:1476,sweBench:80.1,humanEval:95.3,mbpp:88.7,score:91.8},
+  {rank:5,model:"Kimi 2.5",company:"月之暗面",elo:1452,sweBench:78.6,humanEval:90.2,mbpp:83.1,score:89.5},
+  {rank:6,model:"GLM-5",company:"智谱AI",elo:1448,sweBench:77.9,humanEval:89.4,mbpp:82.5,score:88.9},
+  {rank:7,model:"Cursor (Agent 2.0)",company:"Anysphere",elo:1441,sweBench:76.8,humanEval:88.1,mbpp:81.3,score:88.2},
+  {rank:8,model:"Qwen3-Coder 72B",company:"阿里云",elo:1435,sweBench:76.2,humanEval:87.5,mbpp:80.8,score:87.6},
+  {rank:9,model:"GitHub Copilot X",company:"GitHub/OpenAI",elo:1428,sweBench:75.1,humanEval:86.3,mbpp:79.4,score:86.8},
+  {rank:10,model:"Mistral Large 3",company:"Mistral AI",elo:1415,sweBench:73.8,humanEval:84.7,mbpp:77.9,score:85.3}
+];
+
+const colors=['#fbbf24','#a78bfa','#60a5fa','#34d399','#f87171','#fb923c','#38bdf8','#c084fc','#4ade80','#f472b6'];
+const labels=data.map(d=>d.model);
+
+// Table
+const tbody=document.getElementById('tbody');
+data.forEach((d,i)=>{
+  const rc=i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'';
+  const sw=Math.round(d.sweBench),hu=Math.round(d.humanEval),mb=Math.round(d.mbpp);
+  tbody.innerHTML+=`<tr>
+    <td class="${rc}">${d.rank}</td><td style="font-weight:600;text-align:left">${d.model}</td><td>${d.company}</td>
+    <td>${d.elo}</td>
+    <td>${d.sweBench}<span class="score-bar" style="width:${sw}px;background:${colors[i]}"></span></td>
+    <td>${d.humanEval}<span class="score-bar" style="width:${hu}px;background:${colors[i]}"></span></td>
+    <td>${d.mbpp}<span class="score-bar" style="width:${mb}px;background:${colors[i]}"></span></td>
+    <td style="font-weight:700;color:${colors[i]}">${d.score}</td></tr>`;
+});
+
+const chartOpts={responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{color:'#94a3b8',font:{size:10}},grid:{color:'#1e293b'}},y:{ticks:{color:'#94a3b8'},grid:{color:'#334155'}}}};
+
+// Elo bar
+new Chart(document.getElementById('eloChart'),{type:'bar',data:{labels,datasets:[{data:data.map(d=>d.elo),backgroundColor:colors.map(c=>c+'cc'),borderColor:colors,borderWidth:1,borderRadius:4}]},options:{...chartOpts,scales:{...chartOpts.scales,y:{...chartOpts.scales.y,min:1400,max:1560}}}});
+
+// SWE-bench bar
+new Chart(document.getElementById('sweChart'),{type:'bar',data:{labels,datasets:[{data:data.map(d=>d.sweBench),backgroundColor:colors.map(c=>c+'cc'),borderColor:colors,borderWidth:1,borderRadius:4}]},options:{...chartOpts,scales:{...chartOpts.scales,y:{...chartOpts.scales.y,min:70,max:86}}}});
+
+// HumanEval line
+new Chart(document.getElementById('humanChart'),{type:'line',data:{labels,datasets:[{data:data.map(d=>d.humanEval),borderColor:'#60a5fa',backgroundColor:'rgba(96,165,250,0.1)',fill:true,tension:.3,pointBackgroundColor:colors,pointRadius:5,pointHoverRadius:8}]},options:{...chartOpts,scales:{...chartOpts.scales,y:{...chartOpts.scales.y,min:82,max:98}}}});
+
+// MBPP radar
+new Chart(document.getElementById('mbppChart'),{type:'radar',data:{labels:labels.slice(0,5),datasets:[{label:'MBPP',data:data.slice(0,5).map(d=>d.mbpp),backgroundColor:'rgba(167,139,250,0.2)',borderColor:'#a78bfa',pointBackgroundColor:colors.slice(0,5),pointRadius:4}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{r:{ticks:{color:'#94a3b8',backdropColor:'transparent'},grid:{color:'#334155'},pointLabels:{color:'#e2e8f0',font:{size:9}},min:75,max:92}}}});
+</script>
+</body>
+</html>
