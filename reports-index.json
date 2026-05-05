@@ -1,18 +1,6 @@
 {
-  "updated": "2026-04-30 05:55:00",
+  "updated": "2026-05-06 05:56:57",
   "reports": [
-    {
-      "date": "2026-04-30",
-      "file": "reports/benchmark_2026-04-30.html"
-    },
-    {
-      "date": "2026-04-29",
-      "file": "reports/benchmark_2026-04-29.html"
-    },
-    {
-      "date": "2026-04-28",
-      "file": "reports/benchmark_2026-04-28.html"
-    },
     {
       "date": "2026-04-20",
       "file": "reports/dashboard_2026-04-20.html"
