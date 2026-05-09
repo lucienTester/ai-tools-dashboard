@@ -1,12 +1,6 @@
 {
-  "updated": "2026-05-08 05:55:00",
+  "updated": "2026-05-10 05:55:25",
   "reports": [
-    {
-      "date": "2026-05-08",
-      "file": "reports/benchmark_2026-05-08.html",
-      "title": "AI编程工具TOP10评测报告",
-      "type": "benchmark"
-    },
     {
       "date": "2026-04-20",
       "file": "reports/dashboard_2026-04-20.html"
