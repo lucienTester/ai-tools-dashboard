@@ -1,5 +1,5 @@
 {
-  "updated": "2026-05-13 05:56:49",
+  "updated": "2026-05-17 05:55:57",
   "reports": [
     {
       "date": "2026-04-20",
@@ -195,6 +195,22 @@
     }
   ],
   "benchmarks": [
+    {
+      "date": "2026-05-17",
+      "file": "reports/benchmark_2026-05-17.html"
+    },
+    {
+      "date": "2026-05-16",
+      "file": "reports/benchmark_2026-05-16.html"
+    },
+    {
+      "date": "2026-05-15",
+      "file": "reports/benchmark_2026-05-15.html"
+    },
+    {
+      "date": "2026-05-14",
+      "file": "reports/benchmark_2026-05-14.html"
+    },
     {
       "date": "2026-05-13",
       "file": "reports/benchmark_2026-05-13.html"
