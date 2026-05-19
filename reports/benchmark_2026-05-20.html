@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI编程工具 TOP10 评测报告</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        .content { padding: 40px; }
+        .section {
+            margin-bottom: 50px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            font-size: 1.8em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        thead { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        th { font-weight: 600; text-transform: uppercase; font-size: 0.9em; letter-spacing: 0.5px; }
+        tbody tr { transition: all 0.3s; }
+        tbody tr:hover { background: #f0f0f0; transform: scale(1.01); }
+        tbody tr:nth-child(odd) { background: #fafafa; }
+        tbody tr:nth-child(odd):hover { background: #f0f0f0; }
+        .rank-1 { background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%) !important; font-weight: bold; }
+        .rank-2 { background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%) !important; font-weight: bold; }
+        .rank-3 { background: linear-gradient(135deg, #cd7f32 0%, #e8a44a 100%) !important; font-weight: bold; }
+        .score { font-weight: bold; color: #667eea; }
+        .chart-container {
+            position: relative;
+            margin: 30px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .chart-item { height: 400px; }
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .footer a { color: #667eea; text-decoration: none; font-weight: bold; }
+        .footer a:hover { text-decoration: underline; }
+        .highlight { color: #667eea; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏆 AI编程工具 TOP10 评测报告</h1>
+            <p>数据更新时间：2026-05-20 | 基于 LMArena Elo / SWE-bench / HumanEval / MBPP 综合评分</p>
+        </div>
+
+        <div class="content">
+            <!-- 数据表格 -->
+            <div class="section">
+                <h2>📊 排行榜数据</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>排名</th>
+                            <th>模型</th>
+                            <th>公司</th>
+                            <th>Elo 评分</th>
+                            <th>SWE-bench</th>
+                            <th>HumanEval</th>
+                            <th>MBPP</th>
+                            <th>综合评分</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="rank-1">
+                            <td>🥇 1</td>
+                            <td><strong>Claude 4.6 Sonnet</strong></td>
+                            <td>Anthropic</td>
+                            <td class="score">1538</td>
+                            <td>83.2%</td>
+                            <td>94.1%</td>
+                            <td>87.6%</td>
+                            <td class="score">95.1</td>
+                        </tr>
+                        <tr class="rank-2">
+                            <td>🥈 2</td>
+                            <td><strong>Gemini 3.0 Pro</strong></td>
+                            <td>Google DeepMind</td>
+                            <td class="score">1512</td>
+                            <td>81.8%</td>
+                            <td>92.3%</td>
+                            <td>85.4%</td>
+                            <td class="score">93.4</td>
+                        </tr>
+                        <tr class="rank-3">
+                            <td>🥉 3</td>
+                            <td><strong>GPT-5 High</strong></td>
+                            <td>OpenAI</td>
+                            <td class="score">1498</td>
+                            <td>80.5%</td>
+                            <td>91.8%</td>
+                            <td>84.2%</td>
+                            <td class="score">92.0</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><strong>DeepSeek V4</strong></td>
+                            <td>DeepSeek</td>
+                            <td class="score">1476</td>
+                            <td>80.1%</td>
+                            <td>95.3%</td>
+                            <td>88.7%</td>
+                            <td class="score">91.8</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><strong>Kimi 2.5</strong></td>
+                            <td>月之暗面</td>
+                            <td class="score">1452</td>
+                            <td>78.6%</td>
+                            <td>90.2%</td>
+                            <td>83.1%</td>
+                            <td class="score">89.5</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td><strong>GLM-5</strong></td>
+                            <td>智谱AI</td>
+                            <td class="score">1448</td>
+                            <td>77.9%</td>
+                            <td>89.4%</td>
+                            <td>82.5%</td>
+                            <td class="score">88.9</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td><strong>Cursor (Agent 2.0)</strong></td>
+                            <td>Anysphere</td>
+                            <td class="score">1441</td>
+                            <td>76.8%</td>
+                            <td>88.1%</td>
+                            <td>81.3%</td>
+                            <td class="score">88.2</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td><strong>Qwen3-Coder 72B</strong></td>
+                            <td>阿里云</td>
+                            <td class="score">1435</td>
+                            <td>76.2%</td>
+                            <td>87.5%</td>
+                            <td>80.8%</td>
+                            <td class="score">87.6</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td><strong>GitHub Copilot X</strong></td>
+                            <td>GitHub/OpenAI</td>
+                            <td class="score">1428</td>
+                            <td>75.1%</td>
+                            <td>86.3%</td>
+                            <td>79.4%</td>
+                            <td class="score">86.8</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td><strong>Mistral Large 3</strong></td>
+                            <td>Mistral AI</td>
+                            <td class="score">1415</td>
+                            <td>73.8%</td>
+                            <td>84.7%</td>
+                            <td>77.9%</td>
+                            <td class="score">85.3</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 可视化图表 -->
+            <div class="section">
+                <h2>📈 可视化分析</h2>
+                <div class="chart-grid">
+                    <div class="chart-container">
+                        <h3>Elo 评分对比</h3>
+                        <div class="chart-item">
+                            <canvas id="eloChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <h3>SWE-bench 性能对比</h3>
+                        <div class="chart-item">
+                            <canvas id="sweChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <h3>HumanEval 得分趋势</h3>
+                        <div class="chart-item">
+                            <canvas id="humanEvalChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-container">
+                        <h3>MBPP 雷达图</h3>
+                        <div class="chart-item">
+                            <canvas id="mbppRadarChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 关键洞察 -->
+            <div class="section">
+                <h2>💡 关键洞察</h2>
+                <ul style="line-height: 2; font-size: 1.1em;">
+                    <li><span class="highlight">Claude 4.6 Sonnet</span> 以 1538 Elo 和 95.1 综合评分稳居第一，在 SWE-bench 和综合评分上均领先</li>
+                    <li><span class="highlight">DeepSeek V4</span> 在 HumanEval 上达到 95.3%，超过所有竞争对手，展现强大的代码生成能力</li>
+                    <li><span class="highlight">Gemini 3.0 Pro</span> 和 <span class="highlight">GPT-5 High</span> 紧随其后，形成第一梯队</li>
+                    <li>国产模型 <span class="highlight">Kimi 2.5</span>、<span class="highlight">GLM-5</span>、<span class="highlight">Qwen3-Coder</span> 表现亮眼，进入 TOP10</li>
+                    <li><span class="highlight">Cursor (Agent 2.0)</span> 作为 IDE 集成工具首次进入榜单，展现 Agent 模式潜力</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>数据来源：</strong></p>
+            <p>
+                <a href="https://lmarena.ai" target="_blank">LMArena</a> |
+                <a href="https://www.swebench.com" target="_blank">SWE-bench</a> |
+                <a href="https://humaneval.com" target="_blank">HumanEval</a> |
+                <a href="https://mbpp.com" target="_blank">MBPP</a>
+            </p>
+            <p style="margin-top: 15px; opacity: 0.8;">© 2026 AI Tools Dashboard | Generated on 2026-05-20</p>
+        </div>
+    </div>
+
+    <script>
+        const models = ['Claude 4.6', 'Gemini 3.0', 'GPT-5', 'DeepSeek V4', 'Kimi 2.5', 'GLM-5', 'Cursor 2.0', 'Qwen3', 'Copilot X', 'Mistral 3'];
+        const eloScores = [1538, 1512, 1498, 1476, 1452, 1448, 1441, 1435, 1428, 1415];
+        const sweScores = [83.2, 81.8, 80.5, 80.1, 78.6, 77.9, 76.8, 76.2, 75.1, 73.8];
+        const humanEvalScores = [94.1, 92.3, 91.8, 95.3, 90.2, 89.4, 88.1, 87.5, 86.3, 84.7];
+        const mbppScores = [87.6, 85.4, 84.2, 88.7, 83.1, 82.5, 81.3, 80.8, 79.4, 77.9];
+
+        // Elo 柱状图
+        new Chart(document.getElementById('eloChart'), {
+            type: 'bar',
+            data: {
+                labels: models,
+                datasets: [{
+                    label: 'Elo 评分',
+                    data: eloScores,
+                    backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                    borderColor: 'rgba(102, 126, 234, 1)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { beginAtZero: false, min: 1400 }
+                }
+            }
+        });
+
+        // SWE-bench 柱状图
+        new Chart(document.getElementById('sweChart'), {
+            type: 'bar',
+            data: {
+                labels: models,
+                datasets: [{
+                    label: 'SWE-bench (%)',
+                    data: sweScores,
+                    backgroundColor: 'rgba(118, 75, 162, 0.8)',
+                    borderColor: 'rgba(118, 75, 162, 1)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { beginAtZero: false, min: 70 }
+                }
+            }
+        });
+
+        // HumanEval 折线图
+        new Chart(document.getElementById('humanEvalChart'), {
+            type: 'line',
+            data: {
+                labels: models,
+                datasets: [{
+                    label: 'HumanEval (%)',
+                    data: humanEvalScores,
+                    borderColor: 'rgba(234, 102, 102, 1)',
+                    backgroundColor: 'rgba(234, 102, 102, 0.2)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { beginAtZero: false, min: 80 }
+                }
+            }
+        });
+
+        // MBPP 雷达图
+        new Chart(document.getElementById('mbppRadarChart'), {
+            type: 'radar',
+            data: {
+                labels: models.slice(0, 6),
+                datasets: [
+                    {
+                        label: 'MBPP (%)',
+                        data: mbppScores.slice(0, 6),
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        backgroundColor: 'rgba(102, 126, 234, 0.2)',
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    r: { beginAtZero: false, min: 75, max: 90 }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
