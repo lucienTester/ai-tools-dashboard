@@ -1,5 +1,5 @@
 {
-  "updated": "2026-05-29 05:55:57",
+  "updated": "2026-05-30 05:56:24",
   "reports": [
     {
       "date": "2026-04-20",
@@ -195,6 +195,10 @@
     }
   ],
   "benchmarks": [
+    {
+      "date": "2026-05-30",
+      "file": "reports/benchmark_2026-05-30.html"
+    },
     {
       "date": "2026-05-29",
       "file": "reports/benchmark_2026-05-29.html"
