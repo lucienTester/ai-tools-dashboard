@@ -1,6 +1,10 @@
 {
-  "updated": "2026-05-31 05:55:55",
+  "updated": "2026-06-02 05:55:42",
   "reports": [
+    {
+      "date": "2026-06-01",
+      "file": "reports/dashboard_2026-06-01.html"
+    },
     {
       "date": "2026-04-20",
       "file": "reports/dashboard_2026-04-20.html"
@@ -195,6 +199,14 @@
     }
   ],
   "benchmarks": [
+    {
+      "date": "2026-06-02",
+      "file": "reports/benchmark_2026-06-02.html"
+    },
+    {
+      "date": "2026-06-01",
+      "file": "reports/benchmark_2026-06-01.html"
+    },
     {
       "date": "2026-05-31",
       "file": "reports/benchmark_2026-05-31.html"
