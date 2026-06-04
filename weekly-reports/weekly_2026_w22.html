@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>第22周PM周报汇总（5月25日-5月31日）</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh; color: #e2e8f0;
+        }
+        .header {
+            text-align: center; padding: 50px 20px 30px;
+            background: rgba(67,233,123,0.05); border-bottom: 1px solid rgba(67,233,123,0.15);
+        }
+        .header h1 {
+            font-size: 2.2em;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+        .header p { color: #a0aec0; font-size: 1em; }
+        .container { max-width: 960px; margin: 0 auto; padding: 30px 20px 60px; }
+        .back-link {
+            display: inline-flex; align-items: center; gap: 6px;
+            color: #a0aec0; text-decoration: none; font-size: 0.9em;
+            padding: 8px 16px; border-radius: 8px;
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.15s; margin-bottom: 24px;
+        }
+        .back-link:hover { background: rgba(67,233,123,0.15); color: #43e97b; }
+        .content {
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px; padding: 36px 40px; backdrop-filter: blur(10px);
+        }
+        h1 { font-size: 1.8em; color: #43e97b; margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 2px solid rgba(67,233,123,0.3); }
+        h1:first-child { margin-top: 0; }
+        h2 { font-size: 1.4em; color: #38f9d7; margin: 28px 0 12px; }
+        h3 { font-size: 1.15em; color: #90cdf4; margin: 20px 0 10px; }
+        h4 { font-size: 1em; color: #cbd5e0; margin: 16px 0 8px; }
+        p { color: #cbd5e0; line-height: 1.8; margin: 8px 0; }
+        strong { color: #f7fafc; }
+        a { color: #63b3ed; text-decoration: none; } a:hover { color: #43e97b; text-decoration: underline; }
+        blockquote {
+            border-left: 4px solid rgba(67,233,123,0.4); padding: 10px 16px;
+            background: rgba(67,233,123,0.06); border-radius: 0 8px 8px 0;
+            margin: 12px 0; color: #a0aec0; font-style: italic;
+        }
+        hr { border: none; border-top: 1px solid rgba(255,255,255,0.1); margin: 24px 0; }
+        ol, ul { padding-left: 24px; margin: 8px 0; }
+        li { color: #cbd5e0; line-height: 1.8; margin: 4px 0; }
+        table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.92em; }
+        th { background: rgba(67,233,123,0.15); color: #43e97b; padding: 10px 14px; text-align: left; border: 1px solid rgba(255,255,255,0.1); font-weight: 600; }
+        td { padding: 10px 14px; border: 1px solid rgba(255,255,255,0.08); color: #cbd5e0; }
+        tr:hover td { background: rgba(255,255,255,0.04); }
+        .risk-high { filter: brightness(1.3); }
+        .risk-mid { filter: brightness(1.2); }
+        .risk-low { filter: brightness(1.1); }
+        footer { text-align: center; color: #4a5568; font-size: 0.85em; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.06); margin-top: 30px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📋 第22周PM周报汇总</h1>
+        <p>5月25日-5月31日 · 8位成员工作周报</p>
+    </div>
+    <div class="container">
+        <a class="back-link" href="../weekly-report.html">← 返回周报汇总列表</a>
+        <div class="content">
+            <h1>2026年第22周PM周报汇总（5月25日-5月31日）</h1>
+
+<blockquote>汇总时间：2026-05-30</blockquote>
+<blockquote>汇总周期：第22周（5月25日-5月31日）</blockquote>
+<blockquote>参与成员：Jason、Jakey、Yuanbin、Shuhuahuang、Elit、Cary、Iris、Olivia</blockquote>
+
+<hr>
+
+<h2>一、本周总结</h2>
+
+<h3>1.1 PM工作概况</h3>
+
+<h4>1.1.1 和平精英客户端/DS/大厅热更</h4>
+
+<p><strong>负责人：Jason、Jakey、Yuanbin、Shuhuahuang、Elit、Cary</strong></p>
+
+<p><strong>本周核心进展：</strong></p>
+<ul>
+<li>0525常规车定版与发布推进</li>
+<li>0601常规车需求梳理与资源准备</li>
+<li>赛季切换相关内容持续跟进</li>
+<li>商业化资源（赛季手册、通行令等）配置与测试</li>
+
+<p><strong>具体进展（按成员）：</strong></p>
+
+<p><strong>Jason：</strong></p>
+<ul>
+<li>0525常规车收版推进，客户端/DS/大厅各端定版</li>
+<li>0601常规车需求评估与单据拆分</li>
+<li>赛季切换活动配置跟进</li>
+<li>热更白皮书编写（本周热更车次汇总）</li>
+
+<p><strong>Jakey：</strong></p>
+<ul>
+<li>0525常规车DS端定版内容确认</li>
+<li>周末值班保障0525常规车顺利发布</li>
+<li>下周期车次内容规划</li>
+
+<p><strong>Yuanbin：</strong></p>
+<ul>
+<li>0525常规车大厅端定版与测试跟进</li>
+<li>商业化资源（赛季手册、通行令）配置验证</li>
+<li>外网反馈问题跟进与闭环</li>
+
+<p><strong>Shuhuahuang：</strong></p>
+<ul>
+<li>0525常规车客户端定版内容确认</li>
+<li>赛季切换相关模块测试跟进</li>
+<li>热更单据风险评估与合入催办</li>
+
+<p><strong>Elit：</strong></p>
+<ul>
+<li>0525常规车专项模块跟进（古墓探险笔记/小田AI等）</li>
+<li>商业化资源静默投放测试</li>
+<li>新功能（如小田AI 5.27投放）风险跟进</li>
+
+<p><strong>Cary：</strong></p>
+<ul>
+<li>外网疑难缺陷跟进，定期召开推进会议</li>
+<li>热更白皮书编写支持</li>
+<li>0525/0601常规车单据评估与催办</li>
+
+<hr>
+
+<h4>1.1.2 S工作台</h4>
+
+<p><strong>负责人：Iris</strong></p>
+
+<p><strong>本周核心进展：</strong></p>
+<ul>
+<li>工作台首页改版需求推进（预期6月交付）</li>
+<li>自动化测试验证持续推进</li>
+<li>稳定性方案落地（合入前review + 自动化测试 + 崩溃看板监控）</li>
+<li>版本订阅页面同步入口至工作台</li>
+<li>数据埋点功能开发</li>
+<li>人员变动直属领导查询功能</li>
+<li>一键清理权限功能（除P4/UGC管理端外均交付）</li>
+<li>项目管理看板需求优化（策划案完善）</li>
+<li>人员管理增加转岗员工信息补充</li>
+<li>非S工作室协作团队使用工作台审批接入</li>
+
+<p><strong>风险/待办：</strong></p>
+<ul>
+<li>首页改版需协商规范提单流程（宣讲时+自动建子单+挂领域leader提问建议）</li>
+<li>一键清理权限的P4/UGC管理端部分待交付</li>
+
+<hr>
+
+<h4>1.1.3 和平营地</h4>
+
+<p><strong>负责人：Iris</strong></p>
+
+<p><strong>本周核心进展：</strong></p>
+<ul>
+<li>V37研发进度：截止5月29日已完成65.35%，整体进度顺畅</li>
+<li>腾讯视频侧接口提供delay问题已拉起文创与外部平台沟通，下周内提供对应接口</li>
+<li>新老管理端切换前数据库迁移checklist输出</li>
+<li>限制运营/策划在对应期间不做配置操作，同时请测试领域协同对应环境测试</li>
+<li>后台技术优化发布：GitOps改造、容器平台迁移STKE-BCS、APISIX网关引入、腾讯云keewi集群数据迁移</li>
+<li>BCS迁移正式环境Checklist按时间节点推进，安排测试/客户端/H5/运营/策划侧协同工作</li>
+
+<p><strong>风险/待办：</strong></p>
+<ul>
+<li>腾讯视频接口delay，已拉起沟通，下周需跟进接口交付</li>
+<li>新老管理端并行使用期需通过功能checklist引导各领域配置和使用</li>
+
+<hr>
+
+<h4>1.1.4 其他专项</h4>
+
+<p><strong>绿洲协议（Iris）：</strong></p>
+<ul>
+<li>EPIC协议已完成财法税审批，待策划确认无误后启动归档审批流程</li>
+<li>绿洲创作者收益提现协议录入完成</li>
+
+<p><strong>AI Agent（Cary）：</strong></p>
+<ul>
+<li>TAPD夜班助理skill持续运行，夜间Bug监控与次日早上汇总播报正常</li>
+
+<p><strong>数据平台（Iris）：</strong></p>
+<ul>
+<li>数据口径梳理完成</li>
+<li>数据平台调整推进</li>
+
+<p><strong>日常学习（各成员）：</strong></p>
+<ul>
+<li>各成员持续更新日常学习文档，积累技术名词和解决方法</li>
+
+<hr>
+
+<h2>二、项目管理维度汇总分析</h2>
+
+<h3>2.1 进度维度</h3>
+
+<table><thead><tr>
+<th>项目</th>
+<th>当前进度</th>
+<th>状态</th>
+<th>风险</th>
+</tr></thead><tbody>
+<tr>
+<td>0525常规车</td>
+<td>定版完成，发布推进中</td>
+<td>正常</td>
+<td>周末需值班保障</td>
+</tr>
+<tr>
+<td>0601常规车</td>
+<td>需求梳理中</td>
+<td>进行中</td>
+<td>车次内容需提前规划</td>
+</tr>
+<tr>
+<td>和平营地V37</td>
+<td>65.35%</td>
+<td>正常</td>
+<td>腾讯视频接口delay</td>
+</tr>
+<tr>
+<td>S工作台首页改版</td>
+<td>开发中</td>
+<td>进行中</td>
+<td>提单流程需规范</td>
+</tr>
+<tr>
+<td>新老管理端切换</td>
+<td>Checklist输出中</td>
+<td>进行中</td>
+<td>迁移期间需限制配置操作</td>
+</tr>
+</tbody></table>
+
+<h3>2.2 风险维度</h3>
+
+<p><strong>高风险</strong></p>
+<ul>
+<li>腾讯视频侧接口提供delay（和平营地V37），已拉起沟通，下周内需提供对应接口</li>
+<li>0525常规车发布需周末值班保障</li>
+
+<p><strong>中风险</strong></p>
+<ul>
+<li>一键清理权限功能P4/UGC管理端部分待交付</li>
+<li>新老管理端切换期间需协调多领域协同测试</li>
+<li>0601常规车内容需提前规划，避免拥挤</li>
+
+<p><strong>低风险</strong></p>
+<ul>
+<li>外网疑难缺陷持续推进中，已建立双周例会机制</li>
+<li>热更白皮书按时编写</li>
+
+<h3>2.3 协作维度</h3>
+
+<table><thead><tr>
+<th>协作事项</th>
+<th>涉及方</th>
+<th>状态</th>
+</tr></thead><tbody>
+<tr>
+<td>腾讯视频接口提供</td>
+<td>文创/外部平台/营地后台</td>
+<td>进行中（delay）</td>
+</tr>
+<tr>
+<td>新老管理端切换</td>
+<td>测试/客户端/H5/运营/策划</td>
+<td>准备中</td>
+</tr>
+<tr>
+<td>热更车次定版</td>
+<td>各端PM/开发/测试</td>
+<td>按期推进</td>
+</tr>
+<tr>
+<td>工作台需求评审</td>
+<td>策划/程序/交互</td>
+<td>持续进行</td>
+</tr>
+</tbody></table>
+
+<h3>2.4 质量维度</h3>
+
+<ul>
+<li><strong>热更质量</strong>：本周热更车次包括0525常规车等，各端定版流程规范，风险评估机制运行正常</li>
+<li><strong>自动化测试</strong>：S工作台自动化测试验证持续推进，崩溃看板监控方案已落地</li>
+<li><strong>外网缺陷</strong>：疑难缺陷双周推进会议机制已建立，历史遗留问题分组跟进</li>
+
+<hr>
+
+<h2>三、下周计划</h2>
+
+<h3>3.1 常规车次</h3>
+<ul>
+<li>0601常规车需求确认与单据合入推进</li>
+<li>0525常规车发布后外网反馈监控</li>
+
+<h3>3.2 和平营地</h3>
+<ul>
+<li>跟进腾讯视频接口交付</li>
+<li>推进新老管理端切换数据库迁移演练</li>
+<li>V37研发进度持续跟进（目标进度70%+）</li>
+
+<h3>3.3 S工作台</h3>
+<ul>
+<li>首页改版持续开发（预期6月交付）</li>
+<li>一键清理权限功能P4/UGC管理端部分交付</li>
+<li>项目管理看板需求落地</li>
+
+<h3>3.4 其他</h3>
+<ul>
+<li>绿洲协议归档审批流程启动</li>
+<li>外网疑难缺陷双周例会（如有）</li>
+<li>日常学习文档持续更新</li>
+
+<hr>
+
+<p>*本文档由AI助手自动汇总生成，数据来源：各成员周报*</p>
+
+        </div>
+        <footer>
+            <p>📋 PM周报汇总 · 自动化构建 · Powered by AnyDev & Knot AI</p>
+        </footer>
+    </div>
+</body>
+</html>

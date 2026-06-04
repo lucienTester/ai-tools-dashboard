@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PM周报汇总</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+        }
+        .hero { text-align: center; padding: 60px 20px 40px; }
+        .hero h1 {
+            font-size: 3em;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+            letter-spacing: -1px;
+        }
+        .hero p { color: #a0aec0; font-size: 1.1em; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px 60px; }
+
+        .status-bar {
+            display: flex; align-items: center; justify-content: center;
+            gap: 20px; padding: 14px 24px;
+            background: rgba(255,255,255,0.04); border-radius: 12px; margin-bottom: 30px;
+            border: 1px solid rgba(255,255,255,0.08); font-size: 0.88em; color: #a0aec0; flex-wrap: wrap;
+        }
+        .status-dot { width: 8px; height: 8px; background: #48bb78; border-radius: 50%; animation: pulse 2s infinite; display: inline-block; margin-right: 6px; }
+        @keyframes pulse { 0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(1.2);} }
+        .divider { color: #2d3748; }
+
+        .weekly-card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 28px;
+            backdrop-filter: blur(10px);
+        }
+        .card-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
+        .card-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.6em; background: linear-gradient(135deg, #43e97b, #38f9d7); }
+        .card-title { font-size: 1.25em; font-weight: 700; color: #f7fafc; }
+        .card-desc { font-size: 0.9em; color: #a0aec0; margin-top: 2px; }
+
+        .weekly-list { list-style: none; }
+        .weekly-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 20px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 12px; margin-bottom: 10px;
+            border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.2s;
+        }
+        .weekly-item:first-child { background: rgba(67,233,123,0.12); border-color: rgba(67,233,123,0.3); }
+        .weekly-item:hover { background: rgba(67,233,123,0.15); transform: translateX(4px); }
+        .weekly-item a { color: #90cdf4; text-decoration: none; font-size: 1em; font-weight: 600; }
+        .weekly-item a:hover { color: #43e97b; }
+        .weekly-meta { display: flex; gap: 10px; align-items: center; }
+        .weekly-badge { font-size: 0.75em; padding: 3px 10px; border-radius: 20px; font-weight: 600; }
+        .badge-new { background: rgba(72,187,120,0.2); color: #68d391; }
+        .weekly-date { font-size: 0.82em; color: #718096; background: rgba(255,255,255,0.06); padding: 3px 12px; border-radius: 20px; }
+        .weekly-members { font-size: 0.8em; color: #a0aec0; margin-top: 4px; }
+
+        .empty-hint { text-align: center; color: #4a5568; padding: 40px 20px; font-size: 0.95em; }
+        .empty-hint span { font-size: 2em; display: block; margin-bottom: 12px; }
+
+        .back-link {
+            display: inline-flex; align-items: center; gap: 6px;
+            color: #a0aec0; text-decoration: none; font-size: 0.9em;
+            padding: 8px 16px; border-radius: 8px;
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.15s; margin-bottom: 20px;
+        }
+        .back-link:hover { background: rgba(67,233,123,0.15); color: #43e97b; }
+
+        footer { text-align: center; color: #4a5568; font-size: 0.85em; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.06); }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>📋 PM周报汇总</h1>
+        <p>每周自动汇总团队周报，项目管理一目了然</p>
+    </div>
+    <div class="container">
+        <div class="status-bar">
+            <span><span class="status-dot"></span>自动汇总中</span>
+            <span class="divider">|</span>
+            <span>📅 最后更新：<span id="lastUpdate">--</span></span>
+            <span class="divider">|</span>
+            <span>📊 已汇总：<span id="weekCount">0</span> 周</span>
+            <span class="divider">|</span>
+            <span>👥 成员：8人</span>
+        </div>
+
+        <a class="back-link" href="./index.html">← 返回AI辅助学习中心</a>
+
+        <div class="weekly-card">
+            <div class="card-header">
+                <div class="card-icon">📋</div>
+                <div>
+                    <div class="card-title">周报汇总列表</div>
+                    <div class="card-desc">每周六自动生成 · 8位成员工作周报</div>
+                </div>
+            </div>
+            <ul class="weekly-list" id="weeklyList">
+                <li class="empty-hint"><span>📭</span>暂无周报汇总</li>
+            </ul>
+        </div>
+
+        <footer>
+            <p>📋 PM周报汇总 · 自动化构建 · Powered by AnyDev & Knot AI</p>
+        </footer>
+    </div>
+
+    <script>
+        async function loadWeeklyReports() {
+            try {
+                const res = await fetch('./weekly-index.json?t=' + Date.now());
+                const data = await res.json();
+                const reports = data.reports || [];
+
+                document.getElementById('lastUpdate').textContent = data.updated || '--';
+                document.getElementById('weekCount').textContent = reports.length;
+
+                const el = document.getElementById('weeklyList');
+                if (!reports.length) {
+                    el.innerHTML = '<li class="empty-hint"><span>📭</span>暂无周报汇总</li>';
+                    return;
+                }
+
+                el.innerHTML = reports.map((r, i) => `
+                    <li class="weekly-item">
+                        <div>
+                            <a href="${r.file}" target="_blank">📆 ${r.title}</a>
+                            <div class="weekly-members">👥 ${r.members || 'Jason · Jakey · Yuanbin · Shuhuahuang · Elit · Cary · Iris · Olivia'}</div>
+                        </div>
+                        <div class="weekly-meta">
+                            ${i === 0 ? '<span class="weekly-badge badge-new">最新</span>' : ''}
+                            <span class="weekly-date">${r.week_range || r.date}</span>
+                        </div>
+                    </li>`).join('');
+            } catch(e) {
+                document.getElementById('weeklyList').innerHTML = '<li class="empty-hint"><span>⚠️</span>加载失败，请刷新重试</li>';
+            }
+        }
+        loadWeeklyReports();
+    </script>
+</body>
+</html>
